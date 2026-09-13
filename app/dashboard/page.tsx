@@ -1,5 +1,6 @@
 import { AddClientDialog } from "@/components/add-client-dialog";
 import ClientsList from "@/components/clients-list";
+import CurrentDateBadge from "@/components/current-date-badge";
 import { Suspense } from "react";
 
 export default function DashboardPage() {
@@ -7,8 +8,12 @@ export default function DashboardPage() {
 		<div className="space-y-8">
 			<div className="flex items-center justify-between">
 				<div>
-					<h1 className="text-3xl font-bold tracking-tight">
-						Clients
+					<Suspense>
+						<CurrentDateBadge />
+					</Suspense>
+
+					<h1 className="text-3xl font-bold mt-3">
+						Good Morning, Coach Georgi
 					</h1>
 
 					<p className="mt-1 text-muted-foreground">

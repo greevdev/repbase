@@ -11,8 +11,8 @@ export default function DashboardLayout({
 		<div className="min-h-screen bg-muted/30">
 			<header className="border-b bg-background">
 				<div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-					<Link href="/protected" className="text-lg font-semibold">
-						RepBase
+					<Link href="/dashboard" className="text-xl font-semibold">
+						Rep<span className="text-emerald-600">Base</span>
 					</Link>
 
 					<div className="flex items-center space-x-5">

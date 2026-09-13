@@ -32,9 +32,9 @@ export function AddClientDialog() {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button>
-					<Plus className="mr-2 size-4" />
-					Add client
+				<Button className="bg-emerald-700 hover:bg-emerald-900">
+					<Plus className="mr-1 size-4" />
+					New Client
 				</Button>
 			</DialogTrigger>
 
