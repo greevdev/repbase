@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { EditClientDialog } from "./edit-client-dialog";
 
 export default async function ClientsList() {
 	const supabase = await createClient();
@@ -11,24 +12,42 @@ export default async function ClientsList() {
 
 	if (error) return <p>Failed to load clients.</p>;
 
+	const currentYear = new Date().getFullYear();
+
 	return (
 		<>
 			{clients && clients.length > 0 ? (
 				clients.map((client) => (
-					<Card
-						key={client.id}
-						className="cursor-pointer transition hover:shadow-md"
-					>
+					<Card key={client.id}>
 						<CardHeader>
 							<CardTitle className="text-lg">
 								{client.name}
 							</CardTitle>
 						</CardHeader>
 
-						<CardContent>
-							<p className="text-sm text-muted-foreground">
-								{client.notes}
-							</p>
+						<CardContent className="space-y-4">
+							<div>
+								{client.goal && (
+									<p className="text-sm">
+										Goal: {client.goal}
+									</p>
+								)}
+
+								{client.year_of_birth && (
+									<p className="text-sm">
+										{currentYear - client.year_of_birth}{" "}
+										years old
+									</p>
+								)}
+
+								{client.notes && (
+									<p className="text-sm text-muted-foreground">
+										{client.notes}
+									</p>
+								)}
+							</div>
+
+							<EditClientDialog client={client} />
 						</CardContent>
 					</Card>
 				))
