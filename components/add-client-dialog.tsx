@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus } from "lucide-react";
-import { addClient } from "@/app/protected/actions";
+import { addClient } from "@/app/dashboard/actions";
 import { useState } from "react";
 import { toast } from "sonner";
 

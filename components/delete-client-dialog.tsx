@@ -1,7 +1,7 @@
 "use client";
 
 import { Trash2 } from "lucide-react";
-import { deleteClient } from "@/app/protected/actions";
+import { deleteClient } from "@/app/dashboard/actions";
 
 import { Button } from "@/components/ui/button";
 import {

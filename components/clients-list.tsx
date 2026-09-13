@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EditClientDialog } from "./edit-client-dialog";
 import { DeleteClientDialog } from "@/components/delete-client-dialog";
+import Link from "next/link";
 
 export default async function ClientsList() {
 	const supabase = await createClient();
@@ -19,14 +20,18 @@ export default async function ClientsList() {
 		<>
 			{clients && clients.length > 0 ? (
 				clients.map((client) => (
-					<Card key={client.id}>
-						<CardHeader>
-							<CardTitle className="text-lg">
-								{client.name}
-							</CardTitle>
-						</CardHeader>
+					<Link
+						key={client.id}
+						href={`/dashboard/clients/${client.id}`}
+					>
+						<Card className="cursor-pointer transition hover:shadow-lg">
+							<CardHeader>
+								<CardTitle className="text-lg">
+									{client.name}
+								</CardTitle>
+							</CardHeader>
 
-						<CardContent className="space-y-4">
+							{/* <CardContent className="space-y-4">
 							<div>
 								{client.goal && (
 									<p className="text-sm">
@@ -56,8 +61,9 @@ export default async function ClientsList() {
 									clientName={client.name}
 								/>
 							</div>
-						</CardContent>
-					</Card>
+						</CardContent> */}
+						</Card>
+					</Link>
 				))
 			) : (
 				<p>You don't have any clients currently.</p>
