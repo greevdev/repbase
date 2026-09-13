@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EditClientDialog } from "./edit-client-dialog";
+import { DeleteClientDialog } from "@/components/delete-client-dialog";
 
 export default async function ClientsList() {
 	const supabase = await createClient();
@@ -47,7 +48,14 @@ export default async function ClientsList() {
 								)}
 							</div>
 
-							<EditClientDialog client={client} />
+							<div className="space-x-3">
+								<EditClientDialog client={client} />
+
+								<DeleteClientDialog
+									clientId={client.id}
+									clientName={client.name}
+								/>
+							</div>
 						</CardContent>
 					</Card>
 				))

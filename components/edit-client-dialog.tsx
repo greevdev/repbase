@@ -63,7 +63,7 @@ export function EditClientDialog({ client }: { client: Client }) {
 					/>
 
 					<Input
-						name="year_of_birth"
+						name=""
 						type="number"
 						min="1900"
 						defaultValue={client.year_of_birth ?? ""}
