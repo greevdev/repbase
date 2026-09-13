@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Plus } from "lucide-react";
 import { addClient } from "@/app/protected/actions";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export function AddClientDialog() {
 	const [open, setOpen] = useState(false);
@@ -22,6 +23,9 @@ export function AddClientDialog() {
 
 		if (result.success) {
 			setOpen(false);
+			toast.success("Client added successfully");
+		} else {
+			toast.error("Failed to add new client");
 		}
 	}
 

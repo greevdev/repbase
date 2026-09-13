@@ -15,6 +15,7 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 export function DeleteClientDialog({
 	clientId,
@@ -24,7 +25,13 @@ export function DeleteClientDialog({
 	clientName: string;
 }) {
 	async function handleDelete() {
-		await deleteClient(clientId);
+		const result = await deleteClient(clientId);
+
+		if (result.success) {
+			toast.success("Client deleted successfully");
+		} else {
+			toast.error(result.error ?? "Failed to delete client");
+		}
 	}
 
 	return (

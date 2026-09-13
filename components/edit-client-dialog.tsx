@@ -6,6 +6,7 @@ import { editClient } from "@/app/protected/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 
 import {
 	Dialog,
@@ -31,6 +32,9 @@ export function EditClientDialog({ client }: { client: Client }) {
 
 		if (result.success) {
 			setOpen(false);
+			toast.success("Client edited successfully");
+		} else {
+			toast.error(result.error ?? "Failed to edit client");
 		}
 	}
 
@@ -63,7 +67,7 @@ export function EditClientDialog({ client }: { client: Client }) {
 					/>
 
 					<Input
-						name=""
+						name="year_of_birth"
 						type="number"
 						min="1900"
 						defaultValue={client.year_of_birth ?? ""}
