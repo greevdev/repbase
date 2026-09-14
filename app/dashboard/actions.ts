@@ -40,7 +40,7 @@ export async function addClient(formData: FormData) {
 
     if (error) throw new Error(error.message);
 
-    revalidatePath("/protected");
+    revalidatePath("/dashboard");
 
     return {success: true};
 }
@@ -89,7 +89,7 @@ export async function editClient(clientId: string, formData: FormData) {
         };
     }
 
-    revalidatePath("/protected");
+    revalidatePath("/dashboard");
 
     return { success: true };
 }
@@ -118,7 +118,45 @@ export async function deleteClient(clientId: string) {
         };
     }
 
-    revalidatePath("/protected");
+    revalidatePath("/dashboard");
+
+    return { success: true };
+}
+
+export async function addWorkout(
+    clientId: string,
+    formData: FormData
+) {
+    const supabase = await createClient();
+
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+        return { success: false, error: "Unauthorized" };
+    }
+
+    const title = formData.get("title")?.toString().trim();
+    const notes = formData.get("notes")?.toString().trim();
+    const date = formData.get("date")?.toString();
+
+    if (!title || !date) {
+        return { success: false, error: "Workout title and date are required" };
+    }
+
+    const { error } = await supabase.from("workouts").insert({
+        client_id: clientId,
+        title,
+        notes: notes || null,
+        date,
+    });
+
+    if (error) {
+        return { success: false, error: error.message };
+    }
+
+    revalidatePath(`/dashboard/clients/${clientId}`);
 
     return { success: true };
 }

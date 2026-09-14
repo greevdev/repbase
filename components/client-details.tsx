@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
+import { AddWorkoutDialog } from "@/components/add-workout-dialog";
 
 export default async function ClientDetails({
 	params,
@@ -27,16 +28,22 @@ export default async function ClientDetails({
 
 	return (
 		<div className="space-y-8">
-			<div>
-				<p className="text-sm text-muted-foreground">Client</p>
+			<div className="flex justify-between">
+				<div>
+					<p className="text-sm text-muted-foreground">Client</p>
 
-				<h1 className="text-3xl font-bold tracking-tight">
-					{client.name}
-				</h1>
+					<h1 className="text-3xl font-bold tracking-tight">
+						{client.name}
+					</h1>
 
-				{client.goal && (
-					<p className="mt-1 text-muted-foreground">{client.goal}</p>
-				)}
+					{client.goal && (
+						<p className="mt-1 text-muted-foreground">
+							{client.goal}
+						</p>
+					)}
+				</div>
+
+				<AddWorkoutDialog clientId={id} />
 			</div>
 
 			<div>
@@ -50,12 +57,18 @@ export default async function ClientDetails({
 								className="rounded-lg border p-4"
 							>
 								<h3 className="font-semibold">
-									{workout.name}
+									{workout.title}
 								</h3>
 
 								{workout.notes && (
 									<p className="text-sm text-muted-foreground">
 										{workout.notes}
+									</p>
+								)}
+
+								{workout.date && (
+									<p className="text-sm text-muted-foreground">
+										{workout.date}
 									</p>
 								)}
 							</div>
