@@ -1,6 +1,16 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { AddWorkoutDialog } from "@/components/add-workout-dialog";
+import { EditWorkoutDialog } from "./edit-workout-dialog";
+import { DeleteWorkoutDialog } from "./delete-workout-dialog";
+
+type Workout = {
+	id: string;
+	title: string;
+	date: string;
+	notes: string | null;
+	client_id: string;
+};
 
 export default async function ClientDetails({
 	params,
@@ -51,7 +61,7 @@ export default async function ClientDetails({
 
 				{workouts && workouts.length > 0 ? (
 					<div className="space-y-3">
-						{workouts.map((workout) => (
+						{workouts.map((workout: Workout) => (
 							<div
 								key={workout.id}
 								className="rounded-lg border p-4"
@@ -71,6 +81,13 @@ export default async function ClientDetails({
 										{workout.date}
 									</p>
 								)}
+
+								<EditWorkoutDialog workout={workout} />
+
+								<DeleteWorkoutDialog
+									clientId={id}
+									workoutId={workout.id}
+								/>
 							</div>
 						))}
 					</div>

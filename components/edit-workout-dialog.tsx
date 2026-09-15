@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
-import { addWorkout } from "@/app/dashboard/actions";
+import { editWorkout } from "@/app/dashboard/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,50 +15,64 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 
-export function AddWorkoutDialog({ clientId }: { clientId: string }) {
+type Workout = {
+	id: string;
+	title: string;
+	date: string;
+	notes: string | null;
+	client_id: string;
+};
+
+type EditWorkoutDialogProps = {
+	workout: Workout;
+};
+
+export function EditWorkoutDialog({ workout }: EditWorkoutDialogProps) {
 	const [open, setOpen] = useState(false);
 
 	async function handleSubmit(formData: FormData) {
-		const result = await addWorkout(clientId, formData);
+		const result = await editWorkout(
+			workout.id,
+			workout.client_id,
+			formData,
+		);
 
 		if (result.success) {
 			setOpen(false);
-			toast.success("Workout added successfully");
+			toast.success("Workout edited successfully");
 		} else {
-			toast.error(result.error ?? "Failed to add workout");
+			toast.error(result.error ?? "Failed to edit workout");
 		}
 	}
-
-	const today = new Date().toLocaleDateString("en-CA");
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<Button>
 					<Plus className="mr-2 size-4" />
-					Log workout
+					Edit workout
 				</Button>
 			</DialogTrigger>
 
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Log workout</DialogTitle>
+					<DialogTitle>Edit workout</DialogTitle>
 				</DialogHeader>
 
 				<form action={handleSubmit} className="space-y-4">
-					<Input name="title" placeholder="Workout title" required />
-
-					<Textarea name="notes" placeholder="Notes" />
+					<Input name="title" defaultValue={workout.title} required />
 
 					<Input
 						name="date"
 						type="date"
+						defaultValue={workout.date}
 						required
-						defaultValue={today}
 					/>
 
+					<Textarea name="notes" defaultValue={workout.notes ?? ""} />
+
 					<Button type="submit" className="w-full">
-						Add workout
+						Save changes
 					</Button>
 				</form>
 			</DialogContent>

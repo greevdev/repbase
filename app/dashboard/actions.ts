@@ -133,17 +133,13 @@ export async function addWorkout(
         data: { user },
     } = await supabase.auth.getUser();
 
-    if (!user) {
-        return { success: false, error: "Unauthorized" };
-    }
+    if (!user) return { success: false, error: "Unauthorized" };
 
     const title = formData.get("title")?.toString().trim();
     const notes = formData.get("notes")?.toString().trim();
     const date = formData.get("date")?.toString();
 
-    if (!title || !date) {
-        return { success: false, error: "Workout title and date are required" };
-    }
+    if (!title || !date) return { success: false, error: "Workout title and date are required" };
 
     const { error } = await supabase.from("workouts").insert({
         client_id: clientId,
@@ -152,9 +148,55 @@ export async function addWorkout(
         date,
     });
 
-    if (error) {
-        return { success: false, error: error.message };
-    }
+    if (error) return { success: false, error: error.message };
+
+    revalidatePath(`/dashboard/clients/${clientId}`);
+
+    return { success: true };
+}
+
+export async function editWorkout(workoutId: string, clientId: string, formData: FormData) {
+    const supabase = await createClient();
+
+    const {data: {user}} = await supabase.auth.getUser();
+
+    if (!user) return { success: false, error: "Unauthorized" };
+
+    const title = formData.get("title")?.toString().trim();
+    const date = formData.get("date")?.toString();
+    const notes = formData.get("notes")?.toString().trim();
+
+    if (!title || !date) return {success: false, error: "Title and date are required"};
+
+    const { error } = await supabase
+        .from("workouts")
+        .update({
+            title,
+            date,
+            notes: notes || null,
+        })
+        .eq("id", workoutId);
+
+    if (error) return { success: false, error: error.message };
+
+    revalidatePath(`/dashboard/clients/${clientId}`);
+
+    return { success: true };
+}
+
+export async function deleteWorkout(workoutId: string, clientId: string) {
+    const supabase = await createClient();
+
+    const {data: {user}} = await supabase.auth.getUser();
+
+    if (!user) return { success: false, error: "Unauthorized" };
+
+    const { error } = await supabase
+        .from("workouts")
+        .delete()
+        .eq("id", workoutId);
+
+    if (error) return { success: false, error: error.message };
 
     revalidatePath(`/dashboard/clients/${clientId}`);
 
