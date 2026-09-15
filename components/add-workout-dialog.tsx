@@ -34,7 +34,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button>
+				<Button className="bg-emerald-700 hover:bg-emerald-900">
 					<Plus className="mr-2 size-4" />
 					Log workout
 				</Button>

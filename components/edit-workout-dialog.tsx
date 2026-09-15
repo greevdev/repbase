@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { toast } from "sonner";
 import { editWorkout } from "@/app/dashboard/actions";
 import { Button } from "@/components/ui/button";
@@ -48,9 +48,12 @@ export function EditWorkoutDialog({ workout }: EditWorkoutDialogProps) {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button>
-					<Plus className="mr-2 size-4" />
-					Edit workout
+				<Button
+					size="sm"
+					variant="default"
+					className=" p-0 aspect-square"
+				>
+					<Pencil className="size-4" />
 				</Button>
 			</DialogTrigger>
 

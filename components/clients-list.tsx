@@ -37,35 +37,6 @@ export default async function ClientsList() {
 							<CardContent className="flex space-x-1 items-center text-muted-foreground">
 								<p className="font-medium">View client</p>
 								<ArrowRightIcon size={20} />
-								{/* <div>
-									{client.goal && (
-										<p className="text-sm">
-											Goal: {client.goal}
-										</p>
-									)}
-
-									{client.year_of_birth && (
-										<p className="text-sm">
-											{currentYear - client.year_of_birth}{" "}
-											years old
-										</p>
-									)}
-
-									{client.notes && (
-										<p className="text-sm text-muted-foreground">
-											{client.notes}
-										</p>
-									)}
-								</div>
-
-								<div className="space-x-3">
-									<EditClientDialog client={client} />
-
-									<DeleteClientDialog
-										clientId={client.id}
-										clientName={client.name}
-									/>
-								</div> */}
 							</CardContent>
 						</Card>
 					</Link>

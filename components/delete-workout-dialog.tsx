@@ -36,9 +36,12 @@ export function DeleteWorkoutDialog({
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
-				<Button variant="destructive" size="sm">
-					<Trash2 className="mr-2 size-4" />
-					Delete
+				<Button
+					variant="destructive"
+					className="aspect-square p-0"
+					size="sm"
+				>
+					<Trash2 className="size-4" />
 				</Button>
 			</AlertDialogTrigger>
 

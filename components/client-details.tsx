@@ -1,8 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { AddWorkoutDialog } from "@/components/add-workout-dialog";
-import { EditWorkoutDialog } from "./edit-workout-dialog";
-import { DeleteWorkoutDialog } from "./delete-workout-dialog";
+import WorkoutCard from "./WorkoutCard";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 type Workout = {
 	id: string;
@@ -39,8 +40,14 @@ export default async function ClientDetails({
 	return (
 		<div className="space-y-8">
 			<div className="flex justify-between">
-				<div>
-					<p className="text-sm text-muted-foreground">Client</p>
+				<div className="space-y-1">
+					<Link
+						href="/dashboard"
+						className="text-sm text-muted-foreground hover:text-black transition flex gap-1 items-center mb-2"
+					>
+						<ArrowLeft size={18} />{" "}
+						<span className="">Dashboard</span>
+					</Link>
 
 					<h1 className="text-3xl font-bold tracking-tight">
 						{client.name}
@@ -48,47 +55,23 @@ export default async function ClientDetails({
 
 					{client.goal && (
 						<p className="mt-1 text-muted-foreground">
-							{client.goal}
+							Goal - {client.goal}
 						</p>
 					)}
 				</div>
-
-				<AddWorkoutDialog clientId={id} />
 			</div>
 
 			<div>
-				<h2 className="mb-4 text-xl font-semibold">Workouts</h2>
+				<div className="flex justify-between items-center mb-4">
+					<h2 className="text-xl font-semibold">Workouts</h2>
+
+					<AddWorkoutDialog clientId={id} />
+				</div>
 
 				{workouts && workouts.length > 0 ? (
 					<div className="space-y-3">
 						{workouts.map((workout: Workout) => (
-							<div
-								key={workout.id}
-								className="rounded-lg border p-4"
-							>
-								<h3 className="font-semibold">
-									{workout.title}
-								</h3>
-
-								{workout.notes && (
-									<p className="text-sm text-muted-foreground">
-										{workout.notes}
-									</p>
-								)}
-
-								{workout.date && (
-									<p className="text-sm text-muted-foreground">
-										{workout.date}
-									</p>
-								)}
-
-								<EditWorkoutDialog workout={workout} />
-
-								<DeleteWorkoutDialog
-									clientId={id}
-									workoutId={workout.id}
-								/>
-							</div>
+							<WorkoutCard key={workout.id} workout={workout} />
 						))}
 					</div>
 				) : (
