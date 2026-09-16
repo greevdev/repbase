@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { addWorkout } from "@/app/dashboard/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "./ui/separator";
 import {
 	Dialog,
 	DialogContent,
@@ -44,6 +44,10 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 				],
 			},
 		]);
+	}
+
+	function removeExercise(index: number) {
+		setExercises(exercises.filter((_, i) => i !== index));
 	}
 
 	function addSet(exerciseIndex: number) {
@@ -153,27 +157,39 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 						/>
 					</div>
 
+					<Separator />
+
 					<div className="space-y-4">
 						{exercises.map((exercise, exerciseIndex) => (
-							<div
-								key={exerciseIndex}
-								className="space-y-4 rounded-lg border p-4"
-							>
-								<Input
-									placeholder="Exercise name"
-									value={exercise.name}
-									onChange={(e) =>
-										updateExercise(
-											exerciseIndex,
-											"name",
-											e.target.value,
-										)
-									}
-									required
-								/>
+							<div key={exerciseIndex} className="space-y-2">
+								<div className="flex justify-between items-center gap-2">
+									<Input
+										placeholder="Exercise name"
+										value={exercise.name}
+										onChange={(e) =>
+											updateExercise(
+												exerciseIndex,
+												"name",
+												e.target.value,
+											)
+										}
+										required
+									/>
 
-								<Textarea
-									placeholder="Exercise notes"
+									<Button
+										type="button"
+										variant="destructive"
+										size="icon"
+										onClick={() =>
+											removeExercise(exerciseIndex)
+										}
+									>
+										<Trash2 className="size-4" />
+									</Button>
+								</div>
+
+								<Input
+									placeholder="Add notes here..."
 									value={exercise.notes}
 									onChange={(e) =>
 										updateExercise(
@@ -182,6 +198,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 											e.target.value,
 										)
 									}
+									className="border-none shadow-none"
 								/>
 
 								<div className="space-y-2">
@@ -190,7 +207,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 											key={setIndex}
 											className="flex items-center gap-2"
 										>
-											<span className="w-12 text-sm">
+											<span className="text-sm whitespace-nowrap mx-1">
 												Set {setIndex + 1}
 											</span>
 
@@ -229,7 +246,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 								<Button
 									type="button"
 									variant="outline"
-									size="sm"
+									className="w-full"
 									onClick={() => addSet(exerciseIndex)}
 								>
 									Add set
@@ -238,10 +255,13 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 						))}
 					</div>
 
+					<Separator />
+
 					<Button
 						type="button"
 						variant="outline"
 						onClick={addExercise}
+						className="w-full"
 					>
 						<Plus className="mr-2 size-4" />
 						Add exercise
