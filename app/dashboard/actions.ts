@@ -202,3 +202,120 @@ export async function deleteWorkout(workoutId: string, clientId: string) {
 
     return { success: true };
 }
+
+type ExerciseSetInput = {
+    reps: string;
+    weight: string;
+};
+
+export async function addExercise(
+    workoutId: string,
+    clientId: string,
+    formData: FormData,
+    sets: ExerciseSetInput[]
+) {
+    const supabase = await createClient();
+
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+        return {
+        success: false,
+        error: "Unauthorized",
+        };
+    }
+
+    const name = formData.get("name")?.toString().trim();
+    const notes = formData.get("notes")?.toString().trim();
+
+    if (!name) {
+        return {
+        success: false,
+        error: "Exercise name is required",
+        };
+    }
+
+    if (sets.length === 0) {
+        return {
+        success: false,
+        error: "Exercise must have at least one set",
+        };
+    }
+
+    for (const set of sets) {
+        const reps = Number(set.reps);
+
+        if (!reps || reps < 1) {
+        return {
+            success: false,
+            error: "Each set must have valid reps",
+        };
+        }
+    }
+
+    const { data: lastExercise } = await supabase
+        .from("workout_exercises")
+        .select("position")
+        .eq("workout_id", workoutId)
+        .order("position", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+    const nextPosition = (lastExercise?.position ?? 0) + 1;
+
+    const { data: exercise, error: exerciseError } =
+        await supabase
+        .from("workout_exercises")
+        .insert({
+            workout_id: workoutId,
+            name,
+            notes: notes || null,
+            position: nextPosition,
+        })
+        .select()
+        .single();
+
+    if (exerciseError || !exercise) {
+        return {
+        success: false,
+        error:
+            exerciseError?.message ??
+            "Failed to create exercise",
+        };
+    }
+
+    const exerciseSets = sets.map((set, index) => ({
+        exercise_id: exercise.id,
+        set_number: index + 1,
+        reps: Number(set.reps),
+        weight: set.weight
+        ? Number(set.weight)
+        : null,
+    }));
+
+    const { error: setsError } = await supabase
+        .from("exercise_sets")
+        .insert(exerciseSets);
+
+    if (setsError) {
+        await supabase
+        .from("workout_exercises")
+        .delete()
+        .eq("id", exercise.id);
+
+        return {
+        success: false,
+        error: setsError.message,
+        };
+    }
+
+    revalidatePath(
+        `/dashboard/clients/${clientId}/workouts/${workoutId}`
+    );
+
+    return {
+        success: true,
+    };
+}

@@ -1,5 +1,6 @@
 import { EditWorkoutDialog } from "./edit-workout-dialog";
 import { DeleteWorkoutDialog } from "./delete-workout-dialog";
+import Link from "next/link";
 
 type Workout = {
 	id: string;
@@ -21,7 +22,10 @@ export default function WorkoutCard({ workout }: WorkoutCardProps) {
 	}).format(new Date(`${workout.date}T00:00:00Z`));
 
 	return (
-		<div className="rounded-lg border p-4 flex justify-between">
+		<Link
+			href={`/dashboard/clients/${workout.client_id}/workouts/${workout.id}`}
+			className="rounded-lg border p-4 flex justify-between hover:border-black/25 transition"
+		>
 			<div className="space-y-1">
 				<h3 className="font-semibold">{workout.title}</h3>
 				<p className="text-muted-foreground text-sm">{formattedDate}</p>
@@ -35,6 +39,6 @@ export default function WorkoutCard({ workout }: WorkoutCardProps) {
 					workoutId={workout.id}
 				/>
 			</div>
-		</div>
+		</Link>
 	);
 }

@@ -35,14 +35,14 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<Button className="bg-emerald-700 hover:bg-emerald-900">
-					<Plus className="mr-2 size-4" />
-					Log workout
+					<Plus className="mr-1 size-4" />
+					Log Workout
 				</Button>
 			</DialogTrigger>
 
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Log workout</DialogTitle>
+					<DialogTitle>Log Workout</DialogTitle>
 				</DialogHeader>
 
 				<form action={handleSubmit} className="space-y-4">
