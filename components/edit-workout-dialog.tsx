@@ -19,7 +19,6 @@ type Workout = {
 	id: string;
 	title: string;
 	date: string;
-	notes: string | null;
 	client_id: string;
 };
 
@@ -71,8 +70,6 @@ export function EditWorkoutDialog({ workout }: EditWorkoutDialogProps) {
 						defaultValue={workout.date}
 						required
 					/>
-
-					<Textarea name="notes" defaultValue={workout.notes ?? ""} />
 
 					<Button type="submit" className="w-full">
 						Save changes

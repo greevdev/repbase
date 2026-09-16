@@ -123,9 +123,19 @@ export async function deleteClient(clientId: string) {
     return { success: true };
 }
 
+type ExerciseInput = {
+    name: string;
+    notes: string;
+    sets: {
+        reps: string;
+        weight: string;
+    }[];
+};
+
 export async function addWorkout(
     clientId: string,
-    formData: FormData
+    formData: FormData,
+    exercises: ExerciseInput[]
 ) {
     const supabase = await createClient();
 
@@ -133,26 +143,121 @@ export async function addWorkout(
         data: { user },
     } = await supabase.auth.getUser();
 
-    if (!user) return { success: false, error: "Unauthorized" };
+    if (!user) {
+        return {
+        success: false,
+        error: "Unauthorized",
+        };
+    }
 
-    const title = formData.get("title")?.toString().trim();
-    const notes = formData.get("notes")?.toString().trim();
-    const date = formData.get("date")?.toString();
+    const title = formData
+        .get("title")
+        ?.toString()
+        .trim();
 
-    if (!title || !date) return { success: false, error: "Workout title and date are required" };
+    const date = formData
+        .get("date")
+        ?.toString();
 
-    const { error } = await supabase.from("workouts").insert({
-        client_id: clientId,
-        title,
-        notes: notes || null,
-        date,
-    });
+    if (!title || !date) {
+        return {
+        success: false,
+        error: "Title and date are required",
+        };
+    }
 
-    if (error) return { success: false, error: error.message };
+    const { data: workout, error: workoutError } =
+        await supabase
+        .from("workouts")
+        .insert({
+            client_id: clientId,
+            title,
+            date,
+        })
+        .select()
+        .single();
 
-    revalidatePath(`/dashboard/clients/${clientId}`);
+    if (workoutError || !workout) {
+        return {
+        success: false,
+        error:
+            workoutError?.message ??
+            "Failed to create workout",
+        };
+    }
 
-    return { success: true };
+    for (
+        let exerciseIndex = 0;
+        exerciseIndex < exercises.length;
+        exerciseIndex++
+    ) {
+        const exerciseInput =
+        exercises[exerciseIndex];
+
+        const { data: exercise, error: exerciseError } =
+        await supabase
+            .from("workout_exercises")
+            .insert({
+            workout_id: workout.id,
+            name: exerciseInput.name,
+            notes: exerciseInput.notes || null,
+            position: exerciseIndex + 1,
+            })
+            .select()
+            .single();
+
+        if (exerciseError || !exercise) {
+        await supabase
+            .from("workouts")
+            .delete()
+            .eq("id", workout.id);
+
+        return {
+            success: false,
+            error:
+            exerciseError?.message ??
+            "Failed to create exercise",
+        };
+        }
+
+        const sets = exerciseInput.sets.map(
+        (set, index) => ({
+            exercise_id: exercise.id,
+            set_number: index + 1,
+            reps: Number(set.reps),
+            weight: set.weight
+            ? Number(set.weight)
+            : null,
+        })
+        );
+
+        if (sets.length > 0) {
+        const { error: setsError } =
+            await supabase
+            .from("exercise_sets")
+            .insert(sets);
+
+        if (setsError) {
+            await supabase
+            .from("workouts")
+            .delete()
+            .eq("id", workout.id);
+
+            return {
+            success: false,
+            error: setsError.message,
+            };
+        }
+    }
+  }
+
+  revalidatePath(
+    `/dashboard/clients/${clientId}`
+  );
+
+  return {
+    success: true,
+  };
 }
 
 export async function editWorkout(workoutId: string, clientId: string, formData: FormData) {
@@ -201,121 +306,4 @@ export async function deleteWorkout(workoutId: string, clientId: string) {
     revalidatePath(`/dashboard/clients/${clientId}`);
 
     return { success: true };
-}
-
-type ExerciseSetInput = {
-    reps: string;
-    weight: string;
-};
-
-export async function addExercise(
-    workoutId: string,
-    clientId: string,
-    formData: FormData,
-    sets: ExerciseSetInput[]
-) {
-    const supabase = await createClient();
-
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-        return {
-        success: false,
-        error: "Unauthorized",
-        };
-    }
-
-    const name = formData.get("name")?.toString().trim();
-    const notes = formData.get("notes")?.toString().trim();
-
-    if (!name) {
-        return {
-        success: false,
-        error: "Exercise name is required",
-        };
-    }
-
-    if (sets.length === 0) {
-        return {
-        success: false,
-        error: "Exercise must have at least one set",
-        };
-    }
-
-    for (const set of sets) {
-        const reps = Number(set.reps);
-
-        if (!reps || reps < 1) {
-        return {
-            success: false,
-            error: "Each set must have valid reps",
-        };
-        }
-    }
-
-    const { data: lastExercise } = await supabase
-        .from("workout_exercises")
-        .select("position")
-        .eq("workout_id", workoutId)
-        .order("position", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-    const nextPosition = (lastExercise?.position ?? 0) + 1;
-
-    const { data: exercise, error: exerciseError } =
-        await supabase
-        .from("workout_exercises")
-        .insert({
-            workout_id: workoutId,
-            name,
-            notes: notes || null,
-            position: nextPosition,
-        })
-        .select()
-        .single();
-
-    if (exerciseError || !exercise) {
-        return {
-        success: false,
-        error:
-            exerciseError?.message ??
-            "Failed to create exercise",
-        };
-    }
-
-    const exerciseSets = sets.map((set, index) => ({
-        exercise_id: exercise.id,
-        set_number: index + 1,
-        reps: Number(set.reps),
-        weight: set.weight
-        ? Number(set.weight)
-        : null,
-    }));
-
-    const { error: setsError } = await supabase
-        .from("exercise_sets")
-        .insert(exerciseSets);
-
-    if (setsError) {
-        await supabase
-        .from("workout_exercises")
-        .delete()
-        .eq("id", exercise.id);
-
-        return {
-        success: false,
-        error: setsError.message,
-        };
-    }
-
-    revalidatePath(
-        `/dashboard/clients/${clientId}/workouts/${workoutId}`
-    );
-
-    return {
-        success: true,
-    };
 }

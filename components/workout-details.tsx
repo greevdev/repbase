@@ -1,5 +1,4 @@
 import { createClient } from "@/lib/server";
-import { AddExerciseDialog } from "./add-exercise-dialog";
 
 export default async function WorkoutDetails({
 	params,
@@ -52,11 +51,6 @@ export default async function WorkoutDetails({
 			<div className="space-y-2">
 				<div>
 					<h2 className="text-xl font-semibold">Exercises</h2>
-
-					<AddExerciseDialog
-						workoutId={workoutId}
-						clientId={workout.clientId}
-					/>
 				</div>
 
 				<div>
@@ -88,12 +82,6 @@ export default async function WorkoutDetails({
 										</div>
 									))}
 							</div>
-
-							{exercise.notes && (
-								<p className="mt-3 text-sm text-muted-foreground">
-									{exercise.notes}
-								</p>
-							)}
 						</div>
 					))}
 				</div>

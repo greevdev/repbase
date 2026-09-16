@@ -6,7 +6,6 @@ type Workout = {
 	id: string;
 	title: string;
 	date: string;
-	notes: string | null;
 	client_id: string;
 };
 
