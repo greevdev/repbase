@@ -1,9 +1,14 @@
-import { createClient } from "@/lib/server";
+import { createClient } from "@/lib/supabase/server";
+import { notFound } from "next/navigation";
+import { EditWorkoutDialog } from "./edit-workout-dialog";
+import { DeleteWorkoutDialog } from "./delete-workout-dialog";
 
 export default async function WorkoutDetails({
 	params,
 }: {
-	params: Promise<{ workoutId: string }>;
+	params: Promise<{
+		workoutId: string;
+	}>;
 }) {
 	const { workoutId } = await params;
 
@@ -11,68 +16,88 @@ export default async function WorkoutDetails({
 
 	const { data: workout } = await supabase
 		.from("workouts")
-		.select("*")
+		.select(
+			`
+      id,
+      title,
+      date,
+      client_id,
+      workout_exercises (
+        id,
+        name,
+        notes,
+        position,
+        exercise_sets (
+          id,
+          set_number,
+          reps,
+          weight
+        )
+      )
+    `,
+		)
 		.eq("id", workoutId)
 		.single();
 
-	const formattedDate = new Intl.DateTimeFormat("en-US", {
-		weekday: "long",
-		month: "short",
-		day: "numeric",
-		year: "numeric",
-		timeZone: "UTC",
-	}).format(new Date(`${workout.date}T00:00:00Z`));
+	if (!workout) {
+		notFound();
+	}
 
-	const { data: exercises } = await supabase
-		.from("workout_exercises")
-		.select(
-			`
-    *,
-    exercise_sets (
-      id,
-      set_number,
-      reps,
-      weight
-    )
-  `,
-		)
-		.eq("workout_id", workoutId)
-		.order("position", { ascending: true });
+	const exercises = [...workout.workout_exercises].sort(
+		(a, b) => a.position - b.position,
+	);
 
 	return (
-		<div className="space-y-10">
-			<div className="space-y-1">
-				<h1 className="text-3xl font-bold tracking-tight">
-					{workout.title}
-				</h1>
-				<p className="text-muted-foreground">{formattedDate}</p>
-			</div>
-
-			<div className="space-y-2">
+		<div className="space-y-8">
+			<div className="flex justify-between items-center">
 				<div>
-					<h2 className="text-xl font-semibold">Exercises</h2>
+					<h1 className="text-3xl font-bold tracking-tight">
+						{workout.title}
+					</h1>
+
+					<p className="text-muted-foreground">{workout.date}</p>
 				</div>
 
-				<div>
-					{exercises?.map((exercise) => (
-						<div
-							key={exercise.id}
-							className="rounded-lg border p-4"
-						>
-							<h3 className="font-semibold">{exercise.name}</h3>
+				<div className="space-x-2">
+					<EditWorkoutDialog workout={workout} />
+					<DeleteWorkoutDialog
+						clientId={workout.client_id}
+						workoutId={workoutId}
+					/>
+				</div>
+			</div>
 
-							<div className="mt-3 space-y-1">
-								{exercise.exercise_sets
-									.sort(
-										(a: any, b: any) =>
-											a.set_number - b.set_number,
-									)
-									.map((set: any) => (
+			{exercises.length > 0 ? (
+				<div className="space-y-6">
+					{exercises.map((exercise) => {
+						const sets = [...exercise.exercise_sets].sort(
+							(a, b) => a.set_number - b.set_number,
+						);
+
+						return (
+							<div
+								key={exercise.id}
+								className="rounded-lg border p-5"
+							>
+								<h2 className="text-lg font-semibold">
+									{exercise.name}
+								</h2>
+
+								{exercise.notes && (
+									<p className="mt-1 text-sm text-muted-foreground">
+										{exercise.notes}
+									</p>
+								)}
+
+								<div className="mt-4 space-y-2">
+									{sets.map((set) => (
 										<div
 											key={set.id}
-											className="flex gap-4 text-sm"
+											className="flex gap-6 text-sm"
 										>
-											<span>Set {set.set_number}</span>
+											<span className="w-12">
+												Set {set.set_number}
+											</span>
 
 											<span>{set.reps} reps</span>
 
@@ -81,11 +106,14 @@ export default async function WorkoutDetails({
 											)}
 										</div>
 									))}
+								</div>
 							</div>
-						</div>
-					))}
+						);
+					})}
 				</div>
-			</div>
+			) : (
+				<p className="text-muted-foreground">No exercises logged.</p>
+			)}
 		</div>
 	);
 }

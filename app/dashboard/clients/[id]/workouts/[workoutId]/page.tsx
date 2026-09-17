@@ -1,7 +1,7 @@
 import WorkoutDetails from "@/components/workout-details";
 import { Suspense } from "react";
 
-export default function page({
+export default function WorkoutPage({
 	params,
 }: {
 	params: Promise<{ workoutId: string }>;

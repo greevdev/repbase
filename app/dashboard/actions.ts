@@ -269,7 +269,6 @@ export async function editWorkout(workoutId: string, clientId: string, formData:
 
     const title = formData.get("title")?.toString().trim();
     const date = formData.get("date")?.toString();
-    const notes = formData.get("notes")?.toString().trim();
 
     if (!title || !date) return {success: false, error: "Title and date are required"};
 
@@ -278,7 +277,6 @@ export async function editWorkout(workoutId: string, clientId: string, formData:
         .update({
             title,
             date,
-            notes: notes || null,
         })
         .eq("id", workoutId);
 
@@ -302,8 +300,6 @@ export async function deleteWorkout(workoutId: string, clientId: string) {
         .eq("id", workoutId);
 
     if (error) return { success: false, error: error.message };
-
-    revalidatePath(`/dashboard/clients/${clientId}`);
 
     return { success: true };
 }

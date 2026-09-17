@@ -15,6 +15,7 @@ import {
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
+import { redirect } from "next/navigation";
 
 export function DeleteWorkoutDialog({
 	clientId,
@@ -28,6 +29,7 @@ export function DeleteWorkoutDialog({
 
 		if (result.success) {
 			toast.success("Workout deleted successfully");
+			redirect(`/dashboard/clients/${clientId}`);
 		} else {
 			toast.error(result.error ?? "Failed to delete workout");
 		}
@@ -47,19 +49,25 @@ export function DeleteWorkoutDialog({
 
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>
-						Are you sure you want to delete the workout?
+					<AlertDialogTitle className="text-center w-full">
+						Delete this workout?
 					</AlertDialogTitle>
 
-					<AlertDialogDescription>
-						This action cannot be undone.
+					<AlertDialogDescription className="mx-auto text-center">
+						You'll lose the sets, reps and weights logged for this
+						session.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 
-				<AlertDialogFooter>
-					<AlertDialogCancel>Cancel</AlertDialogCancel>
+				<AlertDialogFooter className="mt-3">
+					<AlertDialogCancel className="w-full">
+						Cancel
+					</AlertDialogCancel>
 
-					<AlertDialogAction onClick={handleDelete}>
+					<AlertDialogAction
+						className="w-full"
+						onClick={handleDelete}
+					>
 						Delete
 					</AlertDialogAction>
 				</AlertDialogFooter>

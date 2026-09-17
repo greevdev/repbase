@@ -29,15 +29,6 @@ export default function WorkoutCard({ workout }: WorkoutCardProps) {
 				<h3 className="font-semibold">{workout.title}</h3>
 				<p className="text-muted-foreground text-sm">{formattedDate}</p>
 			</div>
-
-			<div className="space-x-2">
-				<EditWorkoutDialog workout={workout} />
-
-				<DeleteWorkoutDialog
-					clientId={workout.client_id}
-					workoutId={workout.id}
-				/>
-			</div>
 		</Link>
 	);
 }
