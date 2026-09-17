@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import ClientDetails from "@/components/client-details";
+import ClientDetails from "@/components/clients/client-details";
 
 export default function ClientPage({
 	params,
