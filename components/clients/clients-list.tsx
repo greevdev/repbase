@@ -1,9 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EditClientDialog } from "./edit-client-dialog";
-import { DeleteClientDialog } from "@/components/delete-client-dialog";
+import { DeleteClientDialog } from "./delete-client-dialog";
 import Link from "next/link";
-import LetterAvatar from "./letter-avatar";
+import LetterAvatar from "../letter-avatar";
 import { ArrowRightIcon } from "lucide-react";
 
 export default async function ClientsList() {

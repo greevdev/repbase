@@ -1,4 +1,4 @@
-import { AddClientDialog } from "@/components/add-client-dialog";
+import { AddClientDialog } from "@/components/clients/add-client-dialog";
 import ClientsList from "@/components/clients-list";
 import CurrentDateBadge from "@/components/current-date-badge";
 import { Suspense } from "react";

@@ -15,7 +15,7 @@ import {
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/router";
 
 export function DeleteWorkoutDialog({
 	clientId,
@@ -24,12 +24,14 @@ export function DeleteWorkoutDialog({
 	clientId: string;
 	workoutId: string;
 }) {
+	const router = useRouter();
+
 	async function handleDelete() {
 		const result = await deleteWorkout(workoutId, clientId);
 
 		if (result.success) {
 			toast.success("Workout deleted successfully");
-			redirect(`/dashboard/clients/${clientId}`);
+			router.push(`/dashboard/clients/${clientId}`);
 		} else {
 			toast.error(result.error ?? "Failed to delete workout");
 		}

@@ -1,4 +1,4 @@
-import WorkoutDetails from "@/components/workout-details";
+import WorkoutDetails from "@/components/workouts/workout-details";
 import { Suspense } from "react";
 
 export default function WorkoutPage({

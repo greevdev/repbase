@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
-import { AddWorkoutDialog } from "@/components/add-workout-dialog";
-import WorkoutCard from "./WorkoutCard";
+import { AddWorkoutDialog } from "@/components/workouts/add-workout-dialog";
+import WorkoutCard from "../workouts/workout-card";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 

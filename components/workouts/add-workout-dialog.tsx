@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { addWorkout } from "@/app/dashboard/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Separator } from "./ui/separator";
+import { Separator } from "../ui/separator";
 import {
 	Dialog,
 	DialogContent,
