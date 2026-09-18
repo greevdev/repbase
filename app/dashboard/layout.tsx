@@ -28,7 +28,7 @@ export default function DashboardLayout({
 				<nav className="p-4 space-y-2 text-foreground/80">
 					<Link
 						href="/dashboard"
-						className="flex items-center gap-3 rounded-md px-3 py-2 font-medium hover:bg-accent/10 hover:text-accent transition"
+						className="flex items-center gap-3 btn"
 					>
 						<LayoutDashboard className="size-5" />
 						Dashboard
@@ -36,7 +36,7 @@ export default function DashboardLayout({
 
 					<Link
 						href="/dashboard"
-						className="flex items-center gap-3 rounded-md px-3 py-2 font-medium hover:bg-accent/10 hover:text-accent transition"
+						className="flex items-center gap-3 btn"
 					>
 						<Users className="size-5" />
 						Clients

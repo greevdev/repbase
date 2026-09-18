@@ -4,7 +4,7 @@ import ClientsList from "@/components/clients/clients-list";
 import MonthlyRevenue from "@/components/clients/monthly-revenue";
 import { Spinner } from "@/components/ui/spinner";
 import RecentActivityBoard from "@/components/workouts/recent-activity-board";
-import { User, DollarSign } from "lucide-react";
+import { User, DollarSign, Users2 } from "lucide-react";
 import { Suspense } from "react";
 
 export default function DashboardPage() {
@@ -53,7 +53,22 @@ export default function DashboardPage() {
 
 				<RecentActivityBoard />
 
-				<ClientsList />
+				<div className="space-y-4">
+					<div className="flex items-center justify-between gap-7">
+						<h3 className="font-semibold text-lg flex items-center gap-2">
+							<Users2 className="text-accent" />
+							<span className="whitespace-nowrap">
+								Manage your clients
+							</span>
+						</h3>
+
+						<div className="h-px w-full bg-foreground/10" />
+
+						<AddClientDialog />
+					</div>
+
+					<ClientsList />
+				</div>
 			</Suspense>
 		</div>
 	);
