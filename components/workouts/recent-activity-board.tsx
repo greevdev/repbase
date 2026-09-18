@@ -39,13 +39,13 @@ export default async function RecentActivityBoard() {
 				<p>Date</p>
 			</div>
 
-			<div>
+			<div className="max-h-[20em] overflow-scroll">
 				{workouts ? (
 					workouts.map((workout) => (
 						<Link
 							href={`/dashboard/clients/${workout.client_id}/workouts/${workout.id}`}
 							key={workout.id}
-							className="px-5 py-3 grid grid-cols-3 gap-1 border-t border-foreground/5 items-center text-[0.9rem] hover:bg-background/60 transition"
+							className="h-[4.5em] px-5 py-3 grid grid-cols-3 gap-1 border-t border-foreground/5 items-center text-[0.9rem] hover:bg-background/60 transition"
 						>
 							<div className="flex items-center gap-3">
 								<LetterAvatar
@@ -56,11 +56,11 @@ export default async function RecentActivityBoard() {
 								</p>
 							</div>
 
-							<p className="font-medium text-muted-foreground">
+							<p className="text-muted-foreground">
 								{workout.title}
 							</p>
 
-							<p className="font-medium text-muted-foreground">
+							<p className="text-muted-foreground">
 								{formatWorkoutDate(workout.date)}
 							</p>
 						</Link>
