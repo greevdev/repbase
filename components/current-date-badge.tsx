@@ -33,13 +33,13 @@ export default function CurrentDateBadge() {
 	];
 
 	return (
-		<div className="bg-emerald-100 px-3 py-2 text-emerald-900 font-semibold rounded-lg flex w-max space-x-2 items-center">
-			<span>{<CalendarDays size={20} />}</span>
+		<div className="bg-accent/10 px-3 py-2 text-accent font-semibold rounded-lg flex w-max space-x-2 items-center text-sm">
+			<span>{<CalendarDays size={18} />}</span>
 			<span>
-				Today is {currentDayOfMonth} {monthsArray[currentMonth]}.{" "}
+				{currentDayOfMonth} {monthsArray[currentMonth]}.{" "}
 				{daysArray[currentDayOfWeek]}
 			</span>
 		</div>
 	);
 }
-3
+3;

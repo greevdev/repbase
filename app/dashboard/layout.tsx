@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { logout } from "@/app/auth/actions";
 import { Button } from "@/components/ui/button";
+import { LayoutDashboard, Users } from "lucide-react";
+import dumbbellsvg from "@/public/dumbbell.svg";
+import Image from "next/image";
+import { Suspense } from "react";
+import CurrentDateBadge from "@/components/current-date-badge";
 
 export default function DashboardLayout({
 	children,
@@ -8,28 +13,62 @@ export default function DashboardLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<div className="min-h-screen bg-muted/30">
-			<header className="border-b bg-background">
-				<div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-					<Link href="/dashboard" className="text-xl font-semibold">
-						Rep<span className="text-emerald-600">Base</span>
+		<div className="flex min-h-screen bg-muted/20">
+			<aside className="w-64 shrink-0 border-r bg-white flex flex-col">
+				<div className="flex h-16 items-center border-b px-6">
+					<Link
+						href="/dashboard"
+						className="text-[1.4rem] font-bold flex items-center gap-1"
+					>
+						<Image alt="dumbbell" src={dumbbellsvg} />
+						RepBase
+					</Link>
+				</div>
+
+				<nav className="p-4 space-y-2 text-foreground/80">
+					<Link
+						href="/dashboard"
+						className="flex items-center gap-3 rounded-md px-3 py-2 font-medium hover:bg-accent/10 hover:text-accent transition"
+					>
+						<LayoutDashboard className="size-5" />
+						Dashboard
 					</Link>
 
-					<div className="flex items-center space-x-5">
-						<div className="text-sm text-muted-foreground">
-							Georgi
-						</div>
+					<Link
+						href="/dashboard"
+						className="flex items-center gap-3 rounded-md px-3 py-2 font-medium hover:bg-accent/10 hover:text-accent transition"
+					>
+						<Users className="size-5" />
+						Clients
+					</Link>
+				</nav>
 
-						<form action={logout}>
-							<Button type="submit" variant="outline">
-								Logout
-							</Button>
-						</form>
-					</div>
+				<div className="mt-auto p-4">
+					<form action={logout}>
+						<Button type="submit" variant="secondary">
+							Logout
+						</Button>
+					</form>
 				</div>
-			</header>
+			</aside>
 
-			<main className="mx-auto max-w-6xl px-6 py-8">{children}</main>
+			<div className="flex min-w-0 flex-1 flex-col">
+				<header className="h-16 border-b bg-white">
+					<div className="flex h-full items-center justify-between px-6">
+						<h1 className="text-xl font-semibold">
+							Good Morning, Georgi
+						</h1>
+
+						<Suspense>
+							<CurrentDateBadge />
+						</Suspense>
+					</div>
+				</header>
+
+				<main className="flex-1 px-8 py-8">
+					<div className="mx-auto max-w-6xl">{children}</div>
+				</main>
+			</div>
 		</div>
 	);
 }

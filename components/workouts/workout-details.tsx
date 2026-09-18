@@ -59,7 +59,10 @@ export default async function WorkoutDetails({
 				</div>
 
 				<div className="space-x-2">
-					<EditWorkoutDialog workout={workout} />
+					<EditWorkoutDialog
+						workout={workout}
+						clientId={workout.client_id}
+					/>
 					<DeleteWorkoutDialog
 						clientId={workout.client_id}
 						workoutId={workoutId}

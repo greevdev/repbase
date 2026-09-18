@@ -56,6 +56,10 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+
+  .dashboard-card {
+    @apply bg-white p-5 rounded-xl border border-foreground/15;
+  }
 }
 
 @layer base {
