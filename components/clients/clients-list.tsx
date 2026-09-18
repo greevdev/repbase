@@ -17,7 +17,7 @@ export default async function ClientsList() {
 	const currentYear = new Date().getFullYear();
 
 	return (
-		<>
+		<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			{clients && clients.length > 0 ? (
 				clients.map((client) => (
 					<Link
@@ -42,6 +42,6 @@ export default async function ClientsList() {
 			) : (
 				<p>You don't have any clients currently.</p>
 			)}
-		</>
+		</div>
 	);
 }
