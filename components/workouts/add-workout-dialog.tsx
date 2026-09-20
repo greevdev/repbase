@@ -136,17 +136,20 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 				</Button>
 			</DialogTrigger>
 
-			<DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto">
+			<DialogContent className="top-[50%] h-[90vh] overflow-scroll bg-white flex flex-col">
 				<DialogHeader>
-					<DialogTitle>Log Workout</DialogTitle>
+					<DialogTitle className="text-xl font-bold">
+						Log Workout
+					</DialogTitle>
 				</DialogHeader>
 
-				<form action={handleSubmit} className="space-y-6">
+				<form action={handleSubmit} className="space-y-6 mt-3">
 					<div className="grid grid-cols-2 gap-4">
 						<Input
 							name="title"
 							placeholder="Workout title"
 							required
+							className="shadow-none rounded-lg font-semibold md:text-[1.05rem]"
 						/>
 
 						<Input
@@ -154,122 +157,149 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 							type="date"
 							defaultValue={today}
 							required
+							className="shadow-none rounded-lg font-semibold"
 						/>
 					</div>
 
 					<Separator />
 
-					<div className="space-y-4">
-						{exercises.map((exercise, exerciseIndex) => (
-							<div key={exerciseIndex} className="space-y-2">
-								<div className="flex justify-between items-center gap-2">
+					<div className="space-y-8">
+						{exercises.length != 0 ? (
+							exercises.map((exercise, exerciseIndex) => (
+								<div key={exerciseIndex}>
+									<div className="flex justify-between items-center gap-2">
+										<Input
+											placeholder="Exercise name"
+											value={exercise.name}
+											onChange={(e) =>
+												updateExercise(
+													exerciseIndex,
+													"name",
+													e.target.value,
+												)
+											}
+											required
+											type="text"
+											className="shadow-none border-none sm:text-xl md:text-xl font-semibold focus-visible:ring-0 focus-visible:ring-offset-0 px-0 py-0"
+										/>
+
+										<Button
+											type="button"
+											variant="outline"
+											size="icon"
+											className="bg-white shadow-none hover:bg-slate-200"
+											onClick={() =>
+												removeExercise(exerciseIndex)
+											}
+										>
+											<Trash2 className="size-4" />
+										</Button>
+									</div>
+
 									<Input
-										placeholder="Exercise name"
-										value={exercise.name}
+										placeholder="Add notes here..."
+										value={exercise.notes}
 										onChange={(e) =>
 											updateExercise(
 												exerciseIndex,
-												"name",
+												"notes",
 												e.target.value,
 											)
 										}
-										required
+										className="border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 py-0 text-muted-foreground font-medium"
 									/>
+
+									<div className="grid grid-cols-5 mt-3 items-center gap-2 text-[0.7rem] font-bold tracking-widest text-foreground/50">
+										<p className="text-center">SET</p>
+										<p className="col-span-2 text-center">
+											WEIGHT (KG)
+										</p>
+										<p className="col-span-2 text-center">
+											REPS
+										</p>
+									</div>
+
+									<div className="space-y-2 mt-3">
+										{exercise.sets.map((set, setIndex) => (
+											<div
+												key={setIndex}
+												className="grid grid-cols-5 items-center gap-2 "
+											>
+												<span className="text-sm whitespace-nowrap text-center font-bold text-muted-foreground">
+													{setIndex + 1}
+												</span>
+
+												<Input
+													type="number"
+													step="0.5"
+													placeholder="Weight"
+													className="col-span-2 shadow-none rounded-lg md:font-semibold text-center md:text-[1.05rem] md:placeholder:text-[0.85rem]"
+													value={set.weight}
+													onChange={(e) =>
+														updateSet(
+															exerciseIndex,
+															setIndex,
+															"weight",
+															e.target.value,
+														)
+													}
+												/>
+
+												<Input
+													type="number"
+													placeholder="Reps"
+													className="col-span-2 shadow-none rounded-lg md:font-semibold text-center md:text-[1.05rem] md:placeholder:text-[0.85rem]"
+													value={set.reps}
+													onChange={(e) =>
+														updateSet(
+															exerciseIndex,
+															setIndex,
+															"reps",
+															e.target.value,
+														)
+													}
+												/>
+											</div>
+										))}
+									</div>
 
 									<Button
 										type="button"
-										variant="destructive"
-										size="icon"
-										onClick={() =>
-											removeExercise(exerciseIndex)
-										}
+										variant="outline"
+										className="w-full mt-4 border-none shadow-none text-muted-foreground bg-background rounded-xl hover:bg-slate-200"
+										onClick={() => addSet(exerciseIndex)}
 									>
-										<Trash2 className="size-4" />
+										+ Add set
 									</Button>
 								</div>
-
-								<Input
-									placeholder="Add notes here..."
-									value={exercise.notes}
-									onChange={(e) =>
-										updateExercise(
-											exerciseIndex,
-											"notes",
-											e.target.value,
-										)
-									}
-									className="border-none shadow-none"
-								/>
-
-								<div className="space-y-2">
-									{exercise.sets.map((set, setIndex) => (
-										<div
-											key={setIndex}
-											className="flex items-center gap-2"
-										>
-											<span className="text-sm whitespace-nowrap mx-1">
-												Set {setIndex + 1}
-											</span>
-
-											<Input
-												type="number"
-												placeholder="Reps"
-												value={set.reps}
-												onChange={(e) =>
-													updateSet(
-														exerciseIndex,
-														setIndex,
-														"reps",
-														e.target.value,
-													)
-												}
-											/>
-
-											<Input
-												type="number"
-												step="0.5"
-												placeholder="kg"
-												value={set.weight}
-												onChange={(e) =>
-													updateSet(
-														exerciseIndex,
-														setIndex,
-														"weight",
-														e.target.value,
-													)
-												}
-											/>
-										</div>
-									))}
-								</div>
-
-								<Button
-									type="button"
-									variant="outline"
-									className="w-full"
-									onClick={() => addSet(exerciseIndex)}
-								>
-									Add set
-								</Button>
-							</div>
-						))}
+							))
+						) : (
+							<p className="text-center font-semibold text-muted-foreground">
+								No exercises
+							</p>
+						)}
 					</div>
 
 					<Separator />
 
-					<Button
-						type="button"
-						variant="outline"
-						onClick={addExercise}
-						className="w-full"
-					>
-						<Plus className="mr-2 size-4" />
-						Add exercise
-					</Button>
+					<div className="grid grid-cols-2 gap-3">
+						<Button
+							type="button"
+							variant="outline"
+							onClick={addExercise}
+							className="w-full bg-white rounded-xl text-muted-foreground font-semibold shadow-lg shadow-muted-foreground/5 py-6 hover:bg-gray-50"
+						>
+							<Plus className="mr-2 size-4" />
+							Add exercise
+						</Button>
 
-					<Button type="submit" className="w-full">
-						Save workout
-					</Button>
+						<Button
+							type="submit"
+							className="w-full rounded-xl font-semibold shadow-lg shadow-muted-foreground/5 py-6"
+						>
+							Save workout
+						</Button>
+					</div>
 				</form>
 			</DialogContent>
 		</Dialog>
