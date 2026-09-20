@@ -1,5 +1,3 @@
-import { EditWorkoutDialog } from "./edit-workout-dialog";
-import { DeleteWorkoutDialog } from "./delete-workout-dialog";
 import Link from "next/link";
 
 type Workout = {
@@ -23,7 +21,7 @@ export default function WorkoutCard({ workout }: WorkoutCardProps) {
 	return (
 		<Link
 			href={`/dashboard/clients/${workout.client_id}/workouts/${workout.id}`}
-			className="rounded-lg border p-4 flex justify-between hover:border-black/25 transition"
+			className="rounded-lg border border-foreground/10 p-4 flex justify-between hover:border-accent/50 transition bg-white h-full"
 		>
 			<div className="space-y-1">
 				<h3 className="font-semibold">{workout.title}</h3>

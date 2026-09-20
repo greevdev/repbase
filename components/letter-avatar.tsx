@@ -1,7 +1,19 @@
-export default function LetterAvatar({ clientName }: { clientName: string }) {
+import clsx from "clsx";
+
+export default function LetterAvatar({
+	clientId,
+	className,
+}: {
+	clientId: string;
+	className: string;
+}) {
+	const avatarUrl = `https://api.dicebear.com/10.x/waves/svg?seed=${clientId}?backgroundColor=ff2e88,00e5ff,ffe600,7cff00,ff6a00,b400ff`;
+
 	return (
-		<div className="bg-accent/20 w-10 h-10 font-bold flex justify-center items-center rounded-full">
-			<span className="">{clientName[0]}</span>
-		</div>
+		<img
+			src={avatarUrl}
+			alt="avatar"
+			className={clsx("size-10 rounded-full", className)}
+		/>
 	);
 }

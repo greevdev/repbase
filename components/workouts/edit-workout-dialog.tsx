@@ -166,8 +166,8 @@ export function EditWorkoutDialog({
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button variant="outline">
-					<Pencil className="mr-2 size-4" />
+				<Button className="bg-white text-foreground border border-foreground/10 shadow-none hover:bg-background">
+					<Pencil className="mr-1 size-4" />
 					Edit
 				</Button>
 			</DialogTrigger>

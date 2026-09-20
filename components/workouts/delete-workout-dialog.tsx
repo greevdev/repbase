@@ -40,12 +40,9 @@ export function DeleteWorkoutDialog({
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
-				<Button
-					variant="destructive"
-					className="aspect-square p-0"
-					size="sm"
-				>
-					<Trash2 className="size-4" />
+				<Button variant="destructive" size="sm">
+					<Trash2 className="mr-1 size-4" />
+					<span>Delete</span>
 				</Button>
 			</AlertDialogTrigger>
 
@@ -62,7 +59,7 @@ export function DeleteWorkoutDialog({
 				</AlertDialogHeader>
 
 				<AlertDialogFooter className="mt-3">
-					<AlertDialogCancel className="w-full">
+					<AlertDialogCancel className="w-full hover:bg-foreground/10">
 						Cancel
 					</AlertDialogCancel>
 

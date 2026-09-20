@@ -71,7 +71,7 @@ export default async function ClientsList() {
 						>
 							<CardHeader>
 								<CardTitle className="text-lg flex space-x-3 items-center">
-									<LetterAvatar clientName={client.name} />{" "}
+									<LetterAvatar clientId={client.id} />{" "}
 									<div>
 										<p>{client.name}</p>
 
@@ -81,6 +81,10 @@ export default async function ClientsList() {
 									</div>
 								</CardTitle>
 							</CardHeader>
+
+							<div className="px-5 pb-5">
+								<div className="h-px w-full bg-foreground/5" />
+							</div>
 
 							<CardContent className="flex justify-between items-center mr-10">
 								<div className="space-y-2">

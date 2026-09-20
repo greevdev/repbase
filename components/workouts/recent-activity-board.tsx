@@ -49,7 +49,8 @@ export default async function RecentActivityBoard() {
 						>
 							<div className="flex items-center gap-3">
 								<LetterAvatar
-									clientName={workout.clients?.name}
+									className=""
+									clientId={workout.client_id}
 								/>
 								<p className="font-semibold">
 									{workout.clients?.name}
