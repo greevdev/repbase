@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { addWorkout } from "@/app/dashboard/actions";
 import { Button } from "@/components/ui/button";
@@ -113,6 +113,21 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 		);
 	}
 
+	function removeSet(exerciseIndex: number, setIndex: number) {
+		setExercises(
+			exercises.map((exercise, i) =>
+				i === exerciseIndex
+					? {
+							...exercise,
+							sets: exercise.sets.filter(
+								(_, j) => j !== setIndex,
+							),
+						}
+					: exercise,
+			),
+		);
+	}
+
 	async function handleSubmit(formData: FormData) {
 		const result = await addWorkout(clientId, formData, exercises);
 
@@ -209,21 +224,22 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 										className="border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 py-0 text-muted-foreground font-medium"
 									/>
 
-									<div className="grid grid-cols-5 mt-3 items-center gap-2 text-[0.7rem] font-bold tracking-widest text-foreground/50">
+									<div className="grid grid-cols-10 mt-3 items-center gap-2 text-[0.7rem] font-bold tracking-widest text-foreground/50">
 										<p className="text-center">SET</p>
-										<p className="col-span-2 text-center">
+										<p className="col-span-4 text-center">
 											WEIGHT (KG)
 										</p>
-										<p className="col-span-2 text-center">
+										<p className="col-span-4 text-center">
 											REPS
 										</p>
+										<div />
 									</div>
 
 									<div className="space-y-2 mt-3">
 										{exercise.sets.map((set, setIndex) => (
 											<div
 												key={setIndex}
-												className="grid grid-cols-5 items-center gap-2 "
+												className="grid grid-cols-10 items-center gap-2 "
 											>
 												<span className="text-sm whitespace-nowrap text-center font-bold text-muted-foreground">
 													{setIndex + 1}
@@ -233,7 +249,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 													type="number"
 													step="0.5"
 													placeholder="Weight"
-													className="col-span-2 shadow-none rounded-lg md:font-semibold text-center md:text-[1.05rem] md:placeholder:text-[0.85rem]"
+													className="col-span-4 shadow-none rounded-lg md:font-semibold text-center md:text-[1.05rem] md:placeholder:text-[0.85rem]"
 													value={set.weight}
 													onChange={(e) =>
 														updateSet(
@@ -248,7 +264,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 												<Input
 													type="number"
 													placeholder="Reps"
-													className="col-span-2 shadow-none rounded-lg md:font-semibold text-center md:text-[1.05rem] md:placeholder:text-[0.85rem]"
+													className="col-span-4 shadow-none rounded-lg md:font-semibold text-center md:text-[1.05rem] md:placeholder:text-[0.85rem]"
 													value={set.reps}
 													onChange={(e) =>
 														updateSet(
@@ -259,6 +275,21 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 														)
 													}
 												/>
+
+												<Button
+													type="button"
+													variant="ghost"
+													size="icon"
+													className="hover:bg-slate-200"
+													onClick={() =>
+														removeSet(
+															exerciseIndex,
+															setIndex,
+														)
+													}
+												>
+													<X className="size-4" />
+												</Button>
 											</div>
 										))}
 									</div>
