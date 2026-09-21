@@ -5,6 +5,8 @@ import WorkoutCard from "../workouts/workout-card";
 import Link from "next/link";
 import LetterAvatar from "../letter-avatar";
 import { ChevronRight } from "lucide-react";
+import { EditClientDialog } from "./edit-client-dialog";
+import { DeleteClientDialog } from "./delete-client-dialog";
 
 type Workout = {
 	id: string;
@@ -46,7 +48,7 @@ export default async function ClientDetails({
 
 	let lastWorkoutDate = "No workouts";
 
-	if (workouts) {
+	if (workouts?.length != 0 && workouts != null) {
 		lastWorkoutDate = new Intl.DateTimeFormat("en-US", {
 			weekday: "long",
 			month: "short",
@@ -60,12 +62,27 @@ export default async function ClientDetails({
 
 	return (
 		<div className="space-y-5">
-			<div className="flex items-center gap-1 text-sm text-muted-foreground">
-				<Link href="/dashboard" className="transition hover:text-black">
-					Dashboard
-				</Link>
-				<ChevronRight className="text-foreground/30" size={16} />
-				<p className="text-foreground font-semibold">{client.name}</p>
+			<div className="flex justify-between items-center gap-2">
+				<div className="flex items-center gap-1 text-sm text-muted-foreground">
+					<Link
+						href="/dashboard"
+						className="transition hover:text-black"
+					>
+						Dashboard
+					</Link>
+					<ChevronRight className="text-foreground/30" size={16} />
+					<p className="text-foreground font-semibold">
+						{client.name}
+					</p>
+				</div>
+
+				<div className="flex items-center gap-2">
+					<EditClientDialog client={client} />
+					<DeleteClientDialog
+						clientName={client.name}
+						clientId={client.id}
+					/>
+				</div>
 			</div>
 
 			<div className="flex justify-between rounded-xl border border-foreground/10 bg-white p-7 text-lg">
@@ -80,16 +97,20 @@ export default async function ClientDetails({
 							{client.name}
 						</h1>
 
-						{client.goal && (
-							<div className="mt-1 text-muted-foreground text-sm flex items-center gap-2">
-								<p>Goal - {client.goal}</p>
+						<div className="mt-1 text-muted-foreground text-sm flex items-center gap-2">
+							{client.goal && <p>Goal - {client.goal}</p>}
+
+							{client.goal && client.year_of_birth && (
 								<div>•</div>
+							)}
+
+							{client.year_of_birth && (
 								<p>
 									{currentYear - client.year_of_birth} years
 									old
 								</p>
-							</div>
-						)}
+							)}
+						</div>
 					</div>
 				</div>
 
@@ -107,7 +128,11 @@ export default async function ClientDetails({
 							LAST ACTIVITY
 						</p>
 
-						<p className="text-sm">{lastWorkoutDate}</p>
+						<p className="text-sm">
+							{workouts?.length != 0
+								? lastWorkoutDate
+								: "No workouts"}
+						</p>
 					</div>
 				</div>
 			</div>

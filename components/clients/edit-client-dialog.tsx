@@ -41,9 +41,11 @@ export function EditClientDialog({ client }: { client: Client }) {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button variant="outline" size="sm">
-					<Pencil className="mr-2 size-4" />
-					Edit
+				<Button
+					variant="outline"
+					className="bg-white hover:bg-gray-50 rounded-lg"
+				>
+					Edit Client
 				</Button>
 			</DialogTrigger>
 
@@ -52,7 +54,7 @@ export function EditClientDialog({ client }: { client: Client }) {
 					<DialogTitle>Edit client</DialogTitle>
 				</DialogHeader>
 
-				<form action={handleSubmit} className="space-y-4">
+				<form action={handleSubmit} className="space-y-4 mt-2">
 					<Input
 						name="name"
 						defaultValue={client.name}
@@ -80,7 +82,11 @@ export function EditClientDialog({ client }: { client: Client }) {
 						placeholder="Notes"
 					/>
 
-					<Button type="submit" className="w-full">
+					<Button
+						type="submit"
+						className="w-full rounded-lg"
+						size="lg"
+					>
 						Save changes
 					</Button>
 				</form>
