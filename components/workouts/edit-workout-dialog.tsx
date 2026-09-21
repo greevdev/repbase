@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { Pencil, Plus, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
-
 import { editWorkout } from "@/app/dashboard/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -172,17 +171,20 @@ export function EditWorkoutDialog({
 				</Button>
 			</DialogTrigger>
 
-			<DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto">
+			<DialogContent className="top-[50%] h-[90vh] overflow-scroll bg-white flex flex-col">
 				<DialogHeader>
-					<DialogTitle>Edit Workout</DialogTitle>
+					<DialogTitle className="text-xl font-bold">
+						Edit Workout
+					</DialogTitle>
 				</DialogHeader>
 
-				<form action={handleSubmit} className="space-y-6">
+				<form action={handleSubmit} className="space-y-6 mt-3">
 					<div className="grid grid-cols-2 gap-4">
 						<Input
 							name="title"
 							defaultValue={workout.title}
 							required
+							className="shadow-none rounded-lg font-semibold md:text-[1.05rem]"
 						/>
 
 						<Input
@@ -190,135 +192,168 @@ export function EditWorkoutDialog({
 							type="date"
 							defaultValue={workout.date}
 							required
+							className="shadow-none rounded-lg font-semibold"
 						/>
 					</div>
 
 					<Separator />
 
-					<div className="space-y-5">
-						{exercises.map((exercise, exerciseIndex) => (
-							<div key={exerciseIndex} className="space-y-3">
-								<div className="flex gap-2">
-									<Input
-										value={exercise.name}
-										placeholder="Exercise name"
-										onChange={(e) =>
-											updateExercise(
-												exerciseIndex,
-												"name",
-												e.target.value,
-											)
-										}
-										required
-									/>
-
-									<Button
-										type="button"
-										variant="destructive"
-										size="icon"
-										onClick={() =>
-											removeExercise(exerciseIndex)
-										}
-									>
-										<Trash2 className="size-4" />
-									</Button>
-								</div>
-
-								<Input
-									value={exercise.notes}
-									placeholder="Add notes here..."
-									className="border-none shadow-none"
-									onChange={(e) =>
-										updateExercise(
-											exerciseIndex,
-											"notes",
-											e.target.value,
-										)
-									}
-								/>
-
-								{exercise.sets.map((set, setIndex) => (
-									<div
-										key={setIndex}
-										className="flex items-center gap-2"
-									>
-										<span className="whitespace-nowrap text-sm">
-											Set {setIndex + 1}
-										</span>
-
+					<div className="space-y-8">
+						{exercises.length !== 0 ? (
+							exercises.map((exercise, exerciseIndex) => (
+								<div key={exerciseIndex}>
+									<div className="flex justify-between items-center gap-2">
 										<Input
-											type="number"
-											placeholder="Reps"
-											value={set.reps}
+											placeholder="Exercise name"
+											value={exercise.name}
 											onChange={(e) =>
-												updateSet(
+												updateExercise(
 													exerciseIndex,
-													setIndex,
-													"reps",
+													"name",
 													e.target.value,
 												)
 											}
-										/>
-
-										<Input
-											type="number"
-											step="0.5"
-											placeholder="kg"
-											value={set.weight}
-											onChange={(e) =>
-												updateSet(
-													exerciseIndex,
-													setIndex,
-													"weight",
-													e.target.value,
-												)
-											}
+											required
+											type="text"
+											className="shadow-none border-none sm:text-xl md:text-xl font-semibold focus-visible:ring-0 focus-visible:ring-offset-0 px-0 py-0"
 										/>
 
 										<Button
 											type="button"
-											variant="ghost"
+											variant="outline"
 											size="icon"
+											className="bg-white shadow-none hover:bg-slate-200"
 											onClick={() =>
-												removeSet(
-													exerciseIndex,
-													setIndex,
-												)
+												removeExercise(exerciseIndex)
 											}
 										>
 											<Trash2 className="size-4" />
 										</Button>
 									</div>
-								))}
 
-								<Button
-									type="button"
-									variant="outline"
-									className="w-full"
-									onClick={() => addSet(exerciseIndex)}
-								>
-									<Plus className="mr-2 size-4" />
-									Add set
-								</Button>
+									<Input
+										placeholder="Add notes here..."
+										value={exercise.notes}
+										onChange={(e) =>
+											updateExercise(
+												exerciseIndex,
+												"notes",
+												e.target.value,
+											)
+										}
+										className="border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 py-0 text-muted-foreground font-medium"
+									/>
 
-								<Separator />
-							</div>
-						))}
+									<div className="grid grid-cols-10 mt-3 items-center gap-2 text-[0.7rem] font-bold tracking-widest text-foreground/50">
+										<p className="text-center">SET</p>
+
+										<p className="col-span-4 text-center">
+											WEIGHT (KG)
+										</p>
+
+										<p className="col-span-4 text-center">
+											REPS
+										</p>
+
+										<div />
+									</div>
+
+									<div className="space-y-2 mt-3">
+										{exercise.sets.map((set, setIndex) => (
+											<div
+												key={setIndex}
+												className="grid grid-cols-10 items-center gap-2"
+											>
+												<span className="text-sm whitespace-nowrap text-center font-bold text-muted-foreground ">
+													{setIndex + 1}
+												</span>
+
+												<Input
+													type="number"
+													step="0.5"
+													placeholder="Weight"
+													className="col-span-4 shadow-none rounded-lg md:font-semibold text-center md:text-[1.05rem] md:placeholder:text-[0.85rem]"
+													value={set.weight}
+													onChange={(e) =>
+														updateSet(
+															exerciseIndex,
+															setIndex,
+															"weight",
+															e.target.value,
+														)
+													}
+												/>
+
+												<Input
+													type="number"
+													placeholder="Reps"
+													className="col-span-4 shadow-none rounded-lg md:font-semibold text-center md:text-[1.05rem] md:placeholder:text-[0.85rem]"
+													value={set.reps}
+													onChange={(e) =>
+														updateSet(
+															exerciseIndex,
+															setIndex,
+															"reps",
+															e.target.value,
+														)
+													}
+												/>
+
+												<Button
+													type="button"
+													variant="ghost"
+													size="icon"
+													className="hover:bg-slate-200"
+													onClick={() =>
+														removeSet(
+															exerciseIndex,
+															setIndex,
+														)
+													}
+												>
+													<X className="size-4" />
+												</Button>
+											</div>
+										))}
+									</div>
+
+									<Button
+										type="button"
+										variant="outline"
+										className="w-full mt-4 border-none shadow-none text-muted-foreground bg-background rounded-xl hover:bg-slate-200"
+										onClick={() => addSet(exerciseIndex)}
+									>
+										+ Add set
+									</Button>
+								</div>
+							))
+						) : (
+							<p className="text-center font-semibold text-muted-foreground">
+								No exercises
+							</p>
+						)}
 					</div>
 
-					<Button
-						type="button"
-						variant="outline"
-						className="w-full"
-						onClick={addExercise}
-					>
-						<Plus className="mr-2 size-4" />
-						Add exercise
-					</Button>
+					<Separator />
 
-					<Button type="submit" className="w-full">
-						Save changes
-					</Button>
+					<div className="grid grid-cols-2 gap-3">
+						<Button
+							type="button"
+							variant="outline"
+							onClick={addExercise}
+							className="w-full bg-white rounded-xl text-muted-foreground font-semibold shadow-lg shadow-muted-foreground/5 py-6 hover:bg-gray-50"
+						>
+							<Plus className="mr-2 size-4" />
+							Add exercise
+						</Button>
+
+						<Button
+							type="submit"
+							className="w-full rounded-xl font-semibold shadow-lg shadow-muted-foreground/5 py-6"
+						>
+							Save changes
+						</Button>
+					</div>
 				</form>
 			</DialogContent>
 		</Dialog>
