@@ -1,11 +1,16 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
+import { toast } from "sonner";
+
 import { deleteWorkout } from "@/app/dashboard/actions";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "../ui/spinner";
+
 import {
 	AlertDialog,
-	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
@@ -14,8 +19,6 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 export function DeleteWorkoutDialog({
 	clientId,
@@ -26,22 +29,32 @@ export function DeleteWorkoutDialog({
 }) {
 	const router = useRouter();
 
-	async function handleDelete() {
-		const result = await deleteWorkout(workoutId, clientId);
+	const [open, setOpen] = useState(false);
+	const [loading, setLoading] = useState(false);
 
-		if (result.success) {
-			toast.success("Workout deleted successfully");
-			router.push(`/dashboard/clients/${clientId}`);
-		} else {
-			toast.error(result.error ?? "Failed to delete workout");
+	async function handleDelete() {
+		setLoading(true);
+
+		try {
+			const result = await deleteWorkout(workoutId, clientId);
+
+			if (result.success) {
+				setOpen(false);
+				toast.success("Workout deleted successfully");
+				router.push(`/dashboard/clients/${clientId}`);
+			} else {
+				toast.error(result.error ?? "Failed to delete workout");
+			}
+		} finally {
+			setLoading(false);
 		}
 	}
 
 	return (
-		<AlertDialog>
+		<AlertDialog open={open} onOpenChange={setOpen}>
 			<AlertDialogTrigger asChild>
-				<Button variant="destructive" size="sm">
-					<Trash2 className="mr-1 size-4" />
+				<Button className="bg-white rounded-lg text-foreground border border-foreground/10 hover:bg-background">
+					<Trash2 className="mr-1 size-4 text-red-500" />
 					<span>Delete</span>
 				</Button>
 			</AlertDialogTrigger>
@@ -59,16 +72,29 @@ export function DeleteWorkoutDialog({
 				</AlertDialogHeader>
 
 				<AlertDialogFooter className="mt-3">
-					<AlertDialogCancel className="w-full hover:bg-foreground/10">
+					<AlertDialogCancel
+						className="w-full hover:bg-foreground/10 rounded-lg"
+						size="lg"
+						disabled={loading}
+					>
 						Cancel
 					</AlertDialogCancel>
 
-					<AlertDialogAction
-						className="w-full"
+					<Button
+						type="button"
+						size="lg"
+						className="w-full rounded-lg"
 						onClick={handleDelete}
+						disabled={loading}
 					>
-						Delete
-					</AlertDialogAction>
+						{loading ? (
+							<>
+								<Spinner className="size-4" />
+							</>
+						) : (
+							"Delete"
+						)}
+					</Button>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>

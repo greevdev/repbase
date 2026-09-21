@@ -3,10 +3,13 @@
 import { useState } from "react";
 import { Pencil, Plus, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
+
 import { editWorkout } from "@/app/dashboard/actions";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { Spinner } from "@/components/ui/spinner";
 
 import {
 	Dialog,
@@ -53,6 +56,7 @@ export function EditWorkoutDialog({
 	clientId: string;
 }) {
 	const [open, setOpen] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const [exercises, setExercises] = useState<Exercise[]>(
 		[...workout.workout_exercises]
@@ -146,26 +150,36 @@ export function EditWorkoutDialog({
 		);
 	}
 
-	async function handleSubmit(formData: FormData) {
-		const result = await editWorkout(
-			workout.id,
-			clientId,
-			formData,
-			exercises,
-		);
+	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+		event.preventDefault();
 
-		if (result.success) {
-			setOpen(false);
-			toast.success("Workout updated successfully");
-		} else {
-			toast.error(result.error ?? "Failed to update workout");
+		setLoading(true);
+
+		const formData = new FormData(event.currentTarget);
+
+		try {
+			const result = await editWorkout(
+				workout.id,
+				clientId,
+				formData,
+				exercises,
+			);
+
+			if (result.success) {
+				setOpen(false);
+				toast.success("Workout updated successfully");
+			} else {
+				toast.error(result.error ?? "Failed to update workout");
+			}
+		} finally {
+			setLoading(false);
 		}
 	}
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button className="bg-white text-foreground border border-foreground/10 shadow-none hover:bg-background">
+				<Button className="bg-white rounded-lg text-foreground border border-foreground/10 hover:bg-background">
 					<Pencil className="mr-1 size-4" />
 					Edit
 				</Button>
@@ -178,7 +192,7 @@ export function EditWorkoutDialog({
 					</DialogTitle>
 				</DialogHeader>
 
-				<form action={handleSubmit} className="space-y-6 mt-3">
+				<form onSubmit={handleSubmit} className="space-y-6 mt-3">
 					<div className="grid grid-cols-2 gap-4">
 						<Input
 							name="title"
@@ -264,7 +278,7 @@ export function EditWorkoutDialog({
 												key={setIndex}
 												className="grid grid-cols-10 items-center gap-2"
 											>
-												<span className="text-sm whitespace-nowrap text-center font-bold text-muted-foreground ">
+												<span className="text-sm whitespace-nowrap text-center font-bold text-muted-foreground">
 													{setIndex + 1}
 												</span>
 
@@ -341,6 +355,7 @@ export function EditWorkoutDialog({
 							type="button"
 							variant="outline"
 							onClick={addExercise}
+							disabled={loading}
 							className="w-full bg-white rounded-xl text-muted-foreground font-semibold shadow-lg shadow-muted-foreground/5 py-6 hover:bg-gray-50"
 						>
 							<Plus className="mr-2 size-4" />
@@ -349,9 +364,16 @@ export function EditWorkoutDialog({
 
 						<Button
 							type="submit"
+							disabled={loading}
 							className="w-full rounded-xl font-semibold shadow-lg shadow-muted-foreground/5 py-6"
 						>
-							Save changes
+							{loading ? (
+								<>
+									<Spinner className="size-4" />
+								</>
+							) : (
+								"Save changes"
+							)}
 						</Button>
 					</div>
 				</form>

@@ -14,6 +14,18 @@ import { Plus } from "lucide-react";
 import { addClient } from "@/app/dashboard/actions";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Spinner } from "../ui/spinner";
+import { useFormStatus } from "react-dom";
+
+function SubmitButton() {
+	const { pending } = useFormStatus();
+
+	return (
+		<Button type="submit" className="w-full py-5 rounded-lg">
+			{pending ? <Spinner className="size-4" /> : "Add client"}
+		</Button>
+	);
+}
 
 export function AddClientDialog() {
 	const [open, setOpen] = useState(false);
@@ -57,9 +69,7 @@ export function AddClientDialog() {
 
 					<Textarea name="notes" placeholder="Notes" />
 
-					<Button type="submit" className="w-full">
-						Add client
-					</Button>
+					<SubmitButton />
 				</form>
 			</DialogContent>
 		</Dialog>

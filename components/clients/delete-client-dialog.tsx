@@ -1,9 +1,16 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
+import { toast } from "sonner";
+
 import { deleteClient } from "@/app/dashboard/actions";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
+
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -15,10 +22,6 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { toast } from "sonner";
-import { Input } from "../ui/input";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export function DeleteClientDialog({
 	clientId,
@@ -29,25 +32,30 @@ export function DeleteClientDialog({
 }) {
 	const router = useRouter();
 
-	async function handleDelete() {
-		const result = await deleteClient(clientId);
+	const [clientNameInput, setClientNameInput] = useState("");
+	const [loading, setLoading] = useState(false);
+	const [open, setOpen] = useState(false);
 
-		if (result.success) {
-			toast.success("Client deleted successfully");
-			router.push("/dashboard");
-		} else {
-			toast.error(result.error ?? "Failed to delete client");
+	async function handleDelete() {
+		setLoading(true);
+
+		try {
+			const result = await deleteClient(clientId);
+
+			if (result.success) {
+				setOpen(false);
+				toast.success("Client deleted successfully");
+				router.push("/dashboard");
+			} else {
+				toast.error(result.error ?? "Failed to delete client");
+			}
+		} finally {
+			setLoading(false);
 		}
 	}
 
-	const [clientNameInput, setClientNameInput] = useState("");
-
-	function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
-		setClientNameInput(event.target.value);
-	}
-
 	return (
-		<AlertDialog>
+		<AlertDialog open={open} onOpenChange={setOpen}>
 			<AlertDialogTrigger asChild>
 				<Button
 					className="rounded-lg aspect-square bg-white text-red-400 hover:bg-gray-50"
@@ -73,21 +81,32 @@ export function DeleteClientDialog({
 					name="name"
 					value={clientNameInput}
 					placeholder="Enter client's name to confirm deletion."
-					onChange={handleChange}
+					onChange={(e) => setClientNameInput(e.target.value)}
+					disabled={loading}
 				/>
 
 				<AlertDialogFooter className="w-full grid grid-cols-2">
-					<AlertDialogCancel className="py-5 rounded-[0.7em] hover:bg-gray-100">
+					<AlertDialogCancel
+						className="py-5 rounded-[0.7em] hover:bg-gray-100"
+						disabled={loading}
+					>
 						Cancel
 					</AlertDialogCancel>
 
-					<AlertDialogAction
-						className="disabled:bg-foreground/95 py-5 border border-black rounded-[0.7em] disabled:border-foreground/95"
+					<Button
+						type="button"
 						onClick={handleDelete}
-						disabled={clientNameInput != clientName}
+						disabled={clientNameInput !== clientName || loading}
+						className="py-5 border border-black rounded-[0.7em]"
 					>
-						Delete
-					</AlertDialogAction>
+						{loading ? (
+							<>
+								<Spinner className="size-4" />
+							</>
+						) : (
+							"Delete"
+						)}
+					</Button>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>

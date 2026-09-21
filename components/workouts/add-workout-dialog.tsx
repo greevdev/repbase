@@ -3,10 +3,13 @@
 import { useState } from "react";
 import { Plus, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
+
 import { addWorkout } from "@/app/dashboard/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Separator } from "../ui/separator";
+import { Separator } from "@/components/ui/separator";
+import { Spinner } from "@/components/ui/spinner";
+
 import {
 	Dialog,
 	DialogContent,
@@ -28,6 +31,7 @@ type Exercise = {
 
 export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 	const [open, setOpen] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [exercises, setExercises] = useState<Exercise[]>([]);
 
 	function addExercise() {
@@ -63,6 +67,21 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 									weight: "",
 								},
 							],
+						}
+					: exercise,
+			),
+		);
+	}
+
+	function removeSet(exerciseIndex: number, setIndex: number) {
+		setExercises(
+			exercises.map((exercise, i) =>
+				i === exerciseIndex
+					? {
+							...exercise,
+							sets: exercise.sets.filter(
+								(_, j) => j !== setIndex,
+							),
 						}
 					: exercise,
 			),
@@ -113,30 +132,25 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 		);
 	}
 
-	function removeSet(exerciseIndex: number, setIndex: number) {
-		setExercises(
-			exercises.map((exercise, i) =>
-				i === exerciseIndex
-					? {
-							...exercise,
-							sets: exercise.sets.filter(
-								(_, j) => j !== setIndex,
-							),
-						}
-					: exercise,
-			),
-		);
-	}
+	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+		event.preventDefault();
 
-	async function handleSubmit(formData: FormData) {
-		const result = await addWorkout(clientId, formData, exercises);
+		setLoading(true);
 
-		if (result.success) {
-			setOpen(false);
-			setExercises([]);
-			toast.success("Workout saved");
-		} else {
-			toast.error(result.error ?? "Failed to save workout");
+		const formData = new FormData(event.currentTarget);
+
+		try {
+			const result = await addWorkout(clientId, formData, exercises);
+
+			if (result.success) {
+				setOpen(false);
+				setExercises([]);
+				toast.success("Workout saved");
+			} else {
+				toast.error(result.error ?? "Failed to save workout");
+			}
+		} finally {
+			setLoading(false);
 		}
 	}
 
@@ -158,7 +172,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 					</DialogTitle>
 				</DialogHeader>
 
-				<form action={handleSubmit} className="space-y-6 mt-3">
+				<form onSubmit={handleSubmit} className="space-y-6 mt-3">
 					<div className="grid grid-cols-2 gap-4">
 						<Input
 							name="title"
@@ -179,7 +193,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 					<Separator />
 
 					<div className="space-y-8">
-						{exercises.length != 0 ? (
+						{exercises.length !== 0 ? (
 							exercises.map((exercise, exerciseIndex) => (
 								<div key={exerciseIndex}>
 									<div className="flex justify-between items-center gap-2">
@@ -226,12 +240,15 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 
 									<div className="grid grid-cols-10 mt-3 items-center gap-2 text-[0.7rem] font-bold tracking-widest text-foreground/50">
 										<p className="text-center">SET</p>
+
 										<p className="col-span-4 text-center">
 											WEIGHT (KG)
 										</p>
+
 										<p className="col-span-4 text-center">
 											REPS
 										</p>
+
 										<div />
 									</div>
 
@@ -239,7 +256,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 										{exercise.sets.map((set, setIndex) => (
 											<div
 												key={setIndex}
-												className="grid grid-cols-10 items-center gap-2 "
+												className="grid grid-cols-10 items-center gap-2"
 											>
 												<span className="text-sm whitespace-nowrap text-center font-bold text-muted-foreground">
 													{setIndex + 1}
@@ -326,9 +343,16 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 
 						<Button
 							type="submit"
+							disabled={loading}
 							className="w-full rounded-xl font-semibold shadow-lg shadow-muted-foreground/5 py-6"
 						>
-							Save workout
+							{loading ? (
+								<>
+									<Spinner className="size-4" />
+								</>
+							) : (
+								"Save workout"
+							)}
 						</Button>
 					</div>
 				</form>

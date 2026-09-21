@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Pencil } from "lucide-react";
+import { useFormStatus } from "react-dom";
 import { editClient } from "@/app/dashboard/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 
 import {
@@ -23,6 +24,27 @@ type Client = {
 	year_of_birth: number | null;
 	notes: string | null;
 };
+
+function SubmitButton() {
+	const { pending } = useFormStatus();
+
+	return (
+		<Button
+			type="submit"
+			className="w-full rounded-lg"
+			size="lg"
+			disabled={pending}
+		>
+			{pending ? (
+				<>
+					<Spinner className="size-4" />
+				</>
+			) : (
+				"Save changes"
+			)}
+		</Button>
+	);
+}
 
 export function EditClientDialog({ client }: { client: Client }) {
 	const [open, setOpen] = useState(false);
@@ -82,13 +104,7 @@ export function EditClientDialog({ client }: { client: Client }) {
 						placeholder="Notes"
 					/>
 
-					<Button
-						type="submit"
-						className="w-full rounded-lg"
-						size="lg"
-					>
-						Save changes
-					</Button>
+					<SubmitButton />
 				</form>
 			</DialogContent>
 		</Dialog>
