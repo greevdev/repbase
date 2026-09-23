@@ -85,19 +85,19 @@ export default async function ClientDetails({
 				</div>
 			</div>
 
-			<div className="flex justify-between rounded-xl border border-foreground/10 bg-white p-7 text-lg">
-				<div className="flex items-center gap-5">
+			<div className="flex flex-col lg:flex-row gap-5 lg:gap-0 justify-between rounded-xl border border-foreground/10 bg-white p-5 md:p-7 text-lg">
+				<div className="flex items-center gap-3 md:gap-5">
 					<LetterAvatar
 						clientId={client.id}
-						className="size-20 border-4 border-white shadow-lg"
+						className="size-16 lg:size-20 border-4 border-white shadow-lg"
 					/>
 
 					<div className="space-y-1">
-						<h1 className="text-3xl font-bold tracking-tight">
+						<h1 className="text-2xl lg:text-3xl font-bold tracking-tight">
 							{client.name}
 						</h1>
 
-						<div className="mt-1 text-muted-foreground text-sm flex items-center gap-2">
+						<div className="mt-1 text-muted-foreground text-xs md:text-sm flex items-center gap-2">
 							{client.goal && <p>Goal - {client.goal}</p>}
 
 							{client.goal && client.year_of_birth && (
@@ -114,17 +114,17 @@ export default async function ClientDetails({
 					</div>
 				</div>
 
-				<div className="flex flex-col justify-between gap-5">
-					<div>
-						<p className="text-sm font-bold tracking-wide text-foreground/50">
+				<div className="flex lg:flex-col justify-between gap-5">
+					<div className="space-y-1">
+						<p className="text-xs md:text-sm font-bold tracking-wide text-foreground/50">
 							JOIN DATE
 						</p>
 
 						<p className="text-sm">{clientJoinDate}</p>
 					</div>
 
-					<div>
-						<p className="text-sm font-bold tracking-wide text-foreground/50">
+					<div className="space-y-1">
+						<p className="text-xs md:text-sm font-bold tracking-wide text-foreground/50">
 							LAST ACTIVITY
 						</p>
 
@@ -141,13 +141,13 @@ export default async function ClientDetails({
 				<div className="mb-4 flex items-center justify-between gap-5">
 					<h2 className="text-xl font-semibold">Workouts</h2>
 
-					<div className="h-px w-full bg-foreground/10" />
+					<div className="h-px w-full bg-gray-200 hidden md:block" />
 
 					<AddWorkoutDialog clientId={id} />
 				</div>
 
 				{workouts && workouts.length > 0 ? (
-					<div className="grid grid-cols-2 gap-3">
+					<div className="grid lg:grid-cols-2 gap-3">
 						{workouts.map((workout: Workout) => (
 							<WorkoutCard key={workout.id} workout={workout} />
 						))}

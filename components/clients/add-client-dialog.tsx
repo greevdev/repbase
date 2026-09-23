@@ -47,7 +47,7 @@ export function AddClientDialog() {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button className="bg-accent hover:bg-accentDark py-5 rounded-lg">
+				<Button className="bg-accent hover:bg-accentDark md:py-5 rounded-lg">
 					<Plus className="mr-1 size-4" />
 					New Client
 				</Button>
