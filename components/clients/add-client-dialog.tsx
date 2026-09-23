@@ -59,18 +59,28 @@ export function AddClientDialog() {
 				</DialogHeader>
 
 				<form action={handleSubmit} className="space-y-4 mt-2">
-					<Input name="name" placeholder="Client name" required />
+					<Input
+						className="text-sm"
+						name="name"
+						placeholder="Client name"
+						required
+					/>
 
-					<Input name="goal" placeholder="Goal" />
+					<Input className="text-sm" name="goal" placeholder="Goal" />
 
 					<Input
+						className="text-sm"
 						name="year_of_birth"
 						type="number"
 						placeholder="Year of birth"
 						min="1900"
 					/>
 
-					<Textarea name="notes" placeholder="Notes" />
+					<Textarea
+						className="text-sm"
+						name="notes"
+						placeholder="Notes"
+					/>
 
 					<SubmitButton />
 				</form>

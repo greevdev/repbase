@@ -81,24 +81,28 @@ export function EditClientDialog({ client }: { client: Client }) {
 						name="name"
 						defaultValue={client.name}
 						placeholder="Client name"
+						className="text-sm"
 						required
 					/>
 
 					<Input
 						name="goal"
 						defaultValue={client.goal ?? ""}
+						className="text-sm"
 						placeholder="Goal"
 					/>
 
 					<Input
 						name="year_of_birth"
 						type="number"
+						className="text-sm"
 						min="1900"
 						defaultValue={client.year_of_birth ?? ""}
 						placeholder="Year of birth"
 					/>
 
 					<Textarea
+						className="text-sm"
 						name="notes"
 						defaultValue={client.notes ?? ""}
 						placeholder="Notes"

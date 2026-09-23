@@ -80,7 +80,8 @@ export function DeleteClientDialog({
 					type="text"
 					name="name"
 					value={clientNameInput}
-					placeholder="Enter client's name to confirm deletion."
+					className="text-sm"
+					placeholder="Enter client's name to confirm"
 					onChange={(e) => setClientNameInput(e.target.value)}
 					disabled={loading}
 				/>
