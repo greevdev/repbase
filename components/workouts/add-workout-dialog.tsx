@@ -165,7 +165,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 				</Button>
 			</DialogTrigger>
 
-			<DialogContent className="top-[50%] h-[90dvh] bg-white flex flex-col overflow-hidden">
+			<DialogContent className="top-[50%] h-[90dvh] max-w-[97dvw] bg-white flex flex-col overflow-hidden p-3 md:p-5">
 				<DialogHeader className="shrink-0">
 					<DialogTitle className="text-xl font-bold">
 						Log Workout
@@ -178,12 +178,12 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 				>
 					<div className="flex-1 min-h-0 flex flex-col gap-6">
 						<div className="shrink-0 space-y-6">
-							<div className="grid grid-cols-2 gap-4">
+							<div className="grid grid-cols-2 gap-2 md:gap-4">
 								<Input
 									name="title"
 									placeholder="Workout title"
 									required
-									className="shadow-none rounded-lg font-semibold md:text-[1.05rem]"
+									className="shadow-none rounded-lg font-semibold text-sm md:text-base"
 								/>
 
 								<Input
@@ -191,7 +191,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 									type="date"
 									defaultValue={today}
 									required
-									className="shadow-none rounded-lg font-semibold"
+									className="shadow-none rounded-lg font-semibold text-sm md:text-base"
 								/>
 							</div>
 
@@ -215,7 +215,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 												}
 												required
 												type="text"
-												className="shadow-none border-none sm:text-xl md:text-xl font-semibold focus-visible:ring-0 focus-visible:ring-offset-0 px-0 py-0"
+												className="shadow-none border-none sm:text-xl font-semibold focus-visible:ring-0 focus-visible:ring-offset-0 px-0 py-0"
 											/>
 
 											<Button
@@ -243,10 +243,10 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 													e.target.value,
 												)
 											}
-											className="border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 py-0 text-muted-foreground font-medium"
+											className="border-none text-sm shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 py-0 placeholder:text-muted-foreground/70 text-muted-foreground font-medium"
 										/>
 
-										<div className="grid grid-cols-10 mt-3 items-center gap-2 text-[0.7rem] font-bold tracking-widest text-foreground/50">
+										<div className="grid grid-cols-10 mt-3 items-center gap-1 md:gap-2 text-[0.7rem] font-bold tracking-widest text-foreground/50">
 											<p className="text-center">SET</p>
 
 											<p className="col-span-4 text-center">
@@ -265,7 +265,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 												(set, setIndex) => (
 													<div
 														key={setIndex}
-														className="grid grid-cols-10 items-center gap-2"
+														className="grid grid-cols-10 items-center gap-1 md:gap-2 overflow-hidden"
 													>
 														<span className="text-sm whitespace-nowrap text-center font-bold text-muted-foreground">
 															{setIndex + 1}
@@ -275,7 +275,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 															type="number"
 															step="0.5"
 															placeholder="Weight"
-															className="col-span-4 shadow-none rounded-lg md:font-semibold text-center md:text-[1.05rem] md:placeholder:text-[0.85rem]"
+															className="col-span-4 shadow-none rounded-lg text-sm font-semibold text-center md:text-[1.05rem] md:placeholder:text-[0.85rem]"
 															value={set.weight}
 															onChange={(e) =>
 																updateSet(
@@ -291,7 +291,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 														<Input
 															type="number"
 															placeholder="Reps"
-															className="col-span-4 shadow-none rounded-lg md:font-semibold text-center md:text-[1.05rem] md:placeholder:text-[0.85rem]"
+															className="col-span-4 shadow-none rounded-lg text-sm font-semibold text-center md:text-[1.05rem] md:placeholder:text-[0.85rem]"
 															value={set.reps}
 															onChange={(e) =>
 																updateSet(
@@ -308,7 +308,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 															type="button"
 															variant="ghost"
 															size="icon"
-															className="hover:bg-slate-200"
+															className="hover:bg-slate-200 w-full"
 															onClick={() =>
 																removeSet(
 																	exerciseIndex,
@@ -350,7 +350,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 							onClick={addExercise}
 							className="w-full bg-white rounded-xl text-muted-foreground font-semibold shadow-lg shadow-muted-foreground/5 py-6 hover:bg-gray-50"
 						>
-							<Plus className="mr-2 size-4" />
+							<Plus className="md:mr-2 size-4" />
 							Add exercise
 						</Button>
 

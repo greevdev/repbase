@@ -71,9 +71,9 @@ export function DeleteWorkoutDialog({
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 
-				<AlertDialogFooter className="mt-3">
+				<AlertDialogFooter className="mt-3 flex flex-row">
 					<AlertDialogCancel
-						className="w-full hover:bg-foreground/10 rounded-lg"
+						className="w-full hover:bg-foreground/10 rounded-lg py-5"
 						size="lg"
 						disabled={loading}
 					>
@@ -83,7 +83,7 @@ export function DeleteWorkoutDialog({
 					<Button
 						type="button"
 						size="lg"
-						className="w-full rounded-lg"
+						className="w-full rounded-lg py-5"
 						onClick={handleDelete}
 						disabled={loading}
 					>
