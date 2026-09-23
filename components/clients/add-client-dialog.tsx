@@ -21,7 +21,10 @@ function SubmitButton() {
 	const { pending } = useFormStatus();
 
 	return (
-		<Button type="submit" className="w-full py-5 rounded-lg">
+		<Button
+			type="submit"
+			className="w-full rounded-xl font-semibold shadow-lg shadow-muted-foreground/5 py-6"
+		>
 			{pending ? <Spinner className="size-4" /> : "Add client"}
 		</Button>
 	);
@@ -44,7 +47,7 @@ export function AddClientDialog() {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button className="bg-accent hover:bg-accentDark">
+				<Button className="bg-accent hover:bg-accentDark py-5 rounded-lg">
 					<Plus className="mr-1 size-4" />
 					New Client
 				</Button>
@@ -52,10 +55,10 @@ export function AddClientDialog() {
 
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Add client</DialogTitle>
+					<DialogTitle className="text-xl">Add client</DialogTitle>
 				</DialogHeader>
 
-				<form action={handleSubmit} className="space-y-4">
+				<form action={handleSubmit} className="space-y-4 mt-2">
 					<Input name="name" placeholder="Client name" required />
 
 					<Input name="goal" placeholder="Goal" />

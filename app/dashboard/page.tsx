@@ -9,7 +9,7 @@ import { Suspense } from "react";
 
 export default function DashboardPage() {
 	return (
-		<div className="space-y-8">
+		<div className="space-y-6 md:space-y-8">
 			<Suspense
 				fallback={
 					<div className="text-muted-foreground w-max mx-auto flex items-center gap-2 text-xl">
@@ -18,14 +18,14 @@ export default function DashboardPage() {
 					</div>
 				}
 			>
-				<div className="grid grid-cols-4 gap-4 items-center">
+				<div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 items-center">
 					<div className="dashboard-card flex flex-col gap-3">
-						<h3 className="font-medium text-muted-foreground text-sm flex items-center gap-1">
+						<h3 className="font-medium text-muted-foreground text-xs md:text-sm flex items-center gap-1">
 							<User size={20} />
 							<span>Active Clients</span>
 						</h3>
 
-						<div className="text-3xl font-bold">
+						<div className="text-2xl md:text-3xl font-bold">
 							<ActiveClients />
 							<span className="text-[0.9rem] ml-2 font-medium text-accent">
 								Clients
@@ -34,12 +34,12 @@ export default function DashboardPage() {
 					</div>
 
 					<div className="dashboard-card flex flex-col gap-3">
-						<h3 className="font-medium text-muted-foreground text-sm flex items-center gap-1">
+						<h3 className="font-medium text-muted-foreground text-xs md:text-sm flex items-center gap-1">
 							<DollarSign size={20} />
 							<span>Monthly Revenue</span>
 						</h3>
 
-						<div className="text-3xl font-bold">
+						<div className="text-2xl md:text-3xl font-bold">
 							€<MonthlyRevenue />
 							<span className="text-[0.9rem] ml-1 font-medium text-accent">
 								/ month
@@ -54,15 +54,15 @@ export default function DashboardPage() {
 				<RecentActivityBoard />
 
 				<div className="space-y-4">
-					<div className="flex items-center justify-between gap-7">
-						<h3 className="font-semibold text-lg flex items-center gap-2">
+					<div className="flex items-center justify-between md:gap-7">
+						<h3 className="font-semibold md:text-lg flex items-center gap-2">
 							<Users2 className="text-accent" />
 							<span className="whitespace-nowrap">
 								Manage your clients
 							</span>
 						</h3>
 
-						<div className="h-px w-full bg-foreground/10" />
+						<div className="h-px w-full bg-foreground/10 hidden md:block" />
 
 						<AddClientDialog />
 					</div>

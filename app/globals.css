@@ -58,11 +58,11 @@
 	}
 
 	.dashboard-card {
-		@apply bg-white p-5 rounded-xl border border-foreground/15;
+		@apply bg-white p-5 rounded-xl border border-foreground/15 h-full;
 	}
 
 	.btn {
-		@apply rounded-md px-3 py-2 font-medium hover:bg-accent/10 hover:text-accent transition;
+		@apply text-sm lg:text-base rounded-md px-3 py-2 font-medium hover:bg-accent/10 hover:text-accent transition;
 	}
 }
 
