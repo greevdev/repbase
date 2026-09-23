@@ -2,14 +2,16 @@ import ActiveClients from "@/components/clients/active-clients";
 import { AddClientDialog } from "@/components/clients/add-client-dialog";
 import ClientsList from "@/components/clients/clients-list";
 import MonthlyRevenue from "@/components/clients/monthly-revenue";
+import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import RecentActivityBoard from "@/components/workouts/recent-activity-board";
 import { User, DollarSign, Users2 } from "lucide-react";
+import Link from "next/link";
 import { Suspense } from "react";
 
 export default function DashboardPage() {
 	return (
-		<div className="space-y-6 md:space-y-8">
+		<div className="space-y-6 md:space-y-8 pb-10">
 			<Suspense
 				fallback={
 					<div className="text-muted-foreground w-max mx-auto flex items-center gap-2 text-xl">
@@ -64,10 +66,27 @@ export default function DashboardPage() {
 
 						<div className="h-px w-full bg-foreground/10 hidden md:block" />
 
-						<AddClientDialog />
+						<div className="flex items-center gap-3">
+							<Link
+								className="hidden sm:block"
+								href="/dashboard/clients"
+							>
+								<Button className="bg-white text-foreground hover:bg-gray-100 md:py-5 px-8 rounded-lg">
+									View All
+								</Button>
+							</Link>
+
+							<AddClientDialog />
+						</div>
 					</div>
 
 					<ClientsList />
+
+					<Link className="sm:hidden" href="/dashboard/clients">
+						<Button className="bg-white w-full mt-5 text-foreground hover:bg-gray-100 py-5 rounded-lg">
+							View All
+						</Button>
+					</Link>
 				</div>
 			</Suspense>
 		</div>

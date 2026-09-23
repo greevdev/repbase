@@ -18,7 +18,8 @@ export default async function ClientsList() {
 			)
 		`,
 		)
-		.order("created_at", { ascending: false });
+		.order("created_at", { ascending: false })
+		.limit(6);
 
 	if (error) return <p>Failed to load clients.</p>;
 
@@ -53,7 +54,7 @@ export default async function ClientsList() {
 	}
 
 	return (
-		<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+		<div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
 			{clients && clients.length > 0 ? (
 				clients.map((client) => {
 					const sortedWorkouts = [...client.workouts].sort(
@@ -71,7 +72,10 @@ export default async function ClientsList() {
 						>
 							<CardHeader>
 								<CardTitle className="text-lg flex space-x-3 items-center">
-									<LetterAvatar clientId={client.id} />{" "}
+									<LetterAvatar
+										className=""
+										clientId={client.id}
+									/>{" "}
 									<div>
 										<p>{client.name}</p>
 
@@ -93,9 +97,17 @@ export default async function ClientsList() {
 									</p>
 
 									{lastWorkout ? (
-										<p className="text-sm font-medium tracking-wide">
-											{lastWorkout.title}
-										</p>
+										<>
+											<p className="text-sm font-medium tracking-wide hidden sm:block">
+												{lastWorkout.title}
+											</p>
+
+											<p className="text-sm font-medium tracking-wide sm:hidden">
+												{formatWorkoutDate(
+													lastWorkout.date,
+												)}
+											</p>
+										</>
 									) : (
 										<p className="text-sm text-muted-foreground">
 											No workouts yet
@@ -103,7 +115,7 @@ export default async function ClientsList() {
 									)}
 								</div>
 
-								<div className="space-y-2">
+								<div className="space-y-2 hidden sm:block">
 									<p className="text-xs font-medium text-foreground/50 tracking-widest">
 										LOG DATE
 									</p>

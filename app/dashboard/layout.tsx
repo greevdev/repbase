@@ -36,7 +36,7 @@ export default function DashboardLayout({
 					</Link>
 
 					<Link
-						href="/dashboard"
+						href="/dashboard/clients"
 						className="flex items-center gap-3 btn"
 					>
 						<Users className="size-5" />
