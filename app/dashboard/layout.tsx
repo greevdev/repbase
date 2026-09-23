@@ -14,7 +14,7 @@ export default function DashboardLayout({
 }) {
 	return (
 		<div className="flex min-h-screen bg-muted/20">
-			<aside className="w-64 shrink-0 border-r bg-white flex flex-col">
+			<aside className="sticky top-0 h-screen w-64 shrink-0 border-r bg-white flex flex-col">
 				<div className="flex h-16 items-center border-b px-6">
 					<Link
 						href="/dashboard"
@@ -25,7 +25,7 @@ export default function DashboardLayout({
 					</Link>
 				</div>
 
-				<nav className="p-4 space-y-2 text-foreground/80">
+				<nav className="p-4 space-y-2 text-foreground/80 flex-1 overflow-y-auto">
 					<Link
 						href="/dashboard"
 						className="flex items-center gap-3 btn"
@@ -53,10 +53,10 @@ export default function DashboardLayout({
 			</aside>
 
 			<div className="flex min-w-0 flex-1 flex-col">
-				<header className="h-16 border-b bg-white">
+				<header className="h-16 border-b bg-white sticky top-0 z-20">
 					<div className="flex h-full items-center justify-between px-6">
 						<h1 className="text-xl font-semibold">
-							Good Morning, Georgi
+							Good Morning, Coach
 						</h1>
 
 						<Suspense>
