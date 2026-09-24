@@ -10,7 +10,7 @@ export default function ClientPage({
 	return (
 		<Suspense
 			fallback={
-				<div className="text-muted-foreground w-max mx-auto flex items-center gap-2 text-xl">
+				<div className="mx-auto flex w-max items-center gap-2 text-xl text-muted-foreground">
 					Loading
 					<Spinner />
 				</div>
