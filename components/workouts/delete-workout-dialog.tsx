@@ -19,13 +19,16 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import clsx from "clsx";
 
 export function DeleteWorkoutDialog({
 	clientId,
 	workoutId,
+	className,
 }: {
 	clientId: string;
 	workoutId: string;
+	className: string;
 }) {
 	const router = useRouter();
 
@@ -53,7 +56,12 @@ export function DeleteWorkoutDialog({
 	return (
 		<AlertDialog open={open} onOpenChange={setOpen}>
 			<AlertDialogTrigger asChild>
-				<Button className="bg-white rounded-lg text-foreground border border-foreground/10 hover:bg-background">
+				<Button
+					className={clsx(
+						"rounded-lg border border-foreground/10 bg-white text-foreground hover:bg-background",
+						className,
+					)}
+				>
 					<Trash2 className="mr-1 size-4 text-red-500" />
 					<span>Delete</span>
 				</Button>
@@ -61,7 +69,7 @@ export function DeleteWorkoutDialog({
 
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle className="text-center w-full">
+					<AlertDialogTitle className="w-full text-center">
 						Delete this workout?
 					</AlertDialogTitle>
 
@@ -73,7 +81,7 @@ export function DeleteWorkoutDialog({
 
 				<AlertDialogFooter className="mt-3 flex flex-row">
 					<AlertDialogCancel
-						className="w-full hover:bg-foreground/10 rounded-lg py-5"
+						className="w-full rounded-lg py-5 hover:bg-foreground/10"
 						size="lg"
 						disabled={loading}
 					>

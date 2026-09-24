@@ -16,6 +16,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import clsx from "clsx";
 
 type ExerciseSet = {
 	reps: string;
@@ -49,9 +50,11 @@ type Workout = {
 export function EditWorkoutDialog({
 	workout,
 	clientId,
+	className = "",
 }: {
 	workout: Workout;
 	clientId: string;
+	className: string;
 }) {
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -186,13 +189,18 @@ export function EditWorkoutDialog({
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button className="bg-white rounded-lg text-foreground border border-foreground/10 hover:bg-background">
+				<Button
+					className={clsx(
+						"rounded-lg border border-foreground/10 bg-white text-foreground hover:bg-background",
+						className,
+					)}
+				>
 					<Pencil className="mr-1 size-4" />
 					Edit
 				</Button>
 			</DialogTrigger>
 
-			<DialogContent className="top-[50%] h-[90dvh] max-w-[97dvw] bg-white flex flex-col overflow-hidden p-3 md:p-5">
+			<DialogContent className="top-[50%] flex h-[90dvh] max-w-[97dvw] flex-col overflow-hidden bg-white p-3 md:p-5">
 				<DialogHeader className="shrink-0">
 					<DialogTitle className="text-xl font-bold">
 						Edit Workout
@@ -201,9 +209,9 @@ export function EditWorkoutDialog({
 
 				<form
 					onSubmit={handleSubmit}
-					className="mt-3 flex-1 min-h-0 flex flex-col gap-6"
+					className="mt-3 flex min-h-0 flex-1 flex-col gap-6"
 				>
-					<div className="flex-1 min-h-0 flex flex-col gap-6">
+					<div className="flex min-h-0 flex-1 flex-col gap-6">
 						{/* Workout details */}
 						<div className="shrink-0 space-y-6">
 							<div className="grid grid-cols-2 gap-2 md:gap-4">
@@ -211,7 +219,7 @@ export function EditWorkoutDialog({
 									name="title"
 									defaultValue={workout.title}
 									required
-									className="shadow-none rounded-lg font-semibold text-sm md:text-base"
+									className="rounded-lg text-sm font-semibold shadow-none md:text-base"
 								/>
 
 								<Input
@@ -219,7 +227,7 @@ export function EditWorkoutDialog({
 									type="date"
 									defaultValue={workout.date}
 									required
-									className="shadow-none rounded-lg font-semibold text-sm md:text-base"
+									className="rounded-lg text-sm font-semibold shadow-none md:text-base"
 								/>
 							</div>
 
@@ -227,11 +235,11 @@ export function EditWorkoutDialog({
 						</div>
 
 						{/* Scrollable exercises */}
-						<div className="flex-1 min-h-0 space-y-8 overflow-y-auto custom-scrollbar">
+						<div className="custom-scrollbar min-h-0 flex-1 space-y-8 overflow-y-auto">
 							{exercises.length !== 0 ? (
 								exercises.map((exercise, exerciseIndex) => (
 									<div key={exerciseIndex}>
-										<div className="flex justify-between items-center gap-2">
+										<div className="flex items-center justify-between gap-2">
 											<Input
 												placeholder="Exercise name"
 												value={exercise.name}
@@ -244,7 +252,7 @@ export function EditWorkoutDialog({
 												}
 												required
 												type="text"
-												className="shadow-none border-none sm:text-xl font-semibold focus-visible:ring-0 focus-visible:ring-offset-0 px-0 py-0"
+												className="border-none px-0 py-0 font-semibold shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 sm:text-xl"
 											/>
 
 											<Button
@@ -272,10 +280,10 @@ export function EditWorkoutDialog({
 													e.target.value,
 												)
 											}
-											className="border-none text-sm placeholder:text-muted-foreground/70 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 py-0 text-muted-foreground font-medium"
+											className="border-none px-0 py-0 text-sm font-medium text-muted-foreground shadow-none placeholder:text-muted-foreground/70 focus-visible:ring-0 focus-visible:ring-offset-0"
 										/>
 
-										<div className="grid grid-cols-10 mt-3 items-center gap-1 md:gap-2 text-[0.7rem] font-bold tracking-widest text-foreground/50">
+										<div className="mt-3 grid grid-cols-10 items-center gap-1 text-[0.7rem] font-bold tracking-widest text-foreground/50 md:gap-2">
 											<p className="text-center">SET</p>
 
 											<p className="col-span-4 text-center">
@@ -289,14 +297,14 @@ export function EditWorkoutDialog({
 											<div />
 										</div>
 
-										<div className="space-y-2 mt-3">
+										<div className="mt-3 space-y-2">
 											{exercise.sets.map(
 												(set, setIndex) => (
 													<div
 														key={setIndex}
 														className="grid grid-cols-10 items-center gap-1 md:gap-2"
 													>
-														<span className="text-sm whitespace-nowrap text-center font-bold text-muted-foreground">
+														<span className="whitespace-nowrap text-center text-sm font-bold text-muted-foreground">
 															{setIndex + 1}
 														</span>
 
@@ -304,7 +312,7 @@ export function EditWorkoutDialog({
 															type="number"
 															step="0.5"
 															placeholder="Weight"
-															className="col-span-4 shadow-none rounded-lg font-semibold text-center text-sm md:text-[1.05rem] md:placeholder:text-[0.85rem]"
+															className="col-span-4 rounded-lg text-center text-sm font-semibold shadow-none md:text-[1.05rem] md:placeholder:text-[0.85rem]"
 															value={set.weight}
 															onChange={(e) =>
 																updateSet(
@@ -320,7 +328,7 @@ export function EditWorkoutDialog({
 														<Input
 															type="number"
 															placeholder="Reps"
-															className="col-span-4 shadow-none rounded-lg font-semibold text-center text-sm md:text-[1.05rem] md:placeholder:text-[0.85rem]"
+															className="col-span-4 rounded-lg text-center text-sm font-semibold shadow-none md:text-[1.05rem] md:placeholder:text-[0.85rem]"
 															value={set.reps}
 															onChange={(e) =>
 																updateSet(
@@ -337,7 +345,7 @@ export function EditWorkoutDialog({
 															type="button"
 															variant="ghost"
 															size="icon"
-															className="hover:bg-slate-200 w-full"
+															className="w-full hover:bg-slate-200"
 															onClick={() =>
 																removeSet(
 																	exerciseIndex,
@@ -355,7 +363,7 @@ export function EditWorkoutDialog({
 										<Button
 											type="button"
 											variant="outline"
-											className="w-full mt-4 border-none shadow-none text-muted-foreground bg-background rounded-xl hover:bg-slate-200"
+											className="mt-4 w-full rounded-xl border-none bg-background text-muted-foreground shadow-none hover:bg-slate-200"
 											onClick={() =>
 												addSet(exerciseIndex)
 											}
@@ -372,22 +380,22 @@ export function EditWorkoutDialog({
 						</div>
 					</div>
 
-					<div className="grid grid-cols-2 gap-3 shrink-0">
+					<div className="grid shrink-0 grid-cols-2 gap-3">
 						<Button
 							type="button"
 							variant="outline"
 							onClick={addExercise}
 							disabled={loading}
-							className="w-full bg-white rounded-xl text-muted-foreground font-semibold shadow-lg shadow-muted-foreground/5 py-6 hover:bg-gray-50"
+							className="w-full rounded-xl bg-white py-6 font-semibold text-muted-foreground shadow-lg shadow-muted-foreground/5 hover:bg-gray-50"
 						>
-							<Plus className="md:mr-2 size-4" />
+							<Plus className="size-4 md:mr-2" />
 							Add exercise
 						</Button>
 
 						<Button
 							type="submit"
 							disabled={loading}
-							className="w-full rounded-xl font-semibold shadow-lg shadow-muted-foreground/5 py-6"
+							className="w-full rounded-xl py-6 font-semibold shadow-lg shadow-muted-foreground/5"
 						>
 							{loading ? (
 								<Spinner className="size-4" />

@@ -71,50 +71,52 @@ export default async function WorkoutDetails({
 
 	return (
 		<div className="space-y-8">
-			<div className="text-sm text-muted-foreground flex items-center gap-1">
-				<Link href="/dashboard" className="hover:text-black transition">
+			<div className="flex items-center gap-1 text-sm text-muted-foreground">
+				<Link href="/dashboard" className="transition hover:text-black">
 					Dashboard
 				</Link>
 				<ChevronRight className="text-foreground/30" size={16} />
 				<Link
 					href={`/dashboard/clients/${workout.client_id}`}
-					className="hover:text-black transition"
+					className="transition hover:text-black"
 				>
 					{client?.name}
 				</Link>
 				<ChevronRight className="text-foreground/30" size={16} />
-				<p className="text-foreground font-semibold">{workout.title}</p>
+				<p className="font-semibold text-foreground">{workout.title}</p>
 			</div>
 
-			<div className="flex justify-between items-start bg-white p-7 rounded-xl border border-foreground/10">
+			<div className="flex flex-col items-start justify-between gap-5 rounded-xl border border-foreground/10 bg-white p-7 sm:flex-row sm:gap-1">
 				<div className="space-y-3">
-					<h1 className="text-3xl font-bold flex items-center gap-4">
+					<h1 className="flex items-center gap-4 text-2xl font-bold sm:text-3xl">
 						<span>{workout.title}</span>
-						<span className="text-xs tracking-wider font-semibold text-accent rounded-xl px-3 py-1 bg-emerald-100">
+						<span className="rounded-xl bg-emerald-100 px-3 text-[0.6rem] font-semibold tracking-wider text-accent sm:py-1 sm:text-xs">
 							COMPLETED
 						</span>
 					</h1>
 
-					<p className="text-muted-foreground text-[0.9rem] flex items-center gap-2">
+					<p className="flex items-center gap-2 text-[0.8rem] text-muted-foreground sm:text-[0.9rem]">
 						<CalendarDays size={20} />
 						<span>{workoutDate}</span>
 					</p>
 				</div>
 
-				<div className="space-x-2">
+				<div className="flex w-full gap-2 sm:w-auto">
 					<EditWorkoutDialog
 						workout={workout}
 						clientId={workout.client_id}
+						className="w-full"
 					/>
 					<DeleteWorkoutDialog
 						clientId={workout.client_id}
 						workoutId={workoutId}
+						className="w-full"
 					/>
 				</div>
 			</div>
 
-			<h1 className="text-xl font-semibold flex items-center gap-2">
-				<ListChecksIcon className="text-accent" />
+			<h1 className="flex items-center gap-2 text-lg font-semibold sm:text-xl">
+				<ListChecksIcon className="size-6 text-accent sm:size-7" />
 				<span>Exercise Breakdown</span>
 			</h1>
 
@@ -128,13 +130,13 @@ export default async function WorkoutDetails({
 						return (
 							<div
 								key={exercise.id}
-								className="rounded-xl border bg-white overflow-hidden"
+								className="overflow-hidden rounded-xl border bg-white"
 							>
-								<h2 className="text-lg font-semibold p-7 border-b border-foreground/5 bg-[#fcfcfd]">
+								<h2 className="border-b border-foreground/5 bg-[#fcfcfd] p-4 font-semibold sm:p-7 sm:text-lg">
 									{exercise.name}
 								</h2>
 
-								<div className="grid grid-cols-4 text-[0.7rem] font-semibold tracking-wider text-foreground/50 px-7 py-3">
+								<div className="grid grid-cols-4 px-4 py-3 text-[0.6rem] font-semibold tracking-wider text-foreground/50 sm:px-7 sm:text-[0.7rem]">
 									<p>SET</p>
 									<p>WEIGHT</p>
 									<p>REPS</p>
@@ -146,7 +148,7 @@ export default async function WorkoutDetails({
 										<div
 											key={set.id}
 											className={clsx(
-												"grid grid-cols-4 text-base font-semibold px-7 py-3",
+												"grid grid-cols-4 px-4 py-3 text-sm font-semibold sm:px-7 sm:text-base",
 												set.set_number != 1 &&
 													"border-t border-foreground/5",
 												set.set_number % 2 == 0 &&
@@ -159,7 +161,7 @@ export default async function WorkoutDetails({
 
 											<p>{set.reps}</p>
 
-											<p className="italic text-muted-foreground font-normal">
+											<p className="font-normal italic text-muted-foreground">
 												{set.reps * set.weight} kg
 											</p>
 										</div>
@@ -167,12 +169,12 @@ export default async function WorkoutDetails({
 								</div>
 
 								{exercise.notes && (
-									<p className="text-sm font-normal tracking-wide px-7 py-4 border-t border-foreground/5 flex items-center">
+									<p className="flex items-center border-t border-foreground/5 px-4 py-4 text-xs font-normal tracking-wide sm:px-7 sm:text-sm">
 										<MessageCircleMore
 											size={18}
 											className="mr-2 text-muted-foreground"
 										/>
-										<span className="font-bold mr-1">
+										<span className="mr-1 font-bold">
 											Notes:
 										</span>{" "}
 										{exercise.notes}
