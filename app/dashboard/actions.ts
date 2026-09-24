@@ -134,6 +134,7 @@ export async function addWorkout(
 	clientId: string,
 	formData: FormData,
 	exercises: ExerciseInput[],
+	duration: number,
 ) {
 	const supabase = await createClient();
 
@@ -165,6 +166,7 @@ export async function addWorkout(
 			client_id: clientId,
 			title,
 			date,
+			duration_seconds: duration,
 		})
 		.select()
 		.single();

@@ -8,6 +8,7 @@ import {
 	CalendarDays,
 	ListChecksIcon,
 	MessageCircleMore,
+	Clock,
 } from "lucide-react";
 import clsx from "clsx";
 
@@ -30,6 +31,7 @@ export default async function WorkoutDetails({
       title,
       date,
       client_id,
+	  duration_seconds,
       workout_exercises (
         id,
         name,
@@ -69,9 +71,26 @@ export default async function WorkoutDetails({
 		timeZone: "UTC",
 	}).format(new Date(`${workout.date}T00:00:00Z`));
 
+	function formatDuration(seconds: number) {
+		const hours = Math.floor(seconds / 3600);
+		const minutes = Math.floor((seconds % 3600) / 60);
+		const secs = seconds % 60;
+
+		if (hours > 0) {
+			return `${String(hours).padStart(2, "0")}:${String(
+				minutes,
+			).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+		}
+
+		return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(
+			2,
+			"0",
+		)}`;
+	}
+
 	return (
 		<div className="space-y-8">
-			<div className="flex items-center gap-1 text-sm text-muted-foreground">
+			<div className="mt-2 flex items-center gap-1 text-sm text-muted-foreground">
 				<Link href="/dashboard" className="transition hover:text-black">
 					Dashboard
 				</Link>
@@ -86,19 +105,28 @@ export default async function WorkoutDetails({
 				<p className="font-semibold text-foreground">{workout.title}</p>
 			</div>
 
-			<div className="flex flex-col items-start justify-between gap-5 rounded-xl border border-foreground/10 bg-white p-7 sm:flex-row sm:gap-1">
+			<div className="flex flex-col items-start justify-between gap-5 rounded-xl border border-foreground/10 bg-white p-5 sm:flex-row sm:gap-1 sm:p-7">
 				<div className="space-y-3">
-					<h1 className="flex items-center gap-4 text-2xl font-bold sm:text-3xl">
+					<h1 className="flex items-center gap-4 text-xl font-bold sm:text-3xl">
 						<span>{workout.title}</span>
-						<span className="rounded-xl bg-emerald-100 px-3 text-[0.6rem] font-semibold tracking-wider text-accent sm:py-1 sm:text-xs">
+						<span className="rounded-xl bg-emerald-100 px-3 text-[0.7rem] font-semibold tracking-wider text-accent sm:py-1 sm:text-xs">
 							COMPLETED
 						</span>
 					</h1>
 
-					<p className="flex items-center gap-2 text-[0.8rem] text-muted-foreground sm:text-[0.9rem]">
-						<CalendarDays size={20} />
-						<span>{workoutDate}</span>
-					</p>
+					<div className="flex items-center gap-4">
+						<p className="flex items-center gap-2 text-[0.8rem] text-muted-foreground sm:text-[0.9rem]">
+							<CalendarDays size={20} />
+							<span>{workoutDate}</span>
+						</p>
+
+						<p className="flex items-center gap-2 text-[0.8rem] text-muted-foreground sm:text-[0.9rem]">
+							<Clock size={20} />
+							<span>
+								{formatDuration(workout.duration_seconds)}
+							</span>
+						</p>
+					</div>
 				</div>
 
 				<div className="flex w-full gap-2 sm:w-auto">
@@ -132,7 +160,7 @@ export default async function WorkoutDetails({
 								key={exercise.id}
 								className="overflow-hidden rounded-xl border bg-white"
 							>
-								<h2 className="border-b border-foreground/5 bg-[#fcfcfd] p-4 font-semibold sm:p-7 sm:text-lg">
+								<h2 className="border-b border-foreground/5 bg-[#fcfcfd] p-4 font-semibold sm:px-7 sm:py-5 sm:text-lg">
 									{exercise.name}
 								</h2>
 

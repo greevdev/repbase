@@ -1,15 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Plus, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
-
 import { addWorkout } from "@/app/dashboard/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
-
+import { Pause, Play, LucidePause } from "lucide-react";
 import {
 	Dialog,
 	DialogContent,
@@ -33,6 +32,47 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [exercises, setExercises] = useState<Exercise[]>([]);
+	const [duration, setDuration] = useState(0);
+	const [isRunning, setIsRunning] = useState(false);
+
+	useEffect(() => {
+		if (!open) {
+			setDuration(0);
+			setIsRunning(false);
+			return;
+		}
+
+		setIsRunning(true);
+	}, [open]);
+
+	useEffect(() => {
+		if (!isRunning) {
+			return;
+		}
+
+		const interval = setInterval(() => {
+			setDuration((prev) => prev + 1);
+		}, 1000);
+
+		return () => clearInterval(interval);
+	}, [isRunning]);
+
+	function formatDuration(seconds: number) {
+		const hours = Math.floor(seconds / 3600);
+		const minutes = Math.floor((seconds % 3600) / 60);
+		const secs = seconds % 60;
+
+		if (hours > 0) {
+			return `${String(hours).padStart(2, "0")}:${String(
+				minutes,
+			).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+		}
+
+		return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(
+			2,
+			"0",
+		)}`;
+	}
 
 	function addExercise() {
 		setExercises([
@@ -140,7 +180,12 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 		const formData = new FormData(event.currentTarget);
 
 		try {
-			const result = await addWorkout(clientId, formData, exercises);
+			const result = await addWorkout(
+				clientId,
+				formData,
+				exercises,
+				duration,
+			);
 
 			if (result.success) {
 				setOpen(false);
@@ -156,53 +201,134 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 
 	const today = new Date().toLocaleDateString("en-CA");
 
+	const totalSets = exercises.reduce(
+		(total, exercise) => total + exercise.sets.length,
+		0,
+	);
+
+	const totalVolume = exercises.reduce((workoutTotal, exercise) => {
+		const exerciseVolume = exercise.sets.reduce((setTotal, set) => {
+			const reps = Number(set.reps) || 0;
+			const weight = Number(set.weight) || 0;
+
+			return setTotal + reps * weight;
+		}, 0);
+
+		return workoutTotal + exerciseVolume;
+	}, 0);
+
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button className="bg-accent hover:bg-accentDark md:py-5 rounded-lg">
+				<Button className="rounded-lg bg-accent hover:bg-accentDark md:py-5">
 					<Plus className="mr-1 size-4" />
 					Log Workout
 				</Button>
 			</DialogTrigger>
 
-			<DialogContent className="top-[50%] h-[90dvh] max-w-[97dvw] bg-white flex flex-col overflow-hidden p-3 md:p-5">
+			<DialogContent className="top-[50%] flex h-[90dvh] max-w-[97dvw] flex-col overflow-hidden bg-white p-3 md:p-5">
 				<DialogHeader className="shrink-0">
 					<DialogTitle className="text-xl font-bold">
-						Log Workout
+						{/* <span>Log Workout</span> */}
 					</DialogTitle>
 				</DialogHeader>
 
 				<form
 					onSubmit={handleSubmit}
-					className="mt-3 flex-1 min-h-0 flex flex-col gap-6"
+					className="flex min-h-0 flex-1 flex-col gap-6"
 				>
-					<div className="flex-1 min-h-0 flex flex-col gap-6">
-						<div className="shrink-0 space-y-6">
-							<div className="grid grid-cols-2 gap-2 md:gap-4">
-								<Input
-									name="title"
-									placeholder="Workout title"
-									required
-									className="shadow-none rounded-lg font-semibold text-sm md:text-base"
-								/>
+					<div className="grid grid-cols-2 items-center gap-4">
+						<div className="flex flex-col gap-2">
+							<Input
+								name="title"
+								placeholder="Workout title"
+								required
+								className="rounded-lg text-sm font-semibold shadow-none md:text-base"
+							/>
 
-								<Input
-									name="date"
-									type="date"
-									defaultValue={today}
-									required
-									className="shadow-none rounded-lg font-semibold text-sm md:text-base"
-								/>
+							<Input
+								name="date"
+								type="date"
+								defaultValue={today}
+								required
+								className="rounded-lg text-sm font-semibold shadow-none md:text-base"
+							/>
+						</div>
+
+						<div>
+							<div className="mr-auto flex w-max items-center gap-3">
+								<div>
+									<p className="text-2xl font-bold tabular-nums">
+										{formatDuration(duration)}
+									</p>
+								</div>
+
+								<button
+									onClick={() =>
+										setIsRunning((prev) => !prev)
+									}
+									className="btn aspect-square border p-2 hover:bg-gray-100"
+									type="button"
+								>
+									{isRunning ? (
+										<>
+											<LucidePause
+												size={20}
+												strokeWidth={0}
+												fill="accent"
+												fillOpacity={0.5}
+											/>
+										</>
+									) : (
+										<>
+											<Play
+												size={20}
+												strokeWidth={0}
+												fill="accent"
+												fillOpacity={0.5}
+											/>
+										</>
+									)}
+								</button>
 							</div>
 
+							<div className="mt-3 flex items-center gap-6">
+								<div className="flex flex-col">
+									<p className="text-xs font-medium tracking-widest text-muted-foreground">
+										SETS
+									</p>
+
+									<p className="text-lg font-bold tabular-nums">
+										{totalSets}
+									</p>
+								</div>
+
+								<div className="flex flex-col">
+									<p className="text-xs font-medium tracking-widest text-muted-foreground">
+										TOTAL VOLUME
+									</p>
+
+									<p className="text-lg font-bold tabular-nums">
+										{totalVolume} kg
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div className="flex min-h-0 flex-1 flex-col gap-6">
+						<div className="shrink-0">
 							<Separator className="bg-gray-200" />
 						</div>
 
-						<div className="flex-1 min-h-0 space-y-8 overflow-y-auto custom-scrollbar">
+						<div className="custom-scrollbar min-h-0 flex-1 space-y-8 overflow-y-auto">
 							{exercises.length !== 0 ? (
 								exercises.map((exercise, exerciseIndex) => (
-									<div key={exerciseIndex}>
-										<div className="flex justify-between items-center gap-2">
+									<div
+										key={exerciseIndex}
+										className="rounded-xl border border-gray-200 p-4"
+									>
+										<div className="flex items-center justify-between gap-2">
 											<Input
 												placeholder="Exercise name"
 												value={exercise.name}
@@ -215,7 +341,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 												}
 												required
 												type="text"
-												className="shadow-none border-none sm:text-xl font-semibold focus-visible:ring-0 focus-visible:ring-offset-0 px-0 py-0"
+												className="border-none px-0 py-0 font-semibold shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 sm:text-xl md:text-xl"
 											/>
 
 											<Button
@@ -243,10 +369,10 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 													e.target.value,
 												)
 											}
-											className="border-none text-sm shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 py-0 placeholder:text-muted-foreground/70 text-muted-foreground font-medium"
+											className="border-none px-0 py-0 text-sm font-medium text-muted-foreground shadow-none placeholder:text-muted-foreground/70 focus-visible:ring-0 focus-visible:ring-offset-0"
 										/>
 
-										<div className="grid grid-cols-10 mt-3 items-center gap-1 md:gap-2 text-[0.7rem] font-bold tracking-widest text-foreground/50">
+										<div className="mt-3 grid grid-cols-10 items-center gap-1 text-[0.7rem] font-bold tracking-widest text-foreground/50 md:gap-2">
 											<p className="text-center">SET</p>
 
 											<p className="col-span-4 text-center">
@@ -260,14 +386,14 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 											<div />
 										</div>
 
-										<div className="space-y-2 mt-3">
+										<div className="mt-3 space-y-2">
 											{exercise.sets.map(
 												(set, setIndex) => (
 													<div
 														key={setIndex}
-														className="grid grid-cols-10 items-center gap-1 md:gap-2 overflow-hidden"
+														className="grid grid-cols-10 items-center gap-1 overflow-hidden md:gap-2"
 													>
-														<span className="text-sm whitespace-nowrap text-center font-bold text-muted-foreground">
+														<span className="whitespace-nowrap text-center text-sm font-bold text-muted-foreground">
 															{setIndex + 1}
 														</span>
 
@@ -275,7 +401,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 															type="number"
 															step="0.5"
 															placeholder="Weight"
-															className="col-span-4 shadow-none rounded-lg text-sm font-semibold text-center md:text-[1.05rem] md:placeholder:text-[0.85rem]"
+															className="col-span-4 rounded-lg text-center text-sm font-semibold shadow-none focus-visible:ring-0 md:text-[1.05rem] md:placeholder:text-[0.85rem]"
 															value={set.weight}
 															onChange={(e) =>
 																updateSet(
@@ -291,7 +417,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 														<Input
 															type="number"
 															placeholder="Reps"
-															className="col-span-4 shadow-none rounded-lg text-sm font-semibold text-center md:text-[1.05rem] md:placeholder:text-[0.85rem]"
+															className="col-span-4 rounded-lg text-center text-sm font-semibold shadow-none focus-visible:ring-0 md:text-[1.05rem] md:placeholder:text-[0.85rem]"
 															value={set.reps}
 															onChange={(e) =>
 																updateSet(
@@ -308,7 +434,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 															type="button"
 															variant="ghost"
 															size="icon"
-															className="hover:bg-slate-200 w-full"
+															className="w-full hover:bg-slate-200"
 															onClick={() =>
 																removeSet(
 																	exerciseIndex,
@@ -326,7 +452,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 										<Button
 											type="button"
 											variant="outline"
-											className="w-full mt-4 border-none shadow-none text-muted-foreground bg-background rounded-xl hover:bg-slate-200"
+											className="mt-4 w-full rounded-xl border-none bg-background text-muted-foreground shadow-none hover:bg-slate-200"
 											onClick={() =>
 												addSet(exerciseIndex)
 											}
@@ -343,21 +469,21 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 						</div>
 					</div>
 
-					<div className="grid grid-cols-2 gap-3 shrink-0">
+					<div className="grid shrink-0 grid-cols-2 gap-3">
 						<Button
 							type="button"
 							variant="outline"
 							onClick={addExercise}
-							className="w-full bg-white rounded-xl text-muted-foreground font-semibold shadow-lg shadow-muted-foreground/5 py-6 hover:bg-gray-50"
+							className="w-full rounded-xl bg-white py-6 font-semibold text-muted-foreground shadow-lg shadow-muted-foreground/5 hover:bg-gray-50"
 						>
-							<Plus className="md:mr-2 size-4" />
+							<Plus className="size-4 md:mr-2" />
 							Add exercise
 						</Button>
 
 						<Button
 							type="submit"
 							disabled={loading}
-							className="w-full rounded-xl font-semibold shadow-lg shadow-muted-foreground/5 py-6"
+							className="w-full rounded-xl py-6 font-semibold shadow-lg shadow-muted-foreground/5"
 						>
 							{loading ? (
 								<>
