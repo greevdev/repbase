@@ -8,16 +8,12 @@ export default function Greeting() {
 	useEffect(() => {
 		const hour = new Date().getHours();
 
-		if (hour < 4) {
-			setGreeting("Good Night");
-		} else if (hour < 12) {
+		if (hour < 12) {
 			setGreeting("Good Morning");
 		} else if (hour < 18) {
 			setGreeting("Good Afternoon");
-		} else if (hour < 22) {
-			setGreeting("Good Evening");
 		} else {
-			setGreeting("Good Night");
+			setGreeting("Good Evening");
 		}
 	}, []);
 

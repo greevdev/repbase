@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Plus, Trash2, X } from "lucide-react";
+import { Dumbbell, Plus, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { addWorkout } from "@/app/dashboard/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
-import { Pause, Play, LucidePause } from "lucide-react";
+import { Play, LucidePause } from "lucide-react";
 import {
 	Dialog,
 	DialogContent,
@@ -16,6 +16,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import { ExerciseSelector } from "./exercise-selector";
 
 type ExerciseSet = {
 	reps: string;
@@ -26,6 +27,7 @@ type Exercise = {
 	name: string;
 	notes: string;
 	sets: ExerciseSet[];
+	isCustom: boolean;
 };
 
 export function AddWorkoutDialog({ clientId }: { clientId: string }) {
@@ -80,6 +82,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 			{
 				name: "",
 				notes: "",
+				isCustom: false,
 				sets: [
 					{
 						reps: "",
@@ -169,6 +172,34 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 					),
 				};
 			}),
+		);
+	}
+
+	function setExerciseCustom(index: number) {
+		setExercises(
+			exercises.map((exercise, i) =>
+				i === index
+					? {
+							...exercise,
+							name: "",
+							isCustom: true,
+						}
+					: exercise,
+			),
+		);
+	}
+
+	function setExercisePredefined(index: number) {
+		setExercises(
+			exercises.map((exercise, i) =>
+				i === index
+					? {
+							...exercise,
+							name: "",
+							isCustom: false,
+						}
+					: exercise,
+			),
 		);
 	}
 
@@ -329,20 +360,53 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 										className="rounded-xl border border-gray-200 p-4"
 									>
 										<div className="flex items-center justify-between gap-2">
-											<Input
-												placeholder="Exercise name"
-												value={exercise.name}
-												onChange={(e) =>
-													updateExercise(
-														exerciseIndex,
-														"name",
-														e.target.value,
-													)
-												}
-												required
-												type="text"
-												className="border-none px-0 py-0 font-semibold shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 sm:text-xl md:text-xl"
-											/>
+											{exercise.isCustom ? (
+												<div className="flex flex-1 items-center gap-2">
+													<Input
+														placeholder="Custom exercise name"
+														value={exercise.name}
+														onChange={(e) =>
+															updateExercise(
+																exerciseIndex,
+																"name",
+																e.target.value,
+															)
+														}
+														required
+														className="h-auto border-none px-0 py-0 font-semibold shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 sm:text-xl md:text-xl"
+													/>
+
+													<Button
+														type="button"
+														variant="outline"
+														size="icon"
+														className="aspect-square bg-white shadow-none hover:bg-slate-200"
+														onClick={() =>
+															setExercisePredefined(
+																exerciseIndex,
+															)
+														}
+													>
+														<Dumbbell />
+													</Button>
+												</div>
+											) : (
+												<ExerciseSelector
+													value={exercise.name}
+													onSelect={(name) =>
+														updateExercise(
+															exerciseIndex,
+															"name",
+															name,
+														)
+													}
+													onCustom={() =>
+														setExerciseCustom(
+															exerciseIndex,
+														)
+													}
+												/>
+											)}
 
 											<Button
 												type="button"

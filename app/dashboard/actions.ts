@@ -10,6 +10,7 @@ type ExerciseInput = {
 		reps: string;
 		weight: string;
 	}[];
+	isCustom: boolean;
 };
 
 export async function addClient(formData: FormData) {
