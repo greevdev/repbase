@@ -1,7 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Dumbbell, Plus, Trash2, X } from "lucide-react";
+import {
+	ChartColumnBig,
+	ChartColumnIncreasing,
+	ChartColumnIncreasingIcon,
+	Dumbbell,
+	Layers,
+	Plus,
+	Trash2,
+	X,
+} from "lucide-react";
 import { toast } from "sonner";
 import { addWorkout } from "@/app/dashboard/actions";
 import { Button } from "@/components/ui/button";
@@ -257,39 +266,49 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 				</Button>
 			</DialogTrigger>
 
-			<DialogContent className="top-[50%] flex h-[90dvh] max-w-[97dvw] flex-col overflow-hidden bg-white p-3 md:p-5">
+			<DialogContent className="top-[50%] flex h-[100dvh] max-w-[100dvw] flex-col overflow-hidden rounded-none bg-white p-3 sm:h-[90dvh] sm:max-w-lg sm:rounded-xl md:p-5">
 				<DialogHeader className="shrink-0">
-					<DialogTitle className="text-xl font-bold">
-						{/* <span>Log Workout</span> */}
+					<DialogTitle className="text-start text-xl font-bold">
+						<span>Log Workout</span>
 					</DialogTitle>
 				</DialogHeader>
 
 				<form
 					onSubmit={handleSubmit}
-					className="flex min-h-0 flex-1 flex-col gap-6"
+					className="flex min-h-0 flex-1 flex-col gap-2"
 				>
-					<div className="grid grid-cols-2 items-center gap-4">
-						<div className="flex flex-col gap-2">
-							<Input
-								name="title"
-								placeholder="Workout title"
-								required
-								className="rounded-lg text-sm font-semibold shadow-none md:text-base"
-							/>
+					<div className="flex flex-col gap-2">
+						<div className="flex gap-4">
+							<div className="flex w-full flex-col gap-1">
+								<p className="text-sm font-medium text-muted-foreground">
+									Workout Title
+								</p>
+								<Input
+									name="title"
+									placeholder="e.g. Upper Body"
+									required
+									className="w-full rounded-lg text-sm font-semibold shadow-none placeholder:font-medium placeholder:text-gray-400 md:text-base"
+								/>
+							</div>
 
-							<Input
-								name="date"
-								type="date"
-								defaultValue={today}
-								required
-								className="rounded-lg text-sm font-semibold shadow-none md:text-base"
-							/>
+							<div className="flex w-full flex-col gap-1">
+								<p className="text-sm font-medium text-muted-foreground">
+									Date
+								</p>
+								<Input
+									name="date"
+									type="date"
+									defaultValue={today}
+									required
+									className="w-full rounded-lg text-sm font-semibold shadow-none md:text-base"
+								/>
+							</div>
 						</div>
 
-						<div>
+						<div className="flex items-center gap-3 rounded-xl bg-gray-100/70 px-4 py-4 sm:px-8">
 							<div className="mr-auto flex w-max items-center gap-3">
 								<div>
-									<p className="text-2xl font-bold tabular-nums">
+									<p className="text-xl font-bold tabular-nums sm:text-3xl">
 										{formatDuration(duration)}
 									</p>
 								</div>
@@ -298,66 +317,97 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 									onClick={() =>
 										setIsRunning((prev) => !prev)
 									}
-									className="btn aspect-square border p-2 hover:bg-gray-100"
+									className="btn aspect-square bg-gray-200/70 p-2 hover:bg-gray-200"
 									type="button"
 								>
 									{isRunning ? (
 										<>
 											<LucidePause
+												className="hidden sm:block"
 												size={20}
 												strokeWidth={0}
-												fill="accent"
-												fillOpacity={0.5}
+												fill="#000"
+											/>
+											<LucidePause
+												className="sm:hidden"
+												size={16}
+												strokeWidth={0}
+												fill="#000"
 											/>
 										</>
 									) : (
 										<>
 											<Play
-												size={20}
+												className="hidden sm:block"
+												size={16}
 												strokeWidth={0}
-												fill="accent"
-												fillOpacity={0.5}
+												fill="#000"
+											/>
+											<Play
+												className="sm:hidden"
+												size={16}
+												strokeWidth={0}
+												fill="#000"
 											/>
 										</>
 									)}
 								</button>
 							</div>
 
-							<div className="mt-3 flex items-center gap-6">
-								<div className="flex flex-col">
-									<p className="text-xs font-medium tracking-widest text-muted-foreground">
-										SETS
-									</p>
+							<div className="flex items-center gap-4 sm:gap-8">
+								<div className="flex items-center gap-3 sm:gap-4">
+									<Layers
+										className="hidden sm:block"
+										size={24}
+									/>
+									<Layers className="sm:hidden" size={20} />
 
-									<p className="text-lg font-bold tabular-nums">
-										{totalSets}
-									</p>
+									<div className="flex flex-col">
+										<p className="text-[0.65rem] font-medium tracking-widest text-muted-foreground">
+											SETS
+										</p>
+
+										<p className="text-base font-bold tabular-nums sm:text-lg">
+											{totalSets}
+										</p>
+									</div>
 								</div>
 
-								<div className="flex flex-col">
-									<p className="text-xs font-medium tracking-widest text-muted-foreground">
-										TOTAL VOLUME
-									</p>
+								<div className="flex items-center gap-3 sm:gap-4">
+									<ChartColumnBig
+										className="hidden sm:block"
+										size={24}
+									/>
+									<ChartColumnBig
+										className="sm:hidden"
+										size={20}
+									/>
 
-									<p className="text-lg font-bold tabular-nums">
-										{totalVolume} kg
-									</p>
+									<div className="flex flex-col">
+										<p className="text-[0.65rem] font-medium tracking-widest text-muted-foreground">
+											TOTAL VOLUME
+										</p>
+
+										<p className="text-base font-bold tabular-nums sm:text-lg">
+											{totalVolume} kg
+										</p>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<div className="flex min-h-0 flex-1 flex-col gap-6">
+					<div className="flex min-h-0 flex-1 flex-col gap-2">
 						<div className="shrink-0">
 							<Separator className="bg-gray-200" />
 						</div>
 
-						<div className="custom-scrollbar min-h-0 flex-1 space-y-8 overflow-y-auto">
+						<div className="custom-scrollbar min-h-0 flex-1 space-y-4 overflow-y-auto">
 							{exercises.length !== 0 ? (
 								exercises.map((exercise, exerciseIndex) => (
 									<div
 										key={exerciseIndex}
-										className="rounded-xl border border-gray-200 p-4"
+										className="rounded-xl border border-gray-200 px-4 py-2 sm:p-4"
 									>
 										<div className="flex items-center justify-between gap-2">
 											{exercise.isCustom ? (
