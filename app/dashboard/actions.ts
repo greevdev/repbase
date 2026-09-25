@@ -136,6 +136,8 @@ export async function addWorkout(
 	formData: FormData,
 	exercises: ExerciseInput[],
 	duration: number,
+	totalSets: number,
+	totalVolume: number,
 ) {
 	const supabase = await createClient();
 
@@ -168,6 +170,8 @@ export async function addWorkout(
 			title,
 			date,
 			duration_seconds: duration,
+			volume: totalVolume,
+			sets: totalSets,
 		})
 		.select()
 		.single();
@@ -241,6 +245,8 @@ export async function editWorkout(
 	clientId: string,
 	formData: FormData,
 	exercises: ExerciseInput[],
+	totalVolume: number,
+	totalSets: number,
 ) {
 	const supabase = await createClient();
 
@@ -261,6 +267,8 @@ export async function editWorkout(
 		.update({
 			title,
 			date,
+			sets: totalSets,
+			volume: totalVolume,
 		})
 		.eq("id", workoutId);
 

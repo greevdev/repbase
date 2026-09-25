@@ -58,7 +58,7 @@ export function DeleteWorkoutDialog({
 			<AlertDialogTrigger asChild>
 				<Button
 					className={clsx(
-						"rounded-lg border border-foreground/10 bg-white text-foreground hover:bg-background",
+						"w-full rounded-lg border border-foreground/10 bg-white text-foreground hover:bg-background sm:w-auto",
 						className,
 					)}
 				>

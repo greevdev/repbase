@@ -212,35 +212,6 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 		);
 	}
 
-	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-		event.preventDefault();
-
-		setLoading(true);
-
-		const formData = new FormData(event.currentTarget);
-
-		try {
-			const result = await addWorkout(
-				clientId,
-				formData,
-				exercises,
-				duration,
-			);
-
-			if (result.success) {
-				setOpen(false);
-				setExercises([]);
-				toast.success("Workout saved");
-			} else {
-				toast.error(result.error ?? "Failed to save workout");
-			}
-		} finally {
-			setLoading(false);
-		}
-	}
-
-	const today = new Date().toLocaleDateString("en-CA");
-
 	const totalSets = exercises.reduce(
 		(total, exercise) => total + exercise.sets.length,
 		0,
@@ -256,6 +227,37 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 
 		return workoutTotal + exerciseVolume;
 	}, 0);
+
+	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+		event.preventDefault();
+
+		setLoading(true);
+
+		const formData = new FormData(event.currentTarget);
+
+		try {
+			const result = await addWorkout(
+				clientId,
+				formData,
+				exercises,
+				duration,
+				totalSets,
+				totalVolume,
+			);
+
+			if (result.success) {
+				setOpen(false);
+				setExercises([]);
+				toast.success("Workout saved");
+			} else {
+				toast.error(result.error ?? "Failed to save workout");
+			}
+		} finally {
+			setLoading(false);
+		}
+	}
+
+	const today = new Date().toLocaleDateString("en-CA");
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>

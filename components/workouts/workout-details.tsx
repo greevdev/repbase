@@ -32,6 +32,8 @@ export default async function WorkoutDetails({
       date,
       client_id,
 	  duration_seconds,
+	  volume,
+	  sets,
       workout_exercises (
         id,
         name,
@@ -120,7 +122,7 @@ export default async function WorkoutDetails({
 							<span>{workoutDate}</span>
 						</p>
 
-						<p className="flex items-center gap-2 text-[0.8rem] text-muted-foreground sm:text-[0.9rem]">
+						<p className="flex items-center gap-1 text-[0.8rem] text-muted-foreground sm:text-[0.9rem]">
 							<Clock size={20} />
 							<span>
 								{formatDuration(workout.duration_seconds)}
@@ -129,17 +131,39 @@ export default async function WorkoutDetails({
 					</div>
 				</div>
 
-				<div className="flex w-full gap-2 sm:w-auto">
-					<EditWorkoutDialog
-						workout={workout}
-						clientId={workout.client_id}
-						className="w-full"
-					/>
-					<DeleteWorkoutDialog
-						clientId={workout.client_id}
-						workoutId={workoutId}
-						className="w-full"
-					/>
+				<div className="flex w-full flex-col gap-4 sm:w-auto sm:gap-8 lg:flex-row xl:gap-14">
+					<div className="flex items-start gap-6 xl:gap-10">
+						<div className="flex flex-col items-center gap-1">
+							<p className="whitespace-nowrap text-xs font-semibold tracking-wider text-gray-400 sm:text-sm">
+								TOTAL VOLUME
+							</p>
+							<p className="text-lg font-bold sm:text-2xl">
+								{workout.volume} kg
+							</p>
+						</div>
+
+						<div className="flex flex-col items-center gap-1">
+							<p className="text-xs font-semibold tracking-wider text-gray-400 sm:text-sm">
+								SETS
+							</p>
+							<p className="text-lg font-bold sm:text-2xl">
+								{workout.sets}
+							</p>
+						</div>
+					</div>
+
+					<div className="flex w-full gap-2">
+						<EditWorkoutDialog
+							workout={workout}
+							clientId={workout.client_id}
+							className="w-full"
+						/>
+						<DeleteWorkoutDialog
+							clientId={workout.client_id}
+							workoutId={workoutId}
+							className="w-full"
+						/>
+					</div>
 				</div>
 			</div>
 

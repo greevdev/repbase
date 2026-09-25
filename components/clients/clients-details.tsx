@@ -1,7 +1,5 @@
-import { AddClientDialog } from "@/components/clients/add-client-dialog";
 import { createClient } from "@/lib/server";
 import { ClientsGrid } from "./clients-grid";
-import { Users2 } from "lucide-react";
 
 export default async function ClientsDetails() {
 	const supabase = await createClient();

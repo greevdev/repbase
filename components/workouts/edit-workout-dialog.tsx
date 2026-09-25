@@ -202,6 +202,22 @@ export function EditWorkoutDialog({
 		);
 	}
 
+	const totalSets = exercises.reduce(
+		(total, exercise) => total + exercise.sets.length,
+		0,
+	);
+
+	const totalVolume = exercises.reduce((workoutTotal, exercise) => {
+		const exerciseVolume = exercise.sets.reduce((setTotal, set) => {
+			const reps = Number(set.reps) || 0;
+			const weight = Number(set.weight) || 0;
+
+			return setTotal + reps * weight;
+		}, 0);
+
+		return workoutTotal + exerciseVolume;
+	}, 0);
+
 	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 		setLoading(true);
@@ -214,6 +230,8 @@ export function EditWorkoutDialog({
 				clientId,
 				formData,
 				exercises,
+				totalVolume,
+				totalSets,
 			);
 
 			if (result.success) {
@@ -232,7 +250,7 @@ export function EditWorkoutDialog({
 			<DialogTrigger asChild>
 				<Button
 					className={clsx(
-						"rounded-lg border border-foreground/10 bg-white text-foreground hover:bg-background",
+						"w-full rounded-lg border border-foreground/10 bg-white text-foreground hover:bg-background sm:w-auto",
 						className,
 					)}
 				>
