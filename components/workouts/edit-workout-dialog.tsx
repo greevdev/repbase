@@ -35,11 +35,14 @@ type Workout = {
 	id: string;
 	title: string;
 	date: string;
+	client_id: string;
+	duration_seconds: number;
+	volume: number;
+	sets: number;
 	workout_exercises: {
 		id: string;
 		name: string;
 		notes: string | null;
-		isCustom: boolean | false;
 		position: number;
 		exercise_sets: {
 			id: string;
