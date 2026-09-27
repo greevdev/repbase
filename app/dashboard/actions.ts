@@ -237,6 +237,7 @@ export async function addWorkout(
 
 	return {
 		success: true,
+		workoutId: workout.id,
 	};
 }
 

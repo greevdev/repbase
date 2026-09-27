@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import {
 	ChartColumnBig,
-	ChartColumnIncreasing,
-	ChartColumnIncreasingIcon,
 	Dumbbell,
 	Layers,
 	Plus,
@@ -26,6 +24,7 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { ExerciseSelector } from "./exercise-selector";
+import { useRouter } from "next/navigation";
 
 type ExerciseSet = {
 	reps: string;
@@ -40,6 +39,7 @@ type Exercise = {
 };
 
 export function AddWorkoutDialog({ clientId }: { clientId: string }) {
+	const router = useRouter();
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [exercises, setExercises] = useState<Exercise[]>([]);
@@ -248,6 +248,9 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 			if (result.success) {
 				setOpen(false);
 				setExercises([]);
+				router.push(
+					`/dashboard/clients/${clientId}/workouts/${result.workoutId}`,
+				);
 				toast.success("Workout saved");
 			} else {
 				toast.error(result.error ?? "Failed to save workout");
@@ -289,7 +292,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 									name="title"
 									placeholder="e.g. Upper Body"
 									required
-									className="w-full rounded-lg text-sm font-semibold shadow-none placeholder:font-medium placeholder:text-gray-400 md:text-base"
+									className="h-max w-full rounded-lg text-base font-semibold shadow-none placeholder:font-medium placeholder:text-gray-400"
 								/>
 							</div>
 
@@ -302,7 +305,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 									type="date"
 									defaultValue={today}
 									required
-									className="w-full rounded-lg text-sm font-semibold shadow-none md:text-base"
+									className="h-max w-full rounded-lg text-base font-semibold shadow-none"
 								/>
 							</div>
 						</div>
@@ -517,8 +520,9 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 															type="number"
 															step="0.5"
 															placeholder="Weight"
-															className="col-span-4 rounded-lg text-center text-sm font-semibold shadow-none focus-visible:ring-0 md:text-[1.05rem] md:placeholder:text-[0.85rem]"
+															className="col-span-4 rounded-lg text-center text-base font-semibold shadow-none focus-visible:ring-0 md:text-[1.05rem] md:placeholder:text-[0.85rem]"
 															value={set.weight}
+															inputMode="decimal"
 															onChange={(e) =>
 																updateSet(
 																	exerciseIndex,
@@ -533,7 +537,8 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 														<Input
 															type="number"
 															placeholder="Reps"
-															className="col-span-4 rounded-lg text-center text-sm font-semibold shadow-none focus-visible:ring-0 md:text-[1.05rem] md:placeholder:text-[0.85rem]"
+															className="col-span-4 rounded-lg text-center text-base font-semibold shadow-none focus-visible:ring-0 md:text-[1.05rem] md:placeholder:text-[0.85rem]"
+															inputMode="numeric"
 															value={set.reps}
 															onChange={(e) =>
 																updateSet(

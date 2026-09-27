@@ -11,39 +11,38 @@ import { Suspense } from "react";
 
 export default function DashboardPage() {
 	return (
-		<div className="space-y-6 md:space-y-8 pb-10">
+		<div className="space-y-6 pb-10 md:space-y-8">
 			<Suspense
 				fallback={
-					<div className="text-muted-foreground w-max mx-auto flex items-center gap-2 text-xl">
-						Loading
+					<div className="mx-auto flex w-max items-center gap-2 text-xl text-muted-foreground">
 						<Spinner />
 					</div>
 				}
 			>
-				<div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 items-center">
+				<div className="grid grid-cols-2 items-center gap-2 md:gap-4 lg:grid-cols-4">
 					<div className="dashboard-card flex flex-col gap-3">
-						<h3 className="font-medium text-muted-foreground text-xs md:text-sm flex items-center gap-1">
+						<h3 className="flex items-center gap-1 text-xs font-medium text-muted-foreground md:text-sm">
 							<User size={20} />
 							<span>Active Clients</span>
 						</h3>
 
-						<div className="text-2xl md:text-3xl font-bold">
+						<div className="text-2xl font-bold md:text-3xl">
 							<ActiveClients />
-							<span className="text-[0.9rem] ml-2 font-medium text-accent">
+							<span className="ml-2 text-[0.9rem] font-medium text-accent">
 								Clients
 							</span>
 						</div>
 					</div>
 
 					<div className="dashboard-card flex flex-col gap-3">
-						<h3 className="font-medium text-muted-foreground text-xs md:text-sm flex items-center gap-1">
+						<h3 className="flex items-center gap-1 text-xs font-medium text-muted-foreground md:text-sm">
 							<DollarSign size={20} />
 							<span>Monthly Revenue</span>
 						</h3>
 
-						<div className="text-2xl md:text-3xl font-bold">
+						<div className="text-2xl font-bold md:text-3xl">
 							€<MonthlyRevenue />
-							<span className="text-[0.9rem] ml-1 font-medium text-accent">
+							<span className="ml-1 text-[0.9rem] font-medium text-accent">
 								/ month
 							</span>
 						</div>
@@ -57,21 +56,21 @@ export default function DashboardPage() {
 
 				<div className="space-y-4">
 					<div className="flex items-center justify-between md:gap-7">
-						<h3 className="font-semibold md:text-lg flex items-center gap-2">
+						<h3 className="flex items-center gap-2 font-semibold md:text-lg">
 							<Users2 className="text-accent" />
 							<span className="whitespace-nowrap">
 								Manage your clients
 							</span>
 						</h3>
 
-						<div className="h-px w-full bg-foreground/10 hidden md:block" />
+						<div className="hidden h-px w-full bg-foreground/10 md:block" />
 
 						<div className="flex items-center gap-3">
 							<Link
 								className="hidden sm:block"
 								href="/dashboard/clients"
 							>
-								<Button className="bg-white text-foreground hover:bg-gray-100 md:py-5 px-8 rounded-lg">
+								<Button className="rounded-lg bg-white px-8 text-foreground hover:bg-gray-100 md:py-5">
 									View All
 								</Button>
 							</Link>
@@ -83,7 +82,7 @@ export default function DashboardPage() {
 					<ClientsList />
 
 					<Link className="sm:hidden" href="/dashboard/clients">
-						<Button className="bg-white w-full mt-5 text-foreground hover:bg-gray-100 py-5 rounded-lg">
+						<Button className="mt-5 w-full rounded-lg bg-white py-5 text-foreground hover:bg-gray-100">
 							View All
 						</Button>
 					</Link>
