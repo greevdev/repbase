@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { PREDEFINED_EXERCISES } from "@/lib/exercises";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AddWorkoutDialog } from "@/components/workouts/add-workout-dialog";
+import WorkoutTemplateOptionsPopover from "./workout-template-options-popover";
 
 export async function WorkoutTemplates({ clientId }: { clientId: string }) {
 	const supabase = await createClient();
@@ -81,10 +82,15 @@ export async function WorkoutTemplates({ clientId }: { clientId: string }) {
 
 				return (
 					<Card key={template.id} className="shadow-none">
-						<CardHeader className="pb-2">
-							<CardTitle className="md:text-xl">
+						<CardHeader className="flex w-full flex-row items-start justify-between gap-3 pt-4">
+							<CardTitle className="mt-2 md:text-xl">
 								{template.title}
 							</CardTitle>
+
+							<WorkoutTemplateOptionsPopover
+								templateId={template.id}
+								clientId={clientId}
+							/>
 						</CardHeader>
 
 						<CardContent className="space-y-5">

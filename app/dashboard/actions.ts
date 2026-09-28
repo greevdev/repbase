@@ -451,3 +451,28 @@ export async function addWorkoutTemplate(
 		};
 	}
 }
+
+export async function deleteWorkoutTemplate(
+	templateId: string,
+	clientId: string,
+) {
+	const supabase = await createClient();
+
+	const { error } = await supabase
+		.from("workout_templates")
+		.delete()
+		.eq("id", templateId);
+
+	if (error) {
+		return {
+			success: false,
+			error: error.message,
+		};
+	}
+
+	revalidatePath(`/dashboard/clients/${clientId}`);
+
+	return {
+		success: true,
+	};
+}

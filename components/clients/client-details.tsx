@@ -142,7 +142,7 @@ export default async function ClientDetails({
 			<div>
 				<div className="mb-4 flex items-center justify-between gap-5">
 					<h2 className="whitespace-nowrap text-xl font-semibold">
-						Workout Templates
+						Templates
 					</h2>
 					<div className="hidden h-px w-full bg-gray-200 md:block" />
 					<AddWorkoutTemplateDialog clientId={client.id} />
@@ -157,7 +157,10 @@ export default async function ClientDetails({
 
 					<div className="hidden h-px w-full bg-gray-200 md:block" />
 
-					<AddWorkoutDialog clientId={id} />
+					<AddWorkoutDialog
+						className="bg-white text-foreground shadow-lg shadow-gray-200 hover:bg-gray-200"
+						clientId={id}
+					/>
 				</div>
 
 				{workouts && workouts.length > 0 ? (

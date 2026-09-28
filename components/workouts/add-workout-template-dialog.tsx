@@ -317,7 +317,7 @@ export function AddWorkoutTemplateDialog({ clientId }: { clientId: string }) {
 									<Button
 										type="button"
 										variant="outline"
-										className="mt-3 w-full border-none bg-background shadow-none"
+										className="mt-3 w-full border-none bg-background shadow-none hover:bg-gray-200"
 										onClick={() => addSet(exerciseIndex)}
 									>
 										+ Add set
@@ -337,7 +337,7 @@ export function AddWorkoutTemplateDialog({ clientId }: { clientId: string }) {
 							variant="outline"
 							onClick={addExercise}
 							disabled={loading}
-							className="w-full rounded-xl bg-white py-6 font-semibold text-muted-foreground"
+							className="w-full rounded-xl bg-white py-6 font-semibold text-muted-foreground hover:bg-gray-200"
 						>
 							<Plus className="mr-2 size-4" />
 							Add exercise
