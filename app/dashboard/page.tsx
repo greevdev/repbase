@@ -2,6 +2,7 @@ import ActiveClients from "@/components/clients/active-clients";
 import { AddClientDialog } from "@/components/clients/add-client-dialog";
 import ClientsList from "@/components/clients/clients-list";
 import MonthlyRevenue from "@/components/clients/monthly-revenue";
+import MonthText from "@/components/month-text";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import RecentActivityBoard from "@/components/workouts/recent-activity-board";
@@ -43,7 +44,7 @@ export default function DashboardPage() {
 						<div className="text-2xl font-bold md:text-3xl">
 							€<MonthlyRevenue />
 							<span className="ml-1 text-[0.9rem] font-medium text-accent">
-								/ month
+								/ <MonthText />
 							</span>
 						</div>
 					</div>

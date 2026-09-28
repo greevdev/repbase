@@ -7,6 +7,7 @@ import LetterAvatar from "../letter-avatar";
 import { ChevronRight } from "lucide-react";
 import { EditClientDialog } from "./edit-client-dialog";
 import { DeleteClientDialog } from "./delete-client-dialog";
+import { AddWorkoutTemplateDialog } from "../workouts/add-workout-template-dialog";
 
 type Workout = {
 	id: string;
@@ -135,6 +136,26 @@ export default async function ClientDetails({
 						</p>
 					</div>
 				</div>
+			</div>
+
+			<div>
+				<div className="mb-4 flex items-center justify-between gap-5">
+					<h2 className="whitespace-nowrap text-xl font-semibold">
+						Workout Templates
+					</h2>
+					<div className="hidden h-px w-full bg-gray-200 md:block" />
+					<AddWorkoutTemplateDialog clientId={client.id} />
+				</div>
+
+				{/* {workouts && workouts.length > 0 ? (
+					<div className="grid gap-3 lg:grid-cols-2">
+						{workouts.map((workout: Workout) => (
+							<WorkoutCard key={workout.id} workout={workout} />
+						))}
+					</div>
+				) : (
+					<p className="text-muted-foreground">No workouts yet.</p>
+				)} */}
 			</div>
 
 			<div>

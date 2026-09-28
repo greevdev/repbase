@@ -356,3 +356,98 @@ export async function deleteWorkout(workoutId: string, clientId: string) {
 
 	return { success: true };
 }
+
+type TemplateSet = {
+	set_number: number;
+};
+
+type TemplateExercise = {
+	name: string;
+	notes: string;
+	isCustom: boolean;
+	sets: TemplateSet[];
+};
+
+export async function addWorkoutTemplate(
+	clientId: string,
+	formData: FormData,
+	exercises: TemplateExercise[],
+) {
+	const supabase = await createClient();
+
+	const title = formData.get("title") as string;
+
+	const { data: template, error: templateError } = await supabase
+		.from("workout_templates")
+		.insert({
+			client_id: clientId,
+			title,
+		})
+		.select()
+		.single();
+
+	if (templateError || !template) {
+		return {
+			success: false,
+			error: templateError?.message ?? "Failed to create template",
+		};
+	}
+
+	try {
+		for (
+			let exerciseIndex = 0;
+			exerciseIndex < exercises.length;
+			exerciseIndex++
+		) {
+			const exercise = exercises[exerciseIndex];
+
+			const { data: templateExercise, error: exerciseError } =
+				await supabase
+					.from("workout_template_exercises")
+					.insert({
+						template_id: template.id,
+						name: exercise.name,
+						notes: exercise.notes || null,
+						position: exerciseIndex,
+					})
+					.select()
+					.single();
+
+			if (exerciseError || !templateExercise) {
+				throw new Error(
+					exerciseError?.message ??
+						"Failed to create template exercise",
+				);
+			}
+
+			if (exercise.sets.length > 0) {
+				const sets = exercise.sets.map((_, setIndex) => ({
+					template_exercise_id: templateExercise.id,
+					set_number: setIndex + 1,
+				}));
+
+				const { error: setsError } = await supabase
+					.from("workout_template_sets")
+					.insert(sets);
+
+				if (setsError) {
+					throw new Error(setsError.message);
+				}
+			}
+		}
+
+		revalidatePath(`/dashboard/clients/${clientId}`);
+
+		return { success: true };
+	} catch (error) {
+		await supabase.from("workout_templates").delete().eq("id", template.id);
+
+		return {
+			success: false,
+			error:
+				error instanceof Error
+					? error.message
+					: "Failed to create workout template",
+		};
+	}
+}

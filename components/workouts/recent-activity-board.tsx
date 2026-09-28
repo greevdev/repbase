@@ -41,15 +41,15 @@ export default async function RecentActivityBoard() {
 	}
 
 	return (
-		<div className="bg-white border border-foreground/15 rounded-xl overflow-hidden">
+		<div className="overflow-hidden rounded-xl border border-foreground/15 bg-white">
 			<div className="p-4">
-				<h3 className="font-semibold md:text-lg flex items-center gap-2">
+				<h3 className="flex items-center gap-2 font-semibold md:text-lg">
 					<Activity className="text-accent" />
 					<span className="whitespace-nowrap">Recent Activity</span>
 				</h3>
 			</div>
 
-			<div className="bg-background grid grid-cols-3 gap-1 px-4 py-2 text-xs md:text-[0.8rem] text-foreground/70 border-t border-foreground/5">
+			<div className="grid grid-cols-3 gap-1 border-t border-foreground/5 bg-background px-4 py-2 text-xs text-foreground/70 md:text-[0.8rem]">
 				<p>Client</p>
 				<p className="md:hidden">Date</p>
 				<p>Program</p>
@@ -57,38 +57,40 @@ export default async function RecentActivityBoard() {
 			</div>
 
 			<div>
-				{workouts ? (
+				{workouts.length > 0 ? (
 					workouts.map((workout) => (
 						<Link
 							href={`/dashboard/clients/${workout.client_id}/workouts/${workout.id}`}
 							key={workout.id}
-							className="px-4 py-3 grid grid-cols-3 gap-1 border-t border-foreground/5 items-center text-[0.9rem] hover:bg-background/60 transition"
+							className="grid grid-cols-3 items-center gap-1 border-t border-foreground/5 px-4 py-3 text-[0.9rem] transition hover:bg-background/60"
 						>
 							<div className="flex items-center gap-3">
 								<LetterAvatar
 									className="hidden md:block"
 									clientId={workout.client_id}
 								/>
-								<p className="font-semibold text-sm md:text-[0.9rem]">
+								<p className="text-sm font-semibold md:text-[0.9rem]">
 									{workout.clients?.name}
 								</p>
 							</div>
 
-							<p className="text-muted-foreground text-xs md:text-[0.9rem] md:hidden">
+							<p className="text-xs text-muted-foreground md:hidden md:text-[0.9rem]">
 								{formatWorkoutDateMobile(workout.date)}
 							</p>
 
-							<p className="text-muted-foreground text-xs md:text-[0.9rem]">
+							<p className="text-xs text-muted-foreground md:text-[0.9rem]">
 								{workout.title}
 							</p>
 
-							<p className="text-muted-foreground text-xs md:text-[0.9rem] hidden md:block">
+							<p className="hidden text-xs text-muted-foreground md:block md:text-[0.9rem]">
 								{formatWorkoutDate(workout.date)}
 							</p>
 						</Link>
 					))
 				) : (
-					<p>No recent activity</p>
+					<p className="px-4 py-3 text-center text-sm tracking-wide text-muted-foreground">
+						No recent activity
+					</p>
 				)}
 			</div>
 		</div>
