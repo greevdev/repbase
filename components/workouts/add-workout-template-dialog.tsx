@@ -165,7 +165,10 @@ export function AddWorkoutTemplateDialog({ clientId }: { clientId: string }) {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button variant="outline">
+				<Button
+					variant="secondary"
+					className="rounded-lg bg-white shadow-lg shadow-gray-200 hover:bg-gray-200"
+				>
 					<Plus className="mr-2 size-4" />
 					New Template
 				</Button>

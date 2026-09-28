@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/dialog";
 import { ExerciseSelector } from "./exercise-selector";
 import { useRouter } from "next/navigation";
+import clsx from "clsx";
 
 type ExerciseSet = {
 	reps: string;
@@ -38,11 +39,35 @@ type Exercise = {
 	isCustom: boolean;
 };
 
-export function AddWorkoutDialog({ clientId }: { clientId: string }) {
+type InitialExercise = {
+	name: string;
+	notes: string;
+	isCustom: boolean;
+	sets: {
+		reps: string;
+		weight: string;
+	}[];
+};
+
+type AddWorkoutDialogProps = {
+	clientId: string;
+	initialTitle?: string;
+	initialExercises?: InitialExercise[];
+	triggerLabel?: string;
+	className?: string;
+};
+
+export function AddWorkoutDialog({
+	clientId,
+	initialTitle = "",
+	initialExercises = [],
+	triggerLabel = "Log Workout",
+	className = "",
+}: AddWorkoutDialogProps) {
 	const router = useRouter();
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const [exercises, setExercises] = useState<Exercise[]>([]);
+	const [exercises, setExercises] = useState<Exercise[]>(initialExercises);
 	const [duration, setDuration] = useState(0);
 	const [isRunning, setIsRunning] = useState(false);
 
@@ -228,6 +253,19 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 		return workoutTotal + exerciseVolume;
 	}, 0);
 
+	function handleOpenChange(nextOpen: boolean) {
+		setOpen(nextOpen);
+
+		if (nextOpen) {
+			setExercises(
+				initialExercises.map((exercise) => ({
+					...exercise,
+					sets: exercise.sets.map((set) => ({ ...set })),
+				})),
+			);
+		}
+	}
+
 	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 
@@ -263,11 +301,16 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 	const today = new Date().toLocaleDateString("en-CA");
 
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
+		<Dialog open={open} onOpenChange={handleOpenChange}>
 			<DialogTrigger asChild>
-				<Button className="rounded-lg bg-accent hover:bg-accentDark md:py-5">
+				<Button
+					className={clsx(
+						"flex items-center rounded-lg bg-accent hover:bg-accentDark md:py-5",
+						className,
+					)}
+				>
 					<Plus className="mr-1 size-4" />
-					Log Workout
+					{triggerLabel}
 				</Button>
 			</DialogTrigger>
 
@@ -302,6 +345,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 								<Input
 									name="title"
 									placeholder="e.g. Upper Body"
+									defaultValue={initialTitle}
 									required
 									className="h-full w-full rounded-lg text-base font-semibold shadow-none placeholder:font-medium placeholder:text-gray-400"
 								/>

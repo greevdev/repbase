@@ -8,6 +8,7 @@ import { ChevronRight } from "lucide-react";
 import { EditClientDialog } from "./edit-client-dialog";
 import { DeleteClientDialog } from "./delete-client-dialog";
 import { AddWorkoutTemplateDialog } from "../workouts/add-workout-template-dialog";
+import { WorkoutTemplates } from "../workouts/workout-templates";
 
 type Workout = {
 	id: string;
@@ -147,15 +148,7 @@ export default async function ClientDetails({
 					<AddWorkoutTemplateDialog clientId={client.id} />
 				</div>
 
-				{/* {workouts && workouts.length > 0 ? (
-					<div className="grid gap-3 lg:grid-cols-2">
-						{workouts.map((workout: Workout) => (
-							<WorkoutCard key={workout.id} workout={workout} />
-						))}
-					</div>
-				) : (
-					<p className="text-muted-foreground">No workouts yet.</p>
-				)} */}
+				<WorkoutTemplates clientId={client.id} />
 			</div>
 
 			<div>
