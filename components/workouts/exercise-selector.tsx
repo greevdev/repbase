@@ -41,7 +41,7 @@ export function ExerciseSelector({
 					variant="ghost"
 					role="combobox"
 					aria-expanded={open}
-					className="h-max justify-between px-0 py-3 text-xl font-semibold hover:bg-transparent"
+					className="h-max justify-between px-0 py-3 text-xl font-semibold hover:bg-transparent sm:py-0"
 				>
 					{value || (
 						<span className="text-gray-600">Select exercise</span>
@@ -54,6 +54,7 @@ export function ExerciseSelector({
 				align="start"
 				collisionPadding={16}
 				onOpenAutoFocus={(e) => e.preventDefault()}
+				portalled={false}
 			>
 				<Command>
 					<CommandInput
@@ -61,10 +62,7 @@ export function ExerciseSelector({
 						placeholder="Search exercises..."
 					/>
 
-					<CommandList
-						className="max-h-[45dvh] touch-pan-y overflow-y-scroll overscroll-contain"
-						onWheel={(e) => e.stopPropagation()}
-					>
+					<CommandList className="max-h-[45dvh] touch-pan-y overflow-y-scroll overscroll-contain">
 						<CommandEmpty>No exercise found.</CommandEmpty>
 
 						<CommandGroup>

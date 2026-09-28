@@ -271,7 +271,10 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 				</Button>
 			</DialogTrigger>
 
-			<DialogContent className="top-[50%] flex h-[100dvh] max-w-[100dvw] flex-col overflow-hidden rounded-none bg-white p-3 sm:h-[90dvh] sm:max-w-lg sm:rounded-xl md:p-5">
+			<DialogContent
+				onOpenAutoFocus={(e) => e.preventDefault()}
+				className="top-[50%] flex h-[100dvh] max-w-[100dvw] flex-col overflow-hidden rounded-none bg-white p-3 sm:h-[90dvh] sm:max-w-lg sm:rounded-xl md:p-5"
+			>
 				<DialogHeader className="shrink-0">
 					<DialogTitle className="text-start text-xl font-bold">
 						<span>Log Workout</span>
@@ -292,7 +295,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 									name="title"
 									placeholder="e.g. Upper Body"
 									required
-									className="h-max w-full rounded-lg text-base font-semibold shadow-none placeholder:font-medium placeholder:text-gray-400"
+									className="rounded-lg text-base font-semibold shadow-none placeholder:font-medium placeholder:text-gray-400"
 								/>
 							</div>
 
@@ -305,7 +308,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 									type="date"
 									defaultValue={today}
 									required
-									className="h-max w-full rounded-lg text-base font-semibold shadow-none"
+									className="rounded-lg text-base font-semibold shadow-none"
 								/>
 							</div>
 						</div>
@@ -398,9 +401,11 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 					</div>
 
 					<div className="flex min-h-0 flex-1 flex-col gap-2">
-						<div className="shrink-0">
-							<Separator className="bg-gray-200" />
-						</div>
+						{exercises.length == 0 && (
+							<div className="shrink-0">
+								<Separator className="bg-gray-200" />
+							</div>
+						)}
 
 						<div className="custom-scrollbar min-h-0 flex-1 space-y-4 overflow-y-auto">
 							{exercises.length !== 0 ? (
@@ -413,7 +418,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 											{exercise.isCustom ? (
 												<div className="flex flex-1 items-center gap-2">
 													<Input
-														placeholder="Custom exercise name"
+														placeholder="Exercise name"
 														value={exercise.name}
 														onChange={(e) =>
 															updateExercise(
@@ -423,7 +428,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 															)
 														}
 														required
-														className="h-max border-none px-0 py-3 text-xl font-semibold shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+														className="h-max border-none px-0 py-3 text-xl font-semibold shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 sm:py-0 sm:text-xl md:text-xl"
 													/>
 
 													<Button
@@ -486,7 +491,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 											className="border-none px-0 py-0 text-sm font-medium text-muted-foreground shadow-none placeholder:text-muted-foreground/70 focus-visible:ring-0 focus-visible:ring-offset-0"
 										/>
 
-										<div className="mt-3 grid grid-cols-10 items-center gap-1 text-[0.7rem] font-bold tracking-widest text-foreground/50 md:gap-2">
+										<div className="mt-3 grid grid-cols-10 items-center gap-1 text-[0.7rem] font-bold tracking-widest text-accent md:gap-2">
 											<p className="text-center">SET</p>
 
 											<p className="col-span-4 text-center">
@@ -507,7 +512,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 														key={setIndex}
 														className="grid grid-cols-10 items-center gap-1 overflow-hidden md:gap-2"
 													>
-														<span className="whitespace-nowrap text-center text-sm font-bold text-muted-foreground">
+														<span className="whitespace-nowrap text-center text-base font-bold text-muted-foreground">
 															{setIndex + 1}
 														</span>
 
@@ -515,7 +520,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 															type="number"
 															step="0.5"
 															placeholder="Weight"
-															className="col-span-4 rounded-lg text-center text-base font-semibold shadow-none focus-visible:ring-0 md:text-[1.05rem] md:placeholder:text-[0.85rem]"
+															className="col-span-4 rounded-lg text-center text-base font-bold text-foreground shadow-none placeholder:text-sm placeholder:text-muted-foreground/50 focus-visible:ring-0 md:text-[1.05rem] md:placeholder:text-[0.85rem]"
 															value={set.weight}
 															inputMode="decimal"
 															onChange={(e) =>
@@ -532,7 +537,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 														<Input
 															type="number"
 															placeholder="Reps"
-															className="col-span-4 rounded-lg text-center text-base font-semibold shadow-none focus-visible:ring-0 md:text-[1.05rem] md:placeholder:text-[0.85rem]"
+															className="col-span-4 rounded-lg text-center text-base font-bold text-foreground shadow-none placeholder:text-sm placeholder:text-muted-foreground/50 focus-visible:ring-0 md:text-[1.05rem] md:placeholder:text-[0.85rem]"
 															inputMode="numeric"
 															value={set.reps}
 															onChange={(e) =>
