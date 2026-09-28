@@ -41,7 +41,7 @@ export function ExerciseSelector({
 					variant="ghost"
 					role="combobox"
 					aria-expanded={open}
-					className="h-auto justify-between px-0 text-xl font-semibold hover:bg-transparent"
+					className="h-max justify-between px-0 py-3 text-xl font-semibold hover:bg-transparent"
 				>
 					{value || (
 						<span className="text-gray-600">Select exercise</span>
@@ -50,8 +50,10 @@ export function ExerciseSelector({
 			</PopoverTrigger>
 
 			<PopoverContent
-				className="z-[100] w-full p-0 md:w-[400px]"
+				className="z-[100] w-[calc(100vw-2rem)] max-w-[350px] p-0"
 				align="start"
+				collisionPadding={16}
+				onOpenAutoFocus={(e) => e.preventDefault()}
 			>
 				<Command>
 					<CommandInput
@@ -60,7 +62,7 @@ export function ExerciseSelector({
 					/>
 
 					<CommandList
-						className="overflow-y-scroll overscroll-contain"
+						className="max-h-[45dvh] touch-pan-y overflow-y-scroll overscroll-contain"
 						onWheel={(e) => e.stopPropagation()}
 					>
 						<CommandEmpty>No exercise found.</CommandEmpty>

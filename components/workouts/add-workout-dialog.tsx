@@ -283,7 +283,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 					className="flex min-h-0 flex-1 flex-col gap-2"
 				>
 					<div className="flex flex-col gap-2">
-						<div className="flex gap-4">
+						<div className="grid grid-cols-2 gap-2">
 							<div className="flex w-full flex-col gap-1">
 								<p className="text-sm font-medium text-muted-foreground">
 									Workout Title
@@ -296,7 +296,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 								/>
 							</div>
 
-							<div className="flex w-full flex-col gap-1">
+							<div className="flex flex-col gap-1">
 								<p className="text-sm font-medium text-muted-foreground">
 									Date
 								</p>
@@ -310,7 +310,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 							</div>
 						</div>
 
-						<div className="flex items-center gap-3 rounded-xl bg-gray-100/70 px-4 py-4 sm:px-8">
+						<div className="flex items-center justify-between gap-5 rounded-xl bg-gray-100/70 px-6 py-4">
 							<div className="mr-auto flex w-max items-center gap-3">
 								<div>
 									<p className="text-xl font-bold tabular-nums sm:text-3xl">
@@ -359,13 +359,12 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 								</button>
 							</div>
 
-							<div className="flex items-center gap-4 sm:gap-8">
+							<div className="flex items-center gap-8 sm:gap-6">
 								<div className="flex items-center gap-3 sm:gap-4">
 									<Layers
 										className="hidden sm:block"
 										size={24}
 									/>
-									<Layers className="sm:hidden" size={20} />
 
 									<div className="flex flex-col">
 										<p className="text-[0.65rem] font-medium tracking-widest text-muted-foreground">
@@ -383,14 +382,10 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 										className="hidden sm:block"
 										size={24}
 									/>
-									<ChartColumnBig
-										className="sm:hidden"
-										size={20}
-									/>
 
 									<div className="flex flex-col">
 										<p className="text-[0.65rem] font-medium tracking-widest text-muted-foreground">
-											TOTAL VOLUME
+											VOLUME
 										</p>
 
 										<p className="text-base font-bold tabular-nums sm:text-lg">
@@ -428,7 +423,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 															)
 														}
 														required
-														className="h-auto border-none px-0 py-0 font-semibold shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 sm:text-xl md:text-xl"
+														className="h-max border-none px-0 py-3 text-xl font-semibold shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
 													/>
 
 													<Button
@@ -583,7 +578,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 									</div>
 								))
 							) : (
-								<p className="text-center font-semibold text-muted-foreground">
+								<p className="mt-5 text-center font-semibold tracking-wide text-muted-foreground/50">
 									No exercises
 								</p>
 							)}

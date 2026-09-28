@@ -85,7 +85,7 @@ export default async function ClientDetails({
 				</div>
 			</div>
 
-			<div className="flex flex-col justify-between gap-5 rounded-xl border border-foreground/10 bg-white p-5 text-lg md:p-7 lg:flex-row lg:gap-0">
+			<div className="flex flex-col justify-between gap-7 rounded-xl border border-foreground/10 bg-white p-5 text-lg md:p-7 lg:flex-row lg:gap-0">
 				<div className="flex items-center gap-3 md:gap-5">
 					<LetterAvatar
 						clientId={client.id}
