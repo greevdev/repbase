@@ -58,7 +58,7 @@ export function ExerciseSelector({
 			>
 				<Command>
 					<CommandInput
-						className="focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+						className="text-[16px] focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
 						placeholder="Search exercises..."
 					/>
 

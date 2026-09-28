@@ -283,6 +283,14 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 
 				<form
 					onSubmit={handleSubmit}
+					onKeyDown={(e) => {
+						if (
+							e.key === "Enter" &&
+							e.target instanceof HTMLInputElement
+						) {
+							e.preventDefault();
+						}
+					}}
 					className="flex min-h-0 flex-1 flex-col gap-2"
 				>
 					<div className="flex flex-col gap-2">
@@ -295,7 +303,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 									name="title"
 									placeholder="e.g. Upper Body"
 									required
-									className="rounded-lg text-base font-semibold shadow-none placeholder:font-medium placeholder:text-gray-400"
+									className="h-full w-full rounded-lg text-base font-semibold shadow-none placeholder:font-medium placeholder:text-gray-400"
 								/>
 							</div>
 
@@ -308,7 +316,7 @@ export function AddWorkoutDialog({ clientId }: { clientId: string }) {
 									type="date"
 									defaultValue={today}
 									required
-									className="rounded-lg text-base font-semibold shadow-none"
+									className="h-full w-full appearance-none rounded-lg text-base font-semibold shadow-none"
 								/>
 							</div>
 						</div>
