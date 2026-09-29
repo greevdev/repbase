@@ -476,3 +476,97 @@ export async function deleteWorkoutTemplate(
 		success: true,
 	};
 }
+
+export async function editWorkoutTemplate(
+	templateId: string,
+	clientId: string,
+	formData: FormData,
+	exercises: TemplateExercise[],
+) {
+	const supabase = await createClient();
+
+	const title = formData.get("title") as string;
+
+	const { error: templateError } = await supabase
+		.from("workout_templates")
+		.update({
+			title,
+		})
+		.eq("id", templateId);
+
+	if (templateError) {
+		return {
+			success: false,
+			error: templateError.message,
+		};
+	}
+
+	const { error: deleteError } = await supabase
+		.from("workout_template_exercises")
+		.delete()
+		.eq("template_id", templateId);
+
+	if (deleteError) {
+		return {
+			success: false,
+			error: deleteError.message,
+		};
+	}
+
+	try {
+		for (
+			let exerciseIndex = 0;
+			exerciseIndex < exercises.length;
+			exerciseIndex++
+		) {
+			const exercise = exercises[exerciseIndex];
+
+			const { data: templateExercise, error: exerciseError } =
+				await supabase
+					.from("workout_template_exercises")
+					.insert({
+						template_id: templateId,
+						name: exercise.name,
+						notes: exercise.notes || null,
+						position: exerciseIndex,
+					})
+					.select()
+					.single();
+
+			if (exerciseError || !templateExercise) {
+				throw new Error(
+					exerciseError?.message ?? "Failed to save exercise",
+				);
+			}
+
+			if (exercise.sets.length > 0) {
+				const sets = exercise.sets.map((_, setIndex) => ({
+					template_exercise_id: templateExercise.id,
+					set_number: setIndex + 1,
+				}));
+
+				const { error: setsError } = await supabase
+					.from("workout_template_sets")
+					.insert(sets);
+
+				if (setsError) {
+					throw new Error(setsError.message);
+				}
+			}
+		}
+
+		revalidatePath(`/dashboard/clients/${clientId}`);
+
+		return {
+			success: true,
+		};
+	} catch (error) {
+		return {
+			success: false,
+			error:
+				error instanceof Error
+					? error.message
+					: "Failed to update workout template",
+		};
+	}
+}

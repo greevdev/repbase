@@ -8,14 +8,34 @@ import {
 } from "@/components/ui/popover";
 import { EllipsisIcon } from "lucide-react";
 import { DeleteWorkoutTemplateDialog } from "./delete-workout-template-dialog";
+import { EditWorkoutTemplateDialog } from "./edit-workout-template-dialog";
+
+type TemplateSet = {
+	id: string;
+	set_number: number;
+};
+
+type TemplateExercise = {
+	id: string;
+	name: string;
+	notes: string | null;
+	position: number;
+	workout_template_sets: TemplateSet[];
+};
+
+type WorkoutTemplate = {
+	id: string;
+	title: string;
+	workout_template_exercises: TemplateExercise[];
+};
 
 interface WorkoutTemplateOptionsProps {
-	templateId: string;
+	template: WorkoutTemplate;
 	clientId: string;
 }
 
 export default function WorkoutTemplateOptionsPopover({
-	templateId,
+	template,
 	clientId,
 }: WorkoutTemplateOptionsProps) {
 	return (
@@ -28,9 +48,14 @@ export default function WorkoutTemplateOptionsPopover({
 				className="rounded-lg shadow-lg shadow-muted-foreground/20"
 			>
 				<PopoverHeader>
-					<PopoverDescription>
+					<PopoverDescription className="flex flex-col gap-2">
+						<EditWorkoutTemplateDialog
+							template={template}
+							clientId={clientId}
+						/>
+
 						<DeleteWorkoutTemplateDialog
-							templateId={templateId}
+							templateId={template.id}
 							clientId={clientId}
 						/>
 					</PopoverDescription>

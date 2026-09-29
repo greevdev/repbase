@@ -305,7 +305,7 @@ export function AddWorkoutDialog({
 			<DialogTrigger asChild>
 				<Button
 					className={clsx(
-						"flex items-center rounded-lg bg-accent hover:bg-accentDark md:py-5",
+						"flex items-center rounded-lg bg-accent hover:bg-accentDark",
 						className,
 					)}
 				>

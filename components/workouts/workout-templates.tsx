@@ -83,12 +83,12 @@ export async function WorkoutTemplates({ clientId }: { clientId: string }) {
 				return (
 					<Card key={template.id} className="shadow-none">
 						<CardHeader className="flex w-full flex-row items-start justify-between gap-3 pt-4">
-							<CardTitle className="mt-2 md:text-xl">
+							<CardTitle className="mt-2 text-xl">
 								{template.title}
 							</CardTitle>
 
 							<WorkoutTemplateOptionsPopover
-								templateId={template.id}
+								template={template}
 								clientId={clientId}
 							/>
 						</CardHeader>

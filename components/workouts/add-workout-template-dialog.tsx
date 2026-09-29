@@ -167,7 +167,7 @@ export function AddWorkoutTemplateDialog({ clientId }: { clientId: string }) {
 			<DialogTrigger asChild>
 				<Button
 					variant="secondary"
-					className="rounded-lg bg-white shadow-lg shadow-gray-200 hover:bg-gray-200"
+					className="rounded-lg border border-muted-foreground/15 bg-white hover:bg-gray-200"
 				>
 					<Plus className="mr-2 size-4" />
 					New Template
@@ -176,7 +176,7 @@ export function AddWorkoutTemplateDialog({ clientId }: { clientId: string }) {
 
 			<DialogContent
 				onOpenAutoFocus={(e) => e.preventDefault()}
-				className="top-[50%] flex h-[90dvh] max-w-[97dvw] flex-col overflow-hidden bg-white p-3 md:p-5"
+				className="top-[50%] flex h-[90dvh] max-w-[97dvw] flex-col overflow-hidden bg-white p-3 md:rounded-xl md:p-5"
 			>
 				<DialogHeader className="shrink-0">
 					<DialogTitle className="text-xl font-bold">
@@ -194,29 +194,35 @@ export function AddWorkoutTemplateDialog({ clientId }: { clientId: string }) {
 							e.preventDefault();
 						}
 					}}
-					className="mt-3 flex min-h-0 flex-1 flex-col gap-6"
+					className="mt-2 flex min-h-0 flex-1 flex-col gap-6"
 				>
-					<div className="shrink-0 space-y-6">
+					<div className="flex w-full flex-col gap-2">
+						<p className="text-sm font-medium text-muted-foreground">
+							Template Name
+						</p>
 						<Input
 							name="title"
-							placeholder="Template name"
+							placeholder="e.g. Upper Body"
 							required
-							className="rounded-lg text-base font-semibold shadow-none"
+							className="h-full w-full rounded-lg text-base font-semibold shadow-none placeholder:font-medium placeholder:text-gray-400"
 						/>
 
-						<Separator />
+						<Separator className="mt-2" />
 					</div>
 
 					<div className="custom-scrollbar min-h-0 flex-1 space-y-8 overflow-y-auto">
 						{exercises.length > 0 ? (
 							exercises.map((exercise, exerciseIndex) => (
-								<div key={exerciseIndex}>
+								<div
+									key={exerciseIndex}
+									className="rounded-xl border border-gray-200 px-4 py-2 sm:p-4"
+								>
 									<div className="flex items-center justify-between gap-2">
 										<div className="min-w-0 flex-1">
 											{exercise.isCustom ? (
 												<div className="flex items-center gap-2">
 													<Input
-														placeholder="Custom exercise name"
+														placeholder="Exercise name"
 														value={exercise.name}
 														onChange={(e) =>
 															updateExercise(
@@ -226,7 +232,7 @@ export function AddWorkoutTemplateDialog({ clientId }: { clientId: string }) {
 															)
 														}
 														required
-														className="h-auto border-none px-0 py-0 text-xl font-semibold shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+														className="h-auto border-none px-0 py-0 text-xl font-semibold shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 md:text-xl"
 													/>
 
 													<Button
@@ -265,7 +271,7 @@ export function AddWorkoutTemplateDialog({ clientId }: { clientId: string }) {
 											type="button"
 											variant="outline"
 											size="icon"
-											className="shrink-0"
+											className="shrink-0 bg-white hover:bg-gray-100"
 											onClick={() =>
 												removeExercise(exerciseIndex)
 											}
@@ -284,7 +290,7 @@ export function AddWorkoutTemplateDialog({ clientId }: { clientId: string }) {
 												e.target.value,
 											)
 										}
-										className="border-none px-0 py-0 text-sm font-medium text-muted-foreground shadow-none focus-visible:ring-0"
+										className="border-none px-0 py-0 text-sm font-medium tracking-wide text-muted-foreground shadow-none placeholder:text-muted-foreground/70 focus-visible:ring-0"
 									/>
 
 									<div className="mt-4 space-y-2">
@@ -301,6 +307,7 @@ export function AddWorkoutTemplateDialog({ clientId }: { clientId: string }) {
 													type="button"
 													variant="ghost"
 													size="icon"
+													className="hover:bg-gray-200/70"
 													onClick={() =>
 														removeSet(
 															exerciseIndex,
@@ -317,7 +324,7 @@ export function AddWorkoutTemplateDialog({ clientId }: { clientId: string }) {
 									<Button
 										type="button"
 										variant="outline"
-										className="mt-3 w-full border-none bg-background shadow-none hover:bg-gray-200"
+										className="mt-3 w-full rounded-xl border-none bg-background text-muted-foreground shadow-none hover:bg-gray-200"
 										onClick={() => addSet(exerciseIndex)}
 									>
 										+ Add set
@@ -325,7 +332,7 @@ export function AddWorkoutTemplateDialog({ clientId }: { clientId: string }) {
 								</div>
 							))
 						) : (
-							<p className="text-center font-semibold text-muted-foreground">
+							<p className="text-center font-semibold text-muted-foreground/60">
 								No exercises
 							</p>
 						)}

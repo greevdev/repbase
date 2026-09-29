@@ -158,7 +158,7 @@ export default async function ClientDetails({
 					<div className="hidden h-px w-full bg-gray-200 md:block" />
 
 					<AddWorkoutDialog
-						className="bg-white text-foreground shadow-lg shadow-gray-200 hover:bg-gray-200"
+						className="border border-muted-foreground/15 bg-white text-foreground hover:bg-gray-200"
 						clientId={id}
 					/>
 				</div>
