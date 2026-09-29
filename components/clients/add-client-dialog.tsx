@@ -23,7 +23,7 @@ function SubmitButton() {
 	return (
 		<Button
 			type="submit"
-			className="w-full rounded-xl font-semibold shadow-lg shadow-muted-foreground/5 py-6"
+			className="w-full rounded-xl py-6 font-semibold shadow-lg shadow-muted-foreground/5"
 		>
 			{pending ? <Spinner className="size-4" /> : "Add client"}
 		</Button>
@@ -47,7 +47,7 @@ export function AddClientDialog() {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button className="bg-accent hover:bg-accentDark md:py-5 rounded-lg">
+				<Button className="rounded-lg bg-accent hover:bg-accentDark md:py-5">
 					<Plus className="mr-1 size-4" />
 					New Client
 				</Button>
@@ -58,18 +58,22 @@ export function AddClientDialog() {
 					<DialogTitle className="text-xl">Add client</DialogTitle>
 				</DialogHeader>
 
-				<form action={handleSubmit} className="space-y-4 mt-2">
+				<form action={handleSubmit} className="mt-2 space-y-4">
 					<Input
-						className="text-sm"
+						className="text-[16px]"
 						name="name"
 						placeholder="Client name"
 						required
 					/>
 
-					<Input className="text-sm" name="goal" placeholder="Goal" />
+					<Input
+						className="text-[16px]"
+						name="goal"
+						placeholder="Goal"
+					/>
 
 					<Input
-						className="text-sm"
+						className="text-[16px]"
 						name="year_of_birth"
 						type="number"
 						placeholder="Year of birth"
@@ -77,7 +81,7 @@ export function AddClientDialog() {
 					/>
 
 					<Textarea
-						className="text-sm"
+						className="text-[16px]"
 						name="notes"
 						placeholder="Notes"
 					/>

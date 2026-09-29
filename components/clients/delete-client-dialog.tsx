@@ -58,7 +58,7 @@ export function DeleteClientDialog({
 		<AlertDialog open={open} onOpenChange={setOpen}>
 			<AlertDialogTrigger asChild>
 				<Button
-					className="rounded-lg aspect-square bg-white text-red-400 hover:bg-gray-50"
+					className="aspect-square rounded-lg bg-white text-red-400 hover:bg-gray-50"
 					variant="outline"
 				>
 					<Trash2 className="size-4" />
@@ -67,11 +67,11 @@ export function DeleteClientDialog({
 
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle className="text-center w-full">
+					<AlertDialogTitle className="w-full text-center">
 						Delete client {clientName}?
 					</AlertDialogTitle>
 
-					<AlertDialogDescription className="text-center w-full">
+					<AlertDialogDescription className="w-full text-center">
 						This action cannot be undone.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
@@ -80,15 +80,15 @@ export function DeleteClientDialog({
 					type="text"
 					name="name"
 					value={clientNameInput}
-					className="text-sm"
+					className="text-[16px]"
 					placeholder="Enter client's name to confirm"
 					onChange={(e) => setClientNameInput(e.target.value)}
 					disabled={loading}
 				/>
 
-				<AlertDialogFooter className="w-full grid grid-cols-2">
+				<AlertDialogFooter className="grid w-full grid-cols-2">
 					<AlertDialogCancel
-						className="py-5 rounded-[0.7em] hover:bg-gray-100"
+						className="rounded-[0.7em] py-5 hover:bg-gray-100"
 						disabled={loading}
 					>
 						Cancel
@@ -98,7 +98,7 @@ export function DeleteClientDialog({
 						type="button"
 						onClick={handleDelete}
 						disabled={clientNameInput !== clientName || loading}
-						className="py-5 border border-black rounded-[0.7em]"
+						className="rounded-[0.7em] border border-black py-5"
 					>
 						{loading ? (
 							<>
