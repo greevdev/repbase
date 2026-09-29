@@ -6,7 +6,8 @@ import MonthText from "@/components/month-text";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import RecentActivityBoard from "@/components/workouts/recent-activity-board";
-import { User, DollarSign, Users2 } from "lucide-react";
+import WeeklySessions from "@/components/workouts/weekly-sessions";
+import { User, DollarSign, Users2, ChartNoAxesColumn } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
@@ -49,7 +50,20 @@ export default function DashboardPage() {
 						</div>
 					</div>
 
-					<div className="dashboard-card h-full" />
+					<div className="dashboard-card flex flex-col gap-3">
+						<h3 className="flex items-center gap-1 text-xs font-medium text-muted-foreground md:text-sm">
+							<ChartNoAxesColumn size={20} />
+							<span>Weekly Sessions</span>
+						</h3>
+
+						<div className="text-2xl font-bold md:text-3xl">
+							<WeeklySessions />
+							<span className="ml-2 text-[0.9rem] font-medium text-accent">
+								Workouts
+							</span>
+						</div>
+					</div>
+
 					<div className="dashboard-card h-full" />
 				</div>
 

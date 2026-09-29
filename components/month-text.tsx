@@ -2,18 +2,18 @@
 
 export default function MonthText() {
 	const months = [
-		"January",
-		"February",
-		"March",
-		"April",
+		"Jan.",
+		"Feb.",
+		"Mar.",
+		"Apr.",
 		"May",
-		"June",
-		"July",
-		"August",
-		"September",
-		"October",
-		"November",
-		"December",
+		"Jun.",
+		"Jul.",
+		"Aug.",
+		"Sep.",
+		"Oct.",
+		"Nov.",
+		"Dec.",
 	];
 
 	const currentMonth = Number(new Date().getMonth());
