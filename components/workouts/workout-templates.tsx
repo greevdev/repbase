@@ -35,7 +35,7 @@ export async function WorkoutTemplates({
 		)
 		.eq("client_id", clientId)
 		.order("created_at", {
-			ascending: false,
+			ascending: true,
 		});
 
 	if (error) {

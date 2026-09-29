@@ -23,9 +23,7 @@ export default async function ClientsDetails() {
 	}
 
 	return (
-		<div className="space-y-4">
-			
-
+		<div className="space-y-4 duration-300 animate-in fade-in slide-in-from-bottom-2">
 			<ClientsGrid clients={clients} />
 		</div>
 	);

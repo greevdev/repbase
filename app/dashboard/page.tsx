@@ -13,14 +13,14 @@ import { Suspense } from "react";
 
 export default function DashboardPage() {
 	return (
-		<div className="space-y-6 pb-10 md:space-y-8">
-			<Suspense
-				fallback={
-					<div className="mx-auto flex w-max items-center gap-2 text-xl text-muted-foreground">
-						<Spinner />
-					</div>
-				}
-			>
+		<Suspense
+			fallback={
+				<div className="mx-auto flex w-max items-center gap-2 text-xl text-muted-foreground">
+					<Spinner />
+				</div>
+			}
+		>
+			<div className="space-y-6 pb-10 duration-500 animate-in fade-in slide-in-from-bottom-2 md:space-y-8">
 				<div className="grid grid-cols-2 items-center gap-2 md:gap-4 lg:grid-cols-4">
 					<div className="dashboard-card flex flex-col gap-3">
 						<h3 className="flex items-center gap-1 text-xs font-medium text-muted-foreground md:text-sm">
@@ -102,7 +102,7 @@ export default function DashboardPage() {
 						</Button>
 					</Link>
 				</div>
-			</Suspense>
-		</div>
+			</div>
+		</Suspense>
 	);
 }

@@ -91,7 +91,7 @@ export default async function WorkoutDetails({
 	}
 
 	return (
-		<div className="space-y-8">
+		<div className="space-y-8 duration-300 animate-in fade-in slide-in-from-bottom-2">
 			<div className="mt-2 flex items-center gap-1 text-sm text-muted-foreground">
 				<Link href="/dashboard" className="transition hover:text-black">
 					Dashboard
