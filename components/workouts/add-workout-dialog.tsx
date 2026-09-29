@@ -25,11 +25,14 @@ import {
 } from "@/components/ui/dialog";
 import { ExerciseSelector } from "./exercise-selector";
 import { useRouter } from "next/navigation";
+import type { ExerciseHistory } from "@/lib/workouts/get-exercise-history";
 import clsx from "clsx";
 
 type ExerciseSet = {
 	reps: string;
 	weight: string;
+	previousReps?: string;
+	previousWeight?: string;
 };
 
 type Exercise = {
@@ -46,6 +49,16 @@ type InitialExercise = {
 	sets: {
 		reps: string;
 		weight: string;
+		previousReps?: string;
+		previousWeight?: string;
+	}[];
+};
+
+type PreviousExercisePerformance = {
+	name: string;
+	sets: {
+		reps: number | null;
+		weight: number | null;
 	}[];
 };
 
@@ -55,6 +68,7 @@ type AddWorkoutDialogProps = {
 	initialExercises?: InitialExercise[];
 	triggerLabel?: string;
 	className?: string;
+	exerciseHistory?: ExerciseHistory;
 };
 
 export function AddWorkoutDialog({
@@ -63,6 +77,7 @@ export function AddWorkoutDialog({
 	initialExercises = [],
 	triggerLabel = "Log Workout",
 	className = "",
+	exerciseHistory = {},
 }: AddWorkoutDialogProps) {
 	const router = useRouter();
 	const [open, setOpen] = useState(false);
@@ -132,21 +147,36 @@ export function AddWorkoutDialog({
 	}
 
 	function addSet(exerciseIndex: number) {
-		setExercises(
-			exercises.map((exercise, index) =>
-				index === exerciseIndex
-					? {
-							...exercise,
-							sets: [
-								...exercise.sets,
-								{
-									reps: "",
-									weight: "",
-								},
-							],
-						}
-					: exercise,
-			),
+		setExercises((currentExercises) =>
+			currentExercises.map((exercise, index) => {
+				if (index !== exerciseIndex) {
+					return exercise;
+				}
+
+				const newSetIndex = exercise.sets.length;
+
+				const previousSet =
+					exerciseHistory[exercise.name]?.sets[newSetIndex];
+
+				return {
+					...exercise,
+					sets: [
+						...exercise.sets,
+						{
+							reps: "",
+							weight: "",
+							previousReps:
+								previousSet?.reps != null
+									? String(previousSet.reps)
+									: undefined,
+							previousWeight:
+								previousSet?.weight != null
+									? String(previousSet.weight)
+									: undefined,
+						},
+					],
+				};
+			}),
 		);
 	}
 
@@ -234,6 +264,38 @@ export function AddWorkoutDialog({
 						}
 					: exercise,
 			),
+		);
+	}
+
+	function selectExercise(exerciseIndex: number, name: string) {
+		const previous = exerciseHistory[name];
+
+		setExercises((currentExercises) =>
+			currentExercises.map((exercise, index) => {
+				if (index !== exerciseIndex) {
+					return exercise;
+				}
+
+				return {
+					...exercise,
+					name,
+					sets: exercise.sets.map((set, setIndex) => {
+						const previousSet = previous?.sets[setIndex];
+
+						return {
+							...set,
+							previousWeight:
+								previousSet?.weight != null
+									? String(previousSet.weight)
+									: undefined,
+							previousReps:
+								previousSet?.reps != null
+									? String(previousSet.reps)
+									: undefined,
+						};
+					}),
+				};
+			}),
 		);
 	}
 
@@ -501,9 +563,8 @@ export function AddWorkoutDialog({
 												<ExerciseSelector
 													value={exercise.name}
 													onSelect={(name) =>
-														updateExercise(
+														selectExercise(
 															exerciseIndex,
-															"name",
 															name,
 														)
 													}
@@ -571,7 +632,10 @@ export function AddWorkoutDialog({
 														<Input
 															type="number"
 															step="0.5"
-															placeholder="Weight"
+															placeholder={
+																set.previousWeight ??
+																"Weight"
+															}
 															className="col-span-4 rounded-lg text-center text-base font-bold text-foreground shadow-none placeholder:text-sm placeholder:text-muted-foreground/50 focus-visible:ring-0 md:text-[1.05rem] md:placeholder:text-[0.85rem]"
 															value={set.weight}
 															inputMode="decimal"
@@ -588,7 +652,10 @@ export function AddWorkoutDialog({
 
 														<Input
 															type="number"
-															placeholder="Reps"
+															placeholder={
+																set.previousReps ??
+																"Reps"
+															}
 															className="col-span-4 rounded-lg text-center text-base font-bold text-foreground shadow-none placeholder:text-sm placeholder:text-muted-foreground/50 focus-visible:ring-0 md:text-[1.05rem] md:placeholder:text-[0.85rem]"
 															inputMode="numeric"
 															value={set.reps}

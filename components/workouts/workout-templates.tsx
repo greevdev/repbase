@@ -3,8 +3,15 @@ import { PREDEFINED_EXERCISES } from "@/lib/exercises";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AddWorkoutDialog } from "@/components/workouts/add-workout-dialog";
 import WorkoutTemplateOptionsPopover from "./workout-template-options-popover";
+import type { ExerciseHistory } from "@/lib/workouts/get-exercise-history";
 
-export async function WorkoutTemplates({ clientId }: { clientId: string }) {
+export async function WorkoutTemplates({
+	clientId,
+	exerciseHistory,
+}: {
+	clientId: string;
+	exerciseHistory: ExerciseHistory;
+}) {
 	const supabase = await createClient();
 
 	const { data: templates, error } = await supabase
@@ -69,14 +76,29 @@ export async function WorkoutTemplates({ clientId }: { clientId: string }) {
 						(a, b) => a.set_number - b.set_number,
 					);
 
+					const previousPerformance = exerciseHistory[exercise.name];
+
 					return {
 						name: exercise.name,
 						notes: exercise.notes ?? "",
 						isCustom: !isPredefined,
-						sets: sortedSets.map(() => ({
-							reps: "",
-							weight: "",
-						})),
+						sets: sortedSets.map((_, setIndex) => {
+							const previousSet =
+								previousPerformance?.sets[setIndex];
+
+							return {
+								reps: "",
+								weight: "",
+								previousReps:
+									previousSet?.reps != null
+										? String(previousSet.reps)
+										: undefined,
+								previousWeight:
+									previousSet?.weight != null
+										? String(previousSet.weight)
+										: undefined,
+							};
+						}),
 					};
 				});
 

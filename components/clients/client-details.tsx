@@ -9,6 +9,7 @@ import { EditClientDialog } from "./edit-client-dialog";
 import { DeleteClientDialog } from "./delete-client-dialog";
 import { AddWorkoutTemplateDialog } from "../workouts/add-workout-template-dialog";
 import { WorkoutTemplates } from "../workouts/workout-templates";
+import { getExerciseHistory } from "@/lib/workouts/get-exercise-history";
 
 type Workout = {
 	id: string;
@@ -61,6 +62,8 @@ export default async function ClientDetails({
 	}
 
 	const currentYear = new Date().getFullYear();
+
+	const exerciseHistory = await getExerciseHistory(client.id);
 
 	return (
 		<div className="space-y-5">
@@ -148,7 +151,10 @@ export default async function ClientDetails({
 					<AddWorkoutTemplateDialog clientId={client.id} />
 				</div>
 
-				<WorkoutTemplates clientId={client.id} />
+				<WorkoutTemplates
+					exerciseHistory={exerciseHistory}
+					clientId={client.id}
+				/>
 			</div>
 
 			<div>
@@ -159,6 +165,7 @@ export default async function ClientDetails({
 
 					<AddWorkoutDialog
 						className="border border-muted-foreground/15 bg-white text-foreground hover:bg-gray-200"
+						exerciseHistory={exerciseHistory}
 						clientId={id}
 					/>
 				</div>

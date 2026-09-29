@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import LetterAvatar from "../letter-avatar";
 import { Activity } from "lucide-react";
 import Link from "next/link";
+import clsx from "clsx";
 
 export default async function RecentActivityBoard() {
 	const supabase = await createClient();
@@ -58,11 +59,14 @@ export default async function RecentActivityBoard() {
 
 			<div>
 				{workouts.length > 0 ? (
-					workouts.map((workout) => (
+					workouts.map((workout, index: number) => (
 						<Link
 							href={`/dashboard/clients/${workout.client_id}/workouts/${workout.id}`}
 							key={workout.id}
-							className="grid grid-cols-3 items-center gap-1 border-t border-foreground/5 px-4 py-3 text-[0.9rem] transition hover:bg-background/60"
+							className={clsx(
+								"grid grid-cols-3 items-center gap-1 border-t border-foreground/5 px-4 py-3 text-[0.9rem] transition hover:bg-foreground/5",
+								index % 2 != 0 && "bg-background/70",
+							)}
 						>
 							<div className="flex items-center gap-3">
 								<LetterAvatar
