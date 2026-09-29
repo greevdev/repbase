@@ -16,6 +16,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import { Pencil } from "lucide-react";
 
 type Client = {
 	id: string;
@@ -65,9 +66,10 @@ export function EditClientDialog({ client }: { client: Client }) {
 			<DialogTrigger asChild>
 				<Button
 					variant="outline"
-					className="bg-white hover:bg-gray-50 rounded-lg"
+					className="aspect-square rounded-lg bg-white hover:bg-gray-50 sm:aspect-auto"
 				>
-					Edit Client
+					<span className="hidden sm:block">Edit Client</span>
+					<Pencil className="sm:hidden" />
 				</Button>
 			</DialogTrigger>
 
@@ -76,7 +78,7 @@ export function EditClientDialog({ client }: { client: Client }) {
 					<DialogTitle>Edit client</DialogTitle>
 				</DialogHeader>
 
-				<form action={handleSubmit} className="space-y-4 mt-2">
+				<form action={handleSubmit} className="mt-2 space-y-4">
 					<Input
 						name="name"
 						defaultValue={client.name}

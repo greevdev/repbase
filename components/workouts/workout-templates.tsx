@@ -104,8 +104,8 @@ export async function WorkoutTemplates({
 
 				return (
 					<Card key={template.id} className="shadow-none">
-						<CardHeader className="flex w-full flex-row items-start justify-between gap-3 pt-4">
-							<CardTitle className="mt-2 text-xl">
+						<CardHeader className="flex w-full flex-row items-start justify-between gap-3 pb-4 pt-4">
+							<CardTitle className="mt-1 text-lg sm:mt-2 sm:text-xl">
 								{template.title}
 							</CardTitle>
 

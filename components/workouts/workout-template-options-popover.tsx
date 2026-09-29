@@ -40,8 +40,8 @@ export default function WorkoutTemplateOptionsPopover({
 }: WorkoutTemplateOptionsProps) {
 	return (
 		<Popover>
-			<PopoverTrigger className="mt-0 w-max justify-self-start rounded-lg border border-muted-foreground/30 p-1 text-muted-foreground/70 transition hover:bg-gray-100/80">
-				<EllipsisIcon />
+			<PopoverTrigger className="mt-0 w-max justify-self-start rounded-lg border border-muted-foreground/20 p-1 text-muted-foreground/70 transition hover:bg-gray-100/80">
+				<EllipsisIcon size={14} />
 			</PopoverTrigger>
 			<PopoverContent
 				align="end"

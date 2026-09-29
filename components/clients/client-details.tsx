@@ -90,7 +90,7 @@ export default async function ClientDetails({
 				</div>
 			</div>
 
-			<div className="flex flex-col justify-between gap-7 rounded-xl border border-foreground/10 bg-white p-5 text-lg md:p-7 lg:flex-row lg:gap-0">
+			<div className="flex flex-col justify-between gap-10 rounded-xl border border-foreground/10 bg-white p-5 text-lg md:p-7 lg:flex-row lg:gap-0">
 				<div className="flex items-center gap-3 md:gap-5">
 					<LetterAvatar
 						clientId={client.id}
@@ -143,7 +143,7 @@ export default async function ClientDetails({
 			</div>
 
 			<div>
-				<div className="mb-4 flex items-center justify-between gap-5">
+				<div className="mb-4 flex items-center justify-between gap-5 pt-2">
 					<h2 className="whitespace-nowrap text-xl font-semibold">
 						Templates
 					</h2>
@@ -158,7 +158,7 @@ export default async function ClientDetails({
 			</div>
 
 			<div>
-				<div className="mb-4 flex items-center justify-between gap-5">
+				<div className="mb-4 flex items-center justify-between gap-5 pt-2">
 					<h2 className="text-xl font-semibold">Workouts</h2>
 
 					<div className="hidden h-px w-full bg-gray-200 md:block" />
