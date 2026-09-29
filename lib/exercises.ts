@@ -273,6 +273,11 @@ export const PREDEFINED_EXERCISES: PredefinedExercise[] = [
 		equipment: "Machine",
 	},
 	{
+		name: "Belt Squat",
+		category: "Quads",
+		equipment: "Machine",
+	},
+	{
 		name: "Leg Press",
 		category: "Quads",
 		equipment: "Machine",
@@ -283,7 +288,57 @@ export const PREDEFINED_EXERCISES: PredefinedExercise[] = [
 		equipment: "Machine",
 	},
 	{
+		name: "Goblet Squat",
+		category: "Quads",
+		equipment: "Dumbbell",
+	},
+	{
 		name: "Bulgarian Split Squat",
+		category: "Quads",
+		equipment: "Dumbbell",
+	},
+	{
+		name: "Smith Machine Bulgarian Split Squat",
+		category: "Quads",
+		equipment: "Smith Machine",
+	},
+	{
+		name: "Split Squat",
+		category: "Quads",
+		equipment: "Dumbbell",
+	},
+	{
+		name: "Walking Lunge",
+		category: "Quads",
+		equipment: "Dumbbell",
+	},
+	{
+		name: "Forward Lunge",
+		category: "Quads",
+		equipment: "Dumbbell",
+	},
+	{
+		name: "Reverse Lunge",
+		category: "Quads",
+		equipment: "Dumbbell",
+	},
+	{
+		name: "Barbell Reverse Lunge",
+		category: "Quads",
+		equipment: "Barbell",
+	},
+	{
+		name: "Smith Machine Reverse Lunge",
+		category: "Quads",
+		equipment: "Smith Machine",
+	},
+	{
+		name: "Step Up",
+		category: "Quads",
+		equipment: "Dumbbell",
+	},
+	{
+		name: "Lateral Lunge",
 		category: "Quads",
 		equipment: "Dumbbell",
 	},
@@ -300,12 +355,27 @@ export const PREDEFINED_EXERCISES: PredefinedExercise[] = [
 		equipment: "Dumbbell",
 	},
 	{
+		name: "Smith Machine Romanian Deadlift",
+		category: "Hamstrings",
+		equipment: "Smith Machine",
+	},
+	{
+		name: "Single Leg Romanian Deadlift",
+		category: "Hamstrings",
+		equipment: "Dumbbell",
+	},
+	{
 		name: "Lying Leg Curl",
 		category: "Hamstrings",
 		equipment: "Machine",
 	},
 	{
 		name: "Seated Leg Curl",
+		category: "Hamstrings",
+		equipment: "Machine",
+	},
+	{
+		name: "Standing Leg Curl",
 		category: "Hamstrings",
 		equipment: "Machine",
 	},
@@ -332,12 +402,22 @@ export const PREDEFINED_EXERCISES: PredefinedExercise[] = [
 		equipment: "Machine",
 	},
 	{
+		name: "Glute Bridge",
+		category: "Glutes",
+		equipment: "Bodyweight",
+	},
+	{
 		name: "Cable Glute Kickback",
 		category: "Glutes",
 		equipment: "Cable",
 	},
 	{
 		name: "Hip Abduction Machine",
+		category: "Glutes",
+		equipment: "Machine",
+	},
+	{
+		name: "Hip Adduction Machine",
 		category: "Glutes",
 		equipment: "Machine",
 	},
@@ -363,7 +443,18 @@ export const PREDEFINED_EXERCISES: PredefinedExercise[] = [
 		category: "Calves",
 		equipment: "Smith Machine",
 	},
+	{
+		name: "Single Leg Calf Raise",
+		category: "Calves",
+		equipment: "Bodyweight",
+	},
+	{
+		name: "Donkey Calf Raise",
+		category: "Calves",
+		equipment: "Machine",
+	},
 
+	// Core
 	// Core
 	{
 		name: "Cable Crunch",
@@ -376,7 +467,42 @@ export const PREDEFINED_EXERCISES: PredefinedExercise[] = [
 		equipment: "Machine",
 	},
 	{
+		name: "Weighted Crunch",
+		category: "Core",
+		equipment: "Other",
+	},
+	{
+		name: "Decline Crunch",
+		category: "Core",
+		equipment: "Bodyweight",
+	},
+	{
+		name: "Decline Sit Up",
+		category: "Core",
+		equipment: "Bodyweight",
+	},
+	{
 		name: "Hanging Leg Raise",
+		category: "Core",
+		equipment: "Bodyweight",
+	},
+	{
+		name: "Hanging Knee Raise",
+		category: "Core",
+		equipment: "Bodyweight",
+	},
+	{
+		name: "Captain's Chair Leg Raise",
+		category: "Core",
+		equipment: "Bodyweight",
+	},
+	{
+		name: "Lying Leg Raise",
+		category: "Core",
+		equipment: "Bodyweight",
+	},
+	{
+		name: "Reverse Crunch",
 		category: "Core",
 		equipment: "Bodyweight",
 	},
@@ -391,9 +517,44 @@ export const PREDEFINED_EXERCISES: PredefinedExercise[] = [
 		equipment: "Bodyweight",
 	},
 	{
+		name: "Weighted Plank",
+		category: "Core",
+		equipment: "Other",
+	},
+	{
+		name: "Side Plank",
+		category: "Core",
+		equipment: "Bodyweight",
+	},
+	{
+		name: "Dead Bug",
+		category: "Core",
+		equipment: "Bodyweight",
+	},
+	{
 		name: "Pallof Press",
 		category: "Core",
 		equipment: "Cable",
+	},
+	{
+		name: "Cable Wood Chop",
+		category: "Core",
+		equipment: "Cable",
+	},
+	{
+		name: "Russian Twist",
+		category: "Core",
+		equipment: "Other",
+	},
+	{
+		name: "Bicycle Crunch",
+		category: "Core",
+		equipment: "Bodyweight",
+	},
+	{
+		name: "Mountain Climber",
+		category: "Core",
+		equipment: "Bodyweight",
 	},
 
 	// Full Body
