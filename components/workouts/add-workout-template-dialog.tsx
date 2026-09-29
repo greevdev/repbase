@@ -176,10 +176,10 @@ export function AddWorkoutTemplateDialog({ clientId }: { clientId: string }) {
 
 			<DialogContent
 				onOpenAutoFocus={(e) => e.preventDefault()}
-				className="top-[50%] flex h-[90dvh] max-w-[97dvw] flex-col overflow-hidden bg-white p-3 md:rounded-xl md:p-5"
+				className="top-[50%] flex h-[100dvh] max-w-[100dvw] flex-col overflow-hidden rounded-none bg-white p-3 sm:h-[90dvh] sm:rounded-xl md:p-5"
 			>
 				<DialogHeader className="shrink-0">
-					<DialogTitle className="text-xl font-bold">
+					<DialogTitle className="text-start text-xl font-bold">
 						Create Workout Template
 					</DialogTitle>
 				</DialogHeader>
