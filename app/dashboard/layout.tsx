@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Suspense } from "react";
 import CurrentDateBadge from "@/components/current-date-badge";
 import Greeting from "@/components/greeting";
+import MobileMenu from "@/components/mobile-menu";
 
 export default function DashboardLayout({
 	children,
@@ -15,21 +16,21 @@ export default function DashboardLayout({
 }) {
 	return (
 		<div className="flex min-h-screen bg-muted/20">
-			<aside className="sticky top-0 h-screen hidden md:w-48 lg:w-52 xl:w-64 shrink-0 border-r bg-white md:flex flex-col">
+			<aside className="sticky top-0 hidden h-screen shrink-0 flex-col border-r bg-white md:flex md:w-48 lg:w-52 xl:w-64">
 				<div className="flex h-16 items-center border-b px-6">
 					<Link
 						href="/dashboard"
-						className="text-xl lg:text-[1.4rem] font-bold flex items-center gap-1"
+						className="flex items-center gap-1 text-xl font-bold lg:text-[1.4rem]"
 					>
 						<Image alt="dumbbell" src={dumbbellsvg} />
 						RepBase
 					</Link>
 				</div>
 
-				<nav className="p-4 space-y-2 text-foreground/80 flex-1 overflow-y-auto">
+				<nav className="flex-1 space-y-2 overflow-y-auto p-4 text-foreground/80">
 					<Link
 						href="/dashboard"
-						className="flex items-center gap-3 btn"
+						className="btn flex items-center gap-3"
 					>
 						<LayoutDashboard className="size-5" />
 						Dashboard
@@ -37,7 +38,7 @@ export default function DashboardLayout({
 
 					<Link
 						href="/dashboard/clients"
-						className="flex items-center gap-3 btn"
+						className="btn flex items-center gap-3"
 					>
 						<Users className="size-5" />
 						Clients
@@ -58,8 +59,8 @@ export default function DashboardLayout({
 			</aside>
 
 			<div className="flex min-w-0 flex-1 flex-col">
-				<header className="h-16 border-b bg-white sticky top-0 z-20">
-					<div className="hidden md:flex h-full items-center justify-between px-6">
+				<header className="sticky top-0 z-20 h-16 border-b bg-white">
+					<div className="hidden h-full items-center justify-between px-6 md:flex">
 						<Greeting />
 
 						<Suspense>
@@ -67,14 +68,16 @@ export default function DashboardLayout({
 						</Suspense>
 					</div>
 
-					<div className="md:hidden flex h-full items-center justify-between px-4">
+					<div className="flex h-full items-center justify-between px-4 md:hidden">
 						<Link
 							href="/dashboard"
-							className="text-xl lg:text-[1.4rem] font-bold flex items-center gap-1"
+							className="flex items-center gap-1 text-xl font-bold lg:text-[1.4rem]"
 						>
 							<Image alt="dumbbell" src={dumbbellsvg} />
 							RepBase
 						</Link>
+
+						<MobileMenu />
 					</div>
 				</header>
 

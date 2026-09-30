@@ -453,8 +453,7 @@ export function EditWorkoutTemplateDialog({
 						</div>
 					</div>
 
-					{/* Bottom actions */}
-					<div className="grid shrink-0 grid-cols-2 gap-3">
+					<div className="grid shrink-0 grid-cols-2 gap-3 pb-4 sm:pb-0">
 						<Button
 							type="button"
 							variant="outline"
