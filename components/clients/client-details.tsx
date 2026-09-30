@@ -11,6 +11,7 @@ import { AddWorkoutTemplateDialog } from "../workouts/add-workout-template-dialo
 import { WorkoutTemplates } from "../workouts/workout-templates";
 import { getExerciseHistory } from "@/lib/workouts/get-exercise-history";
 import { ScheduleWorkoutDialog } from "../workouts/schedule-workout-dialog";
+import { UpcomingSessions } from "../workouts/upcoming-sessions";
 
 type Workout = {
 	id: string;
@@ -144,19 +145,33 @@ export default async function ClientDetails({
 				</div>
 			</div>
 
-			<div>
-				<div className="mb-4 flex items-center justify-between gap-5 pt-2">
-					<h2 className="whitespace-nowrap text-xl font-semibold">
-						Templates
-					</h2>
-					<div className="hidden h-px w-full bg-gray-200 md:block" />
-					<AddWorkoutTemplateDialog clientId={client.id} />
+			<div className="grid grid-cols-3 gap-8">
+				<div className="col-span-3 lg:col-span-2">
+					<div className="mb-4 flex items-center justify-between gap-5 pt-2">
+						<h2 className="whitespace-nowrap text-xl font-semibold">
+							Templates
+						</h2>
+						<div className="hidden h-px w-full bg-gray-200 md:block" />
+						<AddWorkoutTemplateDialog clientId={client.id} />
+					</div>
+
+					<WorkoutTemplates
+						exerciseHistory={exerciseHistory}
+						clientId={client.id}
+					/>
 				</div>
 
-				<WorkoutTemplates
-					exerciseHistory={exerciseHistory}
-					clientId={client.id}
-				/>
+				<div className="col-span-3 lg:col-span-1">
+					<div className="mb-4 flex items-center justify-between gap-5 pt-3">
+						<h2 className="whitespace-nowrap text-xl font-semibold">
+							Scheduled Workouts
+						</h2>
+
+						{/* <div className="hidden h-px w-full bg-gray-200 md:block" /> */}
+					</div>
+
+					<UpcomingSessions clientId={client.id} />
+				</div>
 			</div>
 
 			<div>
