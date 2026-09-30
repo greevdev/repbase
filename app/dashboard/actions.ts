@@ -577,19 +577,19 @@ export async function scheduleWorkout(clientId: string, formData: FormData) {
 	const supabase = await createClient();
 
 	const title = formData.get("title") as string;
-	const date = formData.get("date") as string;
-	const time = formData.get("time") as string;
+
+	const scheduledAt = formData.get("scheduled_at") as string;
+
 	const durationMinutes = Number(formData.get("duration_minutes"));
+
 	const notes = formData.get("notes") as string;
 
-	if (!title || !date || !time) {
+	if (!title || !scheduledAt) {
 		return {
 			success: false,
 			error: "Missing required fields",
 		};
 	}
-
-	const scheduledAt = new Date(`${date}T${time}`).toISOString();
 
 	const { data, error } = await supabase
 		.from("scheduled_workouts")
@@ -611,7 +611,6 @@ export async function scheduleWorkout(clientId: string, formData: FormData) {
 	}
 
 	revalidatePath(`/dashboard/clients/${clientId}`);
-
 	revalidatePath("/dashboard");
 
 	return {
