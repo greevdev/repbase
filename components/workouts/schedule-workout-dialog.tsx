@@ -38,6 +38,13 @@ export function ScheduleWorkoutDialog({
 
 		const formData = new FormData(event.currentTarget);
 
+		const date = formData.get("date") as string;
+		const time = formData.get("time") as string;
+
+		const scheduledAt = new Date(`${date}T${time}`).toISOString();
+
+		formData.set("scheduled_at", scheduledAt);
+
 		try {
 			const result = await scheduleWorkout(clientId, formData);
 
