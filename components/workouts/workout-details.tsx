@@ -93,13 +93,16 @@ export default async function WorkoutDetails({
 	return (
 		<div className="space-y-8 duration-300 animate-in fade-in slide-in-from-bottom-2">
 			<div className="mt-2 flex items-center gap-1 text-sm text-muted-foreground">
-				<Link href="/dashboard" className="transition hover:text-black">
+				<Link
+					href="/dashboard"
+					className="underline transition hover:text-black"
+				>
 					Dashboard
 				</Link>
 				<ChevronRight className="text-foreground/30" size={16} />
 				<Link
 					href={`/dashboard/clients/${workout.client_id}`}
-					className="transition hover:text-black"
+					className="underline transition hover:text-black"
 				>
 					{client?.name}
 				</Link>
@@ -131,8 +134,10 @@ export default async function WorkoutDetails({
 					</div>
 				</div>
 
+				<div className="h-px w-full bg-gray-200 sm:hidden" />
+
 				<div className="flex w-full flex-col gap-4 sm:w-auto sm:gap-8 lg:flex-row xl:gap-14">
-					<div className="flex items-start gap-6 xl:gap-10">
+					<div className="flex items-start justify-evenly gap-6 xl:gap-10">
 						<div className="flex flex-col items-center gap-1">
 							<p className="whitespace-nowrap text-xs font-semibold tracking-wider text-gray-400 sm:text-sm">
 								TOTAL VOLUME
@@ -188,7 +193,7 @@ export default async function WorkoutDetails({
 									{exercise.name}
 								</h2>
 
-								<div className="grid grid-cols-4 px-4 py-3 text-[0.6rem] font-semibold tracking-wider text-foreground/50 sm:px-7 sm:text-[0.7rem]">
+								<div className="grid grid-cols-4 px-4 py-3 text-[0.6rem] font-semibold tracking-widest text-accent sm:px-7 sm:text-[0.7rem]">
 									<p>SET</p>
 									<p>WEIGHT</p>
 									<p>REPS</p>

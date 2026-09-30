@@ -262,15 +262,23 @@ export function EditWorkoutDialog({
 				</Button>
 			</DialogTrigger>
 
-			<DialogContent className="top-[50%] flex h-[90dvh] max-w-[97dvw] flex-col overflow-hidden bg-white p-3 md:p-5">
+			<DialogContent className="top-[50%] flex h-[100dvh] max-w-[100dvw] flex-col overflow-hidden rounded-none bg-white p-3 sm:h-[90dvh] sm:rounded-xl md:p-5">
 				<DialogHeader className="shrink-0">
-					<DialogTitle className="text-xl font-bold">
+					<DialogTitle className="text-start text-xl font-bold">
 						Edit Workout
 					</DialogTitle>
 				</DialogHeader>
 
 				<form
 					onSubmit={handleSubmit}
+					onKeyDown={(e) => {
+						if (
+							e.key === "Enter" &&
+							e.target instanceof HTMLInputElement
+						) {
+							e.preventDefault();
+						}
+					}}
 					className="mt-3 flex min-h-0 flex-1 flex-col gap-6"
 				>
 					<div className="flex min-h-0 flex-1 flex-col gap-6">
@@ -281,7 +289,7 @@ export function EditWorkoutDialog({
 									name="title"
 									defaultValue={workout.title}
 									required
-									className="rounded-lg text-sm font-semibold shadow-none md:text-base"
+									className="h-full w-full rounded-lg text-base font-semibold shadow-none"
 								/>
 
 								<Input
@@ -289,7 +297,7 @@ export function EditWorkoutDialog({
 									type="date"
 									defaultValue={workout.date}
 									required
-									className="rounded-lg text-sm font-semibold shadow-none md:text-base"
+									className="h-full w-full appearance-none rounded-lg text-base font-semibold shadow-none"
 								/>
 							</div>
 
@@ -475,7 +483,7 @@ export function EditWorkoutDialog({
 						</div>
 					</div>
 
-					<div className="grid shrink-0 grid-cols-2 gap-3">
+					<div className="grid shrink-0 grid-cols-2 gap-3 pb-2 sm:pb-0">
 						<Button
 							type="button"
 							variant="outline"

@@ -709,7 +709,7 @@ export function AddWorkoutDialog({
 						</div>
 					</div>
 
-					<div className="grid shrink-0 grid-cols-2 gap-3">
+					<div className="grid shrink-0 grid-cols-2 gap-3 pb-2 sm:pb-0">
 						<Button
 							type="button"
 							variant="outline"

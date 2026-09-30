@@ -66,12 +66,12 @@ export default async function ClientDetails({
 	const exerciseHistory = await getExerciseHistory(client.id);
 
 	return (
-		<div className="space-y-5 duration-300 animate-in fade-in slide-in-from-bottom-2">
+		<div className="space-y-5 pb-8 duration-300 animate-in fade-in slide-in-from-bottom-2">
 			<div className="flex items-center justify-between gap-2">
 				<div className="flex items-center gap-1 text-sm text-muted-foreground">
 					<Link
 						href="/dashboard"
-						className="transition hover:text-black"
+						className="underline transition hover:text-black"
 					>
 						Dashboard
 					</Link>
