@@ -24,8 +24,6 @@ export function NextSessionContent({ scheduledAt }: NextSessionContentProps) {
 
 	if (difference === 0) {
 		dateLabel = "Today";
-	} else if (difference === 1) {
-		dateLabel = "Tomorrow";
 	} else {
 		dateLabel = date.toLocaleDateString("en-GB", {
 			day: "numeric",

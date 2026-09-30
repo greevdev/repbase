@@ -90,7 +90,7 @@ export function ScheduleWorkoutDialog({
 							e.preventDefault();
 						}
 					}}
-					className="space-y-5"
+					className="space-y-6"
 				>
 					<div className="space-y-1">
 						<p className="text-sm font-medium text-muted-foreground">
@@ -105,7 +105,7 @@ export function ScheduleWorkoutDialog({
 						/>
 					</div>
 
-					<div className="grid grid-cols-2 gap-3">
+					<div className="grid grid-cols-2 gap-2">
 						<div className="space-y-1">
 							<p className="text-sm font-medium text-muted-foreground">
 								Date
@@ -116,7 +116,7 @@ export function ScheduleWorkoutDialog({
 								type="date"
 								defaultValue={today}
 								required
-								className="text-base font-semibold shadow-none"
+								className="h-full w-full appearance-none text-base font-semibold shadow-none"
 							/>
 						</div>
 
@@ -129,7 +129,7 @@ export function ScheduleWorkoutDialog({
 								name="time"
 								type="time"
 								required
-								className="text-base font-semibold shadow-none"
+								className="h-full w-full appearance-none text-base font-semibold shadow-none"
 							/>
 						</div>
 					</div>
