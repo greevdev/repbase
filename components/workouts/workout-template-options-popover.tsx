@@ -6,7 +6,7 @@ import {
 	PopoverTitle,
 	PopoverTrigger,
 } from "@/components/ui/popover";
-import { EllipsisIcon } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import { DeleteWorkoutTemplateDialog } from "./delete-workout-template-dialog";
 import { EditWorkoutTemplateDialog } from "./edit-workout-template-dialog";
 
@@ -40,8 +40,8 @@ export default function WorkoutTemplateOptionsPopover({
 }: WorkoutTemplateOptionsProps) {
 	return (
 		<Popover>
-			<PopoverTrigger className="mt-0 w-max justify-self-start rounded-lg border border-muted-foreground/20 p-1 text-muted-foreground/70 transition hover:bg-gray-100/80">
-				<EllipsisIcon size={14} />
+			<PopoverTrigger className="mt-0 w-max justify-self-start rounded-lg p-2 transition hover:bg-gray-100/80">
+				<MoreHorizontal className="size-5" />
 			</PopoverTrigger>
 			<PopoverContent
 				align="end"

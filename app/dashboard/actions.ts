@@ -618,3 +618,73 @@ export async function scheduleWorkout(clientId: string, formData: FormData) {
 		scheduledWorkout: data,
 	};
 }
+
+export async function editScheduledWorkout(
+	scheduledWorkoutId: string,
+	clientId: string,
+	formData: FormData,
+) {
+	const supabase = await createClient();
+
+	const title = formData.get("title") as string;
+	const scheduledAt = formData.get("scheduled_at") as string;
+	const durationMinutes = Number(formData.get("duration_minutes"));
+	const notes = formData.get("notes") as string;
+
+	if (!title || !scheduledAt) {
+		return {
+			success: false,
+			error: "Missing required fields",
+		};
+	}
+
+	const { error } = await supabase
+		.from("scheduled_workouts")
+		.update({
+			title,
+			scheduled_at: scheduledAt,
+			duration_minutes: durationMinutes || 60,
+			notes: notes || null,
+		})
+		.eq("id", scheduledWorkoutId);
+
+	if (error) {
+		return {
+			success: false,
+			error: error.message,
+		};
+	}
+
+	revalidatePath(`/dashboard/clients/${clientId}`);
+	revalidatePath("/dashboard");
+
+	return {
+		success: true,
+	};
+}
+
+export async function deleteScheduledWorkout(
+	scheduledWorkoutId: string,
+	clientId: string,
+) {
+	const supabase = await createClient();
+
+	const { error } = await supabase
+		.from("scheduled_workouts")
+		.delete()
+		.eq("id", scheduledWorkoutId);
+
+	if (error) {
+		return {
+			success: false,
+			error: error.message,
+		};
+	}
+
+	revalidatePath(`/dashboard/clients/${clientId}`);
+	revalidatePath("/dashboard");
+
+	return {
+		success: true,
+	};
+}

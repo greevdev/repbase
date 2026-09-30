@@ -7,6 +7,7 @@ import GoogleCalendar from "@/public/google_calendar.webp";
 import Image from "next/image";
 import { SessionDateTime } from "@/components/workouts/session-date-time";
 import Link from "next/link";
+import ScheduledWorkoutOptionsPopover from "./scheduled-workout-options-popover";
 
 export async function UpcomingSessions({
 	clientId,
@@ -74,10 +75,17 @@ export async function UpcomingSessions({
 				return (
 					<Card key={session.id} className="shadow-none">
 						<CardContent className="flex items-center justify-between gap-4 p-4">
-							<div className="min-w-0">
-								<p className="truncate text-base font-semibold">
-									{session.title}
-								</p>
+							<div className="w-full">
+								<div className="flex items-center justify-between">
+									<p className="truncate text-base font-semibold">
+										{session.title}
+									</p>
+
+									<ScheduledWorkoutOptionsPopover
+										workout={session}
+										clientId={clientId}
+									/>
+								</div>
 
 								<div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
 									<div className="flex items-center gap-1.5">
