@@ -1,11 +1,12 @@
 import { CalendarDays, Clock3 } from "lucide-react";
 import { createGoogleCalendarUrl } from "@/lib/calendar";
-import { CalendarPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent } from "@/components/ui/card";
 import GoogleCalendar from "@/public/google_calendar.webp";
 import Image from "next/image";
+import { SessionDateTime } from "@/components/workouts/session-date-time";
+import Link from "next/link";
 
 export async function UpcomingSessions({
 	clientId,
@@ -70,17 +71,6 @@ export async function UpcomingSessions({
 					notes: session.notes,
 				});
 
-				const date = scheduledDate.toLocaleDateString("en-GB", {
-					day: "numeric",
-					month: "short",
-					year: "numeric",
-				});
-
-				const time = scheduledDate.toLocaleTimeString("en-GB", {
-					hour: "2-digit",
-					minute: "2-digit",
-				});
-
 				return (
 					<Card key={session.id} className="shadow-none">
 						<CardContent className="flex items-center justify-between gap-4 p-4">
@@ -92,15 +82,17 @@ export async function UpcomingSessions({
 								<div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
 									<div className="flex items-center gap-1.5">
 										<CalendarDays className="size-4" />
-										<span>{date}</span>
+										<SessionDateTime
+											scheduledAt={session.scheduled_at}
+										/>
 									</div>
 
 									<div className="flex items-center gap-1.5">
 										<Clock3 className="size-4" />
-										<span>{time}</span>
+										<span>
+											{session.duration_minutes} min
+										</span>
 									</div>
-
-									<span>{session.duration_minutes} min</span>
 								</div>
 
 								{session.notes && (
@@ -114,7 +106,7 @@ export async function UpcomingSessions({
 									variant="outline"
 									className="mt-3 shrink-0 rounded-lg bg-white shadow-none hover:bg-gray-200"
 								>
-									<a
+									<Link
 										href={googleCalendarUrl}
 										target="_blank"
 										rel="noopener noreferrer"
@@ -125,7 +117,7 @@ export async function UpcomingSessions({
 											className="size-6"
 										/>
 										Google Calendar
-									</a>
+									</Link>
 								</Button>
 							</div>
 						</CardContent>
