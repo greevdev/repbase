@@ -170,7 +170,10 @@ export default async function ClientDetails({
 						{/* <div className="hidden h-px w-full bg-gray-200 md:block" /> */}
 					</div>
 
-					<UpcomingSessions clientId={client.id} />
+					<UpcomingSessions
+						clientId={client.id}
+						clientName={client.name}
+					/>
 				</div>
 			</div>
 

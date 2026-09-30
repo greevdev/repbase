@@ -1,9 +1,19 @@
 import { CalendarDays, Clock3 } from "lucide-react";
-
+import { createGoogleCalendarUrl } from "@/lib/calendar";
+import { CalendarPlus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent } from "@/components/ui/card";
+import GoogleCalendar from "@/public/google_calendar.webp";
+import Image from "next/image";
 
-export async function UpcomingSessions({ clientId }: { clientId: string }) {
+export async function UpcomingSessions({
+	clientId,
+	clientName,
+}: {
+	clientId: string;
+	clientName: string;
+}) {
 	const supabase = await createClient();
 
 	const now = new Date().toISOString();
@@ -52,6 +62,14 @@ export async function UpcomingSessions({ clientId }: { clientId: string }) {
 			{sessions.map((session) => {
 				const scheduledDate = new Date(session.scheduled_at);
 
+				const googleCalendarUrl = createGoogleCalendarUrl({
+					title: session.title,
+					start: scheduledDate,
+					durationMinutes: session.duration_minutes,
+					clientName,
+					notes: session.notes,
+				});
+
 				const date = scheduledDate.toLocaleDateString("en-GB", {
 					day: "numeric",
 					month: "short",
@@ -90,6 +108,25 @@ export async function UpcomingSessions({ clientId }: { clientId: string }) {
 										{session.notes}
 									</p>
 								)}
+
+								<Button
+									asChild
+									variant="outline"
+									className="mt-3 shrink-0 rounded-lg bg-white shadow-none hover:bg-gray-200"
+								>
+									<a
+										href={googleCalendarUrl}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<Image
+											alt="Google Calendar"
+											src={GoogleCalendar}
+											className="size-6"
+										/>
+										Google Calendar
+									</a>
+								</Button>
 							</div>
 						</CardContent>
 					</Card>
