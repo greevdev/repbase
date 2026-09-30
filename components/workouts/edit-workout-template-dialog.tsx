@@ -476,7 +476,7 @@ export function EditWorkoutTemplateDialog({
 								"Save changes"
 							)}
 						</Button>
-					</div>
+					</div>	
 				</form>
 			</DialogContent>
 		</Dialog>

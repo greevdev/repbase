@@ -10,6 +10,7 @@ import { DeleteClientDialog } from "./delete-client-dialog";
 import { AddWorkoutTemplateDialog } from "../workouts/add-workout-template-dialog";
 import { WorkoutTemplates } from "../workouts/workout-templates";
 import { getExerciseHistory } from "@/lib/workouts/get-exercise-history";
+import { ScheduleWorkoutDialog } from "../workouts/schedule-workout-dialog";
 
 type Workout = {
 	id: string;
@@ -82,6 +83,7 @@ export default async function ClientDetails({
 				</div>
 
 				<div className="flex items-center gap-2">
+					<ScheduleWorkoutDialog clientId={client.id} />
 					<EditClientDialog client={client} />
 					<DeleteClientDialog
 						clientName={client.name}

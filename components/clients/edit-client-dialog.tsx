@@ -68,8 +68,8 @@ export function EditClientDialog({ client }: { client: Client }) {
 					variant="outline"
 					className="aspect-square rounded-lg bg-white hover:bg-gray-50 sm:aspect-auto"
 				>
+					<Pencil className="size-4 sm:mr-1" />
 					<span className="hidden sm:block">Edit Client</span>
-					<Pencil className="sm:hidden" />
 				</Button>
 			</DialogTrigger>
 

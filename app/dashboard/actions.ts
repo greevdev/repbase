@@ -572,3 +572,50 @@ export async function editWorkoutTemplate(
 		};
 	}
 }
+
+export async function scheduleWorkout(clientId: string, formData: FormData) {
+	const supabase = await createClient();
+
+	const title = formData.get("title") as string;
+	const date = formData.get("date") as string;
+	const time = formData.get("time") as string;
+	const durationMinutes = Number(formData.get("duration_minutes"));
+	const notes = formData.get("notes") as string;
+
+	if (!title || !date || !time) {
+		return {
+			success: false,
+			error: "Missing required fields",
+		};
+	}
+
+	const scheduledAt = new Date(`${date}T${time}`).toISOString();
+
+	const { data, error } = await supabase
+		.from("scheduled_workouts")
+		.insert({
+			client_id: clientId,
+			title,
+			scheduled_at: scheduledAt,
+			duration_minutes: durationMinutes || 60,
+			notes: notes || null,
+		})
+		.select()
+		.single();
+
+	if (error) {
+		return {
+			success: false,
+			error: error.message,
+		};
+	}
+
+	revalidatePath(`/dashboard/clients/${clientId}`);
+
+	revalidatePath("/dashboard");
+
+	return {
+		success: true,
+		scheduledWorkout: data,
+	};
+}
