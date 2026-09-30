@@ -248,6 +248,7 @@ export async function editWorkout(
 	exercises: ExerciseInput[],
 	totalVolume: number,
 	totalSets: number,
+	durationSeconds: number,
 ) {
 	const supabase = await createClient();
 
@@ -270,6 +271,7 @@ export async function editWorkout(
 			date,
 			sets: totalSets,
 			volume: totalVolume,
+			duration_seconds: durationSeconds,
 		})
 		.eq("id", workoutId);
 

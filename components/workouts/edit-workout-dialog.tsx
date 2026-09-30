@@ -64,7 +64,9 @@ export function EditWorkoutDialog({
 }) {
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
-
+	const [durationMinutes, setDurationMinutes] = useState(
+		Math.floor((workout.duration_seconds ?? 0) / 60),
+	);
 	const [exercises, setExercises] = useState<Exercise[]>(
 		[...workout.workout_exercises]
 			.sort((a, b) => a.position - b.position)
@@ -228,6 +230,8 @@ export function EditWorkoutDialog({
 		const formData = new FormData(event.currentTarget);
 
 		try {
+			const durationSeconds = durationMinutes * 60;
+
 			const result = await editWorkout(
 				workout.id,
 				clientId,
@@ -235,6 +239,7 @@ export function EditWorkoutDialog({
 				exercises,
 				totalVolume,
 				totalSets,
+				durationSeconds,
 			);
 
 			if (result.success) {
@@ -283,22 +288,61 @@ export function EditWorkoutDialog({
 				>
 					<div className="flex min-h-0 flex-1 flex-col gap-6">
 						{/* Workout details */}
-						<div className="shrink-0 space-y-6">
-							<div className="grid grid-cols-2 gap-2 md:gap-4">
+						<div className="shrink-0 space-y-4">
+							<div className="flex flex-col gap-1">
+								<p className="text-sm font-medium text-muted-foreground">
+									Workout Title
+								</p>
 								<Input
 									name="title"
 									defaultValue={workout.title}
 									required
 									className="h-full w-full rounded-lg text-base font-semibold shadow-none"
 								/>
+							</div>
 
-								<Input
-									name="date"
-									type="date"
-									defaultValue={workout.date}
-									required
-									className="h-full w-full appearance-none rounded-lg text-base font-semibold shadow-none"
-								/>
+							<div className="grid grid-cols-2 gap-2 md:gap-4">
+								<div className="flex flex-col gap-1">
+									<p className="text-sm font-medium text-muted-foreground">
+										Duration
+									</p>
+
+									<div className="relative">
+										<Input
+											type="number"
+											min={0}
+											inputMode="numeric"
+											value={durationMinutes}
+											onChange={(e) =>
+												setDurationMinutes(
+													Math.max(
+														0,
+														Number(e.target.value),
+													),
+												)
+											}
+											className="pr-12 text-base font-semibold shadow-none"
+										/>
+
+										<span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+											min
+										</span>
+									</div>
+								</div>
+
+								<div className="flex flex-col gap-1">
+									<p className="text-sm font-medium text-muted-foreground">
+										Date
+									</p>
+
+									<Input
+										name="date"
+										type="date"
+										defaultValue={workout.date}
+										required
+										className="h-full w-full appearance-none rounded-lg text-base font-semibold shadow-none"
+									/>
+								</div>
 							</div>
 
 							<Separator className="bg-gray-200" />
@@ -386,7 +430,7 @@ export function EditWorkoutDialog({
 											className="border-none px-0 py-0 text-sm font-medium text-muted-foreground shadow-none placeholder:text-muted-foreground/70 focus-visible:ring-0 focus-visible:ring-offset-0"
 										/>
 
-										<div className="mt-3 grid grid-cols-10 items-center gap-1 text-[0.7rem] font-bold tracking-widest text-foreground/50 md:gap-2">
+										<div className="mt-3 grid grid-cols-10 items-center gap-1 text-[0.7rem] font-bold tracking-widest text-accent md:gap-2">
 											<p className="text-center">SET</p>
 
 											<p className="col-span-4 text-center">
