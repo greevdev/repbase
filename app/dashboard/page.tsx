@@ -3,6 +3,7 @@ import { AddClientDialog } from "@/components/clients/add-client-dialog";
 import ClientsList from "@/components/clients/clients-list";
 import MonthlyRevenue from "@/components/clients/monthly-revenue";
 import MonthText from "@/components/month-text";
+import { NextSessionCard } from "@/components/next-session-card";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import RecentActivityBoard from "@/components/workouts/recent-activity-board";
@@ -64,7 +65,7 @@ export default function DashboardPage() {
 						</div>
 					</div>
 
-					<div className="dashboard-card h-full" />
+					<NextSessionCard />
 				</div>
 
 				<RecentActivityBoard />

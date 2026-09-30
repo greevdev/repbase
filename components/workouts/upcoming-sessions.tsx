@@ -112,7 +112,7 @@ export async function UpcomingSessions({
 								<Button
 									asChild
 									variant="outline"
-									className="mt-3 shrink-0 rounded-lg bg-white shadow-none hover:bg-gray-200"
+									className="mt-3 w-full shrink-0 rounded-lg bg-white shadow-none hover:bg-gray-200"
 								>
 									<Link
 										href={googleCalendarUrl}
