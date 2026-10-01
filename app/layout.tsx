@@ -2,6 +2,13 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "RepBase | Personal Training Management",
+	description:
+		"Manage clients, workouts, training templates, and scheduled sessions in one simple workspace for personal trainers.",
+};
 
 const defaultUrl = process.env.VERCEL_URL
 	? `https://${process.env.VERCEL_URL}`
@@ -20,7 +27,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<body className={`${inter.className} antialiased text-foreground`}>
+			<body className={`${inter.className} text-foreground antialiased`}>
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="system"
